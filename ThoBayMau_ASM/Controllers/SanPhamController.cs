@@ -54,7 +54,7 @@ namespace ThoBayMau_ASM.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Gia")] SanPham sanPham)
+        public async Task<IActionResult> Create([Bind("Id,Name,Mota,TrangThai,IdLoai")] SanPham sanPham)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +86,7 @@ namespace ThoBayMau_ASM.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Gia")] SanPham sanPham)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Mota,TrangThai,IdLoai")] SanPham sanPham)
         {
             if (id != sanPham.Id)
             {
