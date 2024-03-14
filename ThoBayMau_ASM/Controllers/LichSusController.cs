@@ -10,22 +10,23 @@ using ThoBayMau_ASM.Models;
 
 namespace ThoBayMau_ASM.Controllers
 {
-    public class SanPhamController : Controller
+    public class LichSusController : Controller
     {
         private readonly ThoBayMau_ASMContext _context;
 
-        public SanPhamController(ThoBayMau_ASMContext context)
+        public LichSusController(ThoBayMau_ASMContext context)
         {
             _context = context;
         }
 
-        // GET: SanPham
+        // GET: LichSus
         public async Task<IActionResult> Index()
         {
-            return View(await _context.SanPham.ToListAsync());
+            var thoBayMau_ASMContext = _context.LichSu.Include(l => l.TaiKhoan);
+            return View(await thoBayMau_ASMContext.ToListAsync());
         }
 
-        // GET: SanPham/Details/5
+        // GET: LichSus/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +34,42 @@ namespace ThoBayMau_ASM.Controllers
                 return NotFound();
             }
 
-            var sanPham = await _context.SanPham
+            var lichSu = await _context.LichSu
+                .Include(l => l.TaiKhoan)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (sanPham == null)
+            if (lichSu == null)
             {
                 return NotFound();
             }
 
-            return View(sanPham);
+            return View(lichSu);
         }
 
-        // GET: SanPham/Create
+        // GET: LichSus/Create
         public IActionResult Create()
         {
+            ViewData["TaiKhoanId"] = new SelectList(_context.Set<TaiKhoan>(), "Id", "Id");
             return View();
         }
 
-        // POST: SanPham/Create
+        // POST: LichSus/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Mota,TrangThai,IdLoai")] SanPham sanPham)
+        public async Task<IActionResult> Create([Bind("Id,ThongTin_ThaoTac,NgayGio,ChiTiet,TaiKhoanId")] LichSu lichSu)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(sanPham);
+                _context.Add(lichSu);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(sanPham);
+            ViewData["TaiKhoanId"] = new SelectList(_context.Set<TaiKhoan>(), "Id", "Id", lichSu.TaiKhoanId);
+            return View(lichSu);
         }
 
-        // GET: SanPham/Edit/5
+        // GET: LichSus/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +77,23 @@ namespace ThoBayMau_ASM.Controllers
                 return NotFound();
             }
 
-            var sanPham = await _context.SanPham.FindAsync(id);
-            if (sanPham == null)
+            var lichSu = await _context.LichSu.FindAsync(id);
+            if (lichSu == null)
             {
                 return NotFound();
             }
-            return View(sanPham);
+            ViewData["TaiKhoanId"] = new SelectList(_context.Set<TaiKhoan>(), "Id", "Id", lichSu.TaiKhoanId);
+            return View(lichSu);
         }
 
-        // POST: SanPham/Edit/5
+        // POST: LichSus/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Mota,TrangThai,IdLoai")] SanPham sanPham)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,ThongTin_ThaoTac,NgayGio,ChiTiet,TaiKhoanId")] LichSu lichSu)
         {
-            if (id != sanPham.Id)
+            if (id != lichSu.Id)
             {
                 return NotFound();
             }
@@ -97,12 +102,12 @@ namespace ThoBayMau_ASM.Controllers
             {
                 try
                 {
-                    _context.Update(sanPham);
+                    _context.Update(lichSu);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!SanPhamExists(sanPham.Id))
+                    if (!LichSuExists(lichSu.Id))
                     {
                         return NotFound();
                     }
@@ -113,10 +118,11 @@ namespace ThoBayMau_ASM.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(sanPham);
+            ViewData["TaiKhoanId"] = new SelectList(_context.Set<TaiKhoan>(), "Id", "Id", lichSu.TaiKhoanId);
+            return View(lichSu);
         }
 
-        // GET: SanPham/Delete/5
+        // GET: LichSus/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,34 +130,35 @@ namespace ThoBayMau_ASM.Controllers
                 return NotFound();
             }
 
-            var sanPham = await _context.SanPham
+            var lichSu = await _context.LichSu
+                .Include(l => l.TaiKhoan)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (sanPham == null)
+            if (lichSu == null)
             {
                 return NotFound();
             }
 
-            return View(sanPham);
+            return View(lichSu);
         }
 
-        // POST: SanPham/Delete/5
+        // POST: LichSus/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var sanPham = await _context.SanPham.FindAsync(id);
-            if (sanPham != null)
+            var lichSu = await _context.LichSu.FindAsync(id);
+            if (lichSu != null)
             {
-                _context.SanPham.Remove(sanPham);
+                _context.LichSu.Remove(lichSu);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool SanPhamExists(int id)
+        private bool LichSuExists(int id)
         {
-            return _context.SanPham.Any(e => e.Id == id);
+            return _context.LichSu.Any(e => e.Id == id);
         }
     }
 }

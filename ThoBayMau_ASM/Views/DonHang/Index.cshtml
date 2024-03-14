@@ -1,0 +1,132 @@
+﻿@model IEnumerable<ThoBayMau_ASM.Models.DonHang>
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2>Đơn hàng</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="Category" asp-action="Create" class="btn btn-primary"><i class="bi bi-plus"></i>Create new category</a>
+        </div>
+    </div>
+
+    <br /><br />
+    <!-- Nav pills -->
+    <ul class="nav nav-pills ms-3">
+        <li class="nav-item">
+            <a type="button" class="nav-link active position-relative me-3 rounded-top" data-bs-toggle="pill" href="#home">
+                Chờ duyệt
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    @Model.Where(x => x.TrangThaiDonHang == "cho duyet").Count()
+                    <span class="visually-hidden">unread messages</span>
+                </span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a type="button" class="nav-link position-relative me-3" data-bs-toggle="pill" href="#menu1">
+                Đang giao
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    @Model.Where(x => x.TrangThaiDonHang == "dang giao").Count()
+                    <span class="visually-hidden">unread messages</span>
+                </span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a type="button" class="nav-link position-relative" data-bs-toggle="pill" href="#menu2">
+                Dã giao
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    @Model.Where(x => x.TrangThaiDonHang == "da giao").Count()
+                    <span class="visually-hidden">unread messages</span>
+                </span>
+            </a>
+        </li>
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div class="tab-pane container active" id="home">
+            <table class="table table-bordered table-striped">
+                <thead>
+                <th>ID</th>
+                <th>Thời gian tạo</th>
+                <th>Trang thái thanh toán</th>
+                <th>Trang thái đơn hàng</th>
+                <th>Khách hàng</th>
+                <th>Thao tác</th>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        if (item.TrangThaiDonHang == "cho duyet")
+                        {
+                            <tr>
+                                <td>@item.Id</td>
+                                <td>@item.ThoiGianTao</td>
+                                <td>
+                                    @item.TrangThaiThanhToan
+                                </td>
+                                <td>
+                                    Chờ duyệt
+                                </td>
+                                <td>
+                                    @item.TaiKhoan.TenTK
+                                </td>
+                                <td>
+                                    <a href="#" class="me-3">Chi tiết</a>
+                                    <a asp-action="DuyetDon" asp-controller="Admin" asp-route-id="@item.Id" class="btn btn-primary">Duyệt đơn</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+
+
+                </tbody>
+            </table>
+        </div>
+        <div class="tab-pane container fade" id="menu1">
+            <table class="table table-bordered table-striped">
+                <thead>
+                <th>ID</th>
+                <th>Thời gian tạo</th>
+                <th>Trang thái thanh toán</th>
+                <th>Trang thái đơn hàng</th>
+                <th>Khách hàng</th>
+                <th>Thao tác</th>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        if (item.TrangThaiDonHang == "dang giao")
+                        {
+                            <tr>
+                                <td>@item.Id</td>
+                                <td>@item.ThoiGianTao</td>
+                                <td>
+                                    @item.TrangThaiThanhToan
+                                </td>
+                                <td>
+                                    Đang giao
+                                </td>
+                                <td>
+                                    @item.TaiKhoan.TenTK
+                                </td>
+                                <td>
+                                    <a href="#" class="me-3">Chi tiết</a>
+                                    <button asp-action="DuyetDon" asp-controller="Admin" class="btn btn-primary">Đã giao</button>
+                                </td>
+                            </tr>
+                        }
+                    }
+
+
+                </tbody>
+            </table>
+
+        </div>
+        <div class="tab-pane container fade" id="menu2">...</div>
+    </div>
+</div>

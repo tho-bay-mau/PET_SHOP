@@ -16,5 +16,6 @@ namespace ThoBayMau_ASM.Data
 
         public DbSet<ThoBayMau_ASM.Models.SanPham> SanPham { get; set; } = default!;
         public DbSet<ThoBayMau_ASM.Models.DonHang> DonHang { get; set; } = default!;
+        public DbSet<ThoBayMau_ASM.Models.LichSu> LichSu { get; set; } = default!;
     }
 }

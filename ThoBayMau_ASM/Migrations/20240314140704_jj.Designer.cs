@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ThoBayMau_ASM.Data;
 
@@ -11,9 +12,11 @@ using ThoBayMau_ASM.Data;
 namespace ThoBayMau_ASM.Migrations
 {
     [DbContext(typeof(ThoBayMau_ASMContext))]
-    partial class ThoBayMau_ASMContextModelSnapshot : ModelSnapshot
+    [Migration("20240314140704_jj")]
+    partial class jj
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,7 +44,7 @@ namespace ThoBayMau_ASM.Migrations
 
                     b.HasIndex("SanphamId");
 
-                    b.ToTable("ANH", (string)null);
+                    b.ToTable("ANH");
                 });
 
             modelBuilder.Entity("ThoBayMau_ASM.Models.ChiTiet_SP", b =>
@@ -74,7 +77,7 @@ namespace ThoBayMau_ASM.Migrations
 
                     b.HasIndex("SanPhamId");
 
-                    b.ToTable("CHI_TIET_SP", (string)null);
+                    b.ToTable("CHI_TIET_SP");
                 });
 
             modelBuilder.Entity("ThoBayMau_ASM.Models.DonHang", b =>
@@ -88,20 +91,21 @@ namespace ThoBayMau_ASM.Migrations
                     b.Property<int>("TaiKhoanId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("ThoiGianTao")
+                    b.Property<DateTime>("ThoiGianTao")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("TrangThaiDonHang")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool?>("TrangThaiThanhToan")
+                    b.Property<bool>("TrangThaiThanhToan")
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
 
                     b.HasIndex("TaiKhoanId");
 
-                    b.ToTable("DON_HANG", (string)null);
+                    b.ToTable("DON_HANG");
                 });
 
             modelBuilder.Entity("ThoBayMau_ASM.Models.DonHang_ChiTiet", b =>
@@ -127,7 +131,7 @@ namespace ThoBayMau_ASM.Migrations
 
                     b.HasIndex("SanPhamId");
 
-                    b.ToTable("DONHANG_CHITIET", (string)null);
+                    b.ToTable("DONHANG_CHITIET");
                 });
 
             modelBuilder.Entity("ThoBayMau_ASM.Models.LichSu", b =>
@@ -156,7 +160,7 @@ namespace ThoBayMau_ASM.Migrations
 
                     b.HasIndex("TaiKhoanId");
 
-                    b.ToTable("LICH_SU", (string)null);
+                    b.ToTable("LICH_SU");
                 });
 
             modelBuilder.Entity("ThoBayMau_ASM.Models.LoaiSP", b =>
@@ -176,7 +180,7 @@ namespace ThoBayMau_ASM.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("LOAI_SP", (string)null);
+                    b.ToTable("LOAI_SP");
                 });
 
             modelBuilder.Entity("ThoBayMau_ASM.Models.SanPham", b =>
@@ -205,7 +209,7 @@ namespace ThoBayMau_ASM.Migrations
 
                     b.HasIndex("LoaiSPId");
 
-                    b.ToTable("SAN_PHAM", (string)null);
+                    b.ToTable("SAN_PHAM");
                 });
 
             modelBuilder.Entity("ThoBayMau_ASM.Models.TaiKhoan", b =>
@@ -246,7 +250,7 @@ namespace ThoBayMau_ASM.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TAI_KHOAN", (string)null);
+                    b.ToTable("TAI_KHOAN");
                 });
 
             modelBuilder.Entity("ThoBayMau_ASM.Models.Anh", b =>
