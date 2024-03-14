@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ThoBayMau_ASM.Migrations
 {
     /// <inheritdoc />
-    public partial class db : Migration
+    public partial class PET_SHOP : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -51,7 +51,7 @@ namespace ThoBayMau_ASM.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Ten = table.Column<string>(type: "nvarchar(50)", nullable: false),
+                    Ten = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Mota = table.Column<string>(type: "ntext", nullable: true),
                     TrangThai = table.Column<string>(type: "nvarchar(50)", nullable: false),
                     LoaiSPId = table.Column<int>(type: "int", nullable: false)

@@ -195,7 +195,7 @@ namespace ThoBayMau_ASM.Migrations
 
                     b.Property<string>("Ten")
                         .IsRequired()
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TrangThai")
                         .IsRequired()
