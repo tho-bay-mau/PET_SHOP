@@ -42,5 +42,20 @@ namespace ThoBayMau_ASM.Controllers
                 return RedirectToAction("DonHang", "Admin");
             }
         }
+        public IActionResult GiaoHangThanhCong(int id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                var DonHang = _context.DonHang.FirstOrDefault(a => a.Id == id);
+                DonHang.TrangThaiDonHang = "da giao";
+                _context.Update(DonHang);
+                _context.SaveChanges();
+                return RedirectToAction("DonHang", "Admin");
+            }
+        }
     }
 }
