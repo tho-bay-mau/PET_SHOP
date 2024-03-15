@@ -1,0 +1,46 @@
+﻿@model TaiKhoan
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Tạo mới tài khoản</h2>
+<div class="container" style="width:50%;">
+    <form method="post">
+        <div class="mb-3 mt-3">
+            @Html.DisplayNameFor(model => model.TenTK)
+            <input asp-for="TenTK" class="form-control" placeholder="Nhập tên tài khoản" />
+            <span asp-validation-for="TenTK" class="text-danger"></span>
+        </div>
+        <div class="mb-3 mt-3">
+            @Html.DisplayNameFor(model => model.MatKhau)
+            <input asp-for="MatKhau" class="form-control" placeholder="Nhập mật khẩu" />
+            <span asp-validation-for="MatKhau" class="text-danger"></span>
+        </div>
+        <div class="mb-3 mt-3">
+            @Html.DisplayNameFor(model => model.SDT)
+            <input asp-for="SDT" class="form-control" placeholder="Nhập số điện thoại" />
+        </div>
+        <div class="mb-3 mt-3">
+            @Html.DisplayNameFor(model => model.Email)
+            <input asp-for="Email" class="form-control" placeholder="Nhập email" />
+        </div>
+        <div class="mb-3 mt-3">
+            @Html.DisplayNameFor(model => model.DiaChi)
+            <input asp-for="DiaChi" class="form-control" placeholder="Nhập dịa chỉ" />
+        </div>
+        <div class="mb-3 mt-3">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" asp-for="LoaiTK" value="true">
+                <label class="form-check-label" asp-for="LoaiTK">Admin</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" asp-for="LoaiTK" value="false">
+                <label class="form-check-label" asp-for ="LoaiTK">User</label>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Tạo mới</button>
+        <a asp-action="Index" class="btn btn-primary">Quay lại</a>
+    </form>
+</div>
