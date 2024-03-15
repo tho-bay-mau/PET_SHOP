@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ThoBayMau_ASM.Data;
 
@@ -11,9 +12,11 @@ using ThoBayMau_ASM.Data;
 namespace ThoBayMau_ASM.Migrations
 {
     [DbContext(typeof(ThoBayMau_ASMContext))]
-    partial class ThoBayMau_ASMContextModelSnapshot : ModelSnapshot
+    [Migration("20240314172250_1")]
+    partial class _1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -227,7 +230,7 @@ namespace ThoBayMau_ASM.Migrations
                     b.Property<bool>("LoaiTK")
                         .HasColumnType("bit");
 
-                    b.Property<string>("MatKhau")
+                    b.Property<string>("MakKhau")
                         .IsRequired()
                         .HasColumnType("Varchar(50)");
 
