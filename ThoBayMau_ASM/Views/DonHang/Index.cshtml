@@ -17,48 +17,47 @@
 
     <br /><br />
     <!-- Nav pills -->
-    <ul class="nav nav-pills ms-3">
+    <ul class="nav nav-pills">
         <li class="nav-item">
-            <a type="button" class="nav-link active position-relative me-3 rounded-top" data-bs-toggle="pill" href="#home">
+            <a type="button" class="nav-link active position-relative pe-3 rounded-top" data-bs-toggle="pill" href="#home" style="--bs-nav-pills-border-radius: -7px">
                 Chờ duyệt
-                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                <span class="badge bg-danger">
                     @Model.Where(x => x.TrangThaiDonHang == "cho duyet").Count()
-                    <span class="visually-hidden">unread messages</span>
                 </span>
             </a>
         </li>
         <li class="nav-item">
-            <a type="button" class="nav-link position-relative me-3" data-bs-toggle="pill" href="#menu1">
+            <a type="button" class="nav-link position-relative pe-3 rounded-top" data-bs-toggle="pill" href="#menu1" style="--bs-nav-pills-border-radius: -7px">
                 Đang giao
-                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                <span class="badge bg-danger">
                     @Model.Where(x => x.TrangThaiDonHang == "dang giao").Count()
-                    <span class="visually-hidden">unread messages</span>
                 </span>
             </a>
         </li>
         <li class="nav-item">
-            <a type="button" class="nav-link position-relative" data-bs-toggle="pill" href="#menu2">
+            <a type="button" class="nav-link position-relative rounded-top" data-bs-toggle="pill" href="#menu2" style="--bs-nav-pills-border-radius: -7px">
                 Dã giao
-                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                <span class="badge bg-danger">
                     @Model.Where(x => x.TrangThaiDonHang == "da giao").Count()
-                    <span class="visually-hidden">unread messages</span>
                 </span>
             </a>
         </li>
     </ul>
     <!-- Tab panes -->
     <div class="tab-content">
-        <div class="tab-pane container active" id="home">
-            <table class="table table-bordered table-striped">
-                <thead>
+        <div class="tab-pane active" id="home">
+            <table class="table table-bordered table-hover ">
+                <thead class="table-light">
                 <th>ID</th>
                 <th>Thời gian tạo</th>
                 <th>Trang thái thanh toán</th>
                 <th>Trang thái đơn hàng</th>
                 <th>Khách hàng</th>
+                <th>Giá</th>
+                <th>Sản phẩm</th>
                 <th>Thao tác</th>
                 </thead>
-                <tbody>
+                <tbody class="align-middle">
                     @foreach (var item in Model)
                     {
                         if (item.TrangThaiDonHang == "cho duyet")
@@ -76,8 +75,15 @@
                                     @item.TaiKhoan.TenTK
                                 </td>
                                 <td>
-                                    <a href="#" class="me-3">Chi tiết</a>
-                                    <a asp-action="DuyetDon" asp-controller="Admin" asp-route-id="@item.Id" class="btn btn-primary">Duyệt đơn</a>
+                                    100000
+                                </td>
+                                <td>
+                                    5 <a href="#" class="ms-1"><i class="fa-solid fa-list"></i></a>
+                                </td>
+                                <td>
+
+                                    <a asp-action="DuyetDon" asp-controller="DonHang" asp-route-id="@item.Id" class="btn btn-primary"><i class="fa-solid fa-check"></i></a>
+                                    <a asp-action="HuytDon" asp-controller="DonHang" asp-route-id="@item.Id" class="btn btn-danger" style="--bs-btn-bg: red;"><i class="fa-solid fa-trash"></i></a>
                                 </td>
                             </tr>
                         }
