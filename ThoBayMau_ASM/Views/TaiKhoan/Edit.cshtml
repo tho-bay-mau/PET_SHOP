@@ -20,11 +20,13 @@
         </div>
         <div class="mb-3 mt-3">
             @Html.DisplayNameFor(model => model.SDT)
-            <input asp-for="SDT" class="form-control" placeholder="Nhập số điện thoại" />
+            <input asp-for="SDT" class="form-control" placeholder="Nhập số điện thoại" maxlength="11" />
+            <span asp-validation-for="SDT" class="text-danger"></span>
         </div>
         <div class="mb-3 mt-3">
             @Html.DisplayNameFor(model => model.Email)
             <input asp-for="Email" class="form-control" placeholder="Nhập email" />
+            <span asp-validation-for="Email" class="text-danger"></span>
         </div>
         <div class="mb-3 mt-3">
             @Html.DisplayNameFor(model => model.DiaChi)
@@ -42,7 +44,13 @@
         </div>
         <input type="hidden" asp-for="NgayDangKy" />
         <input type="hidden" asp-for="TrangThai" />
-        <button type="submit" class="btn btn-primary">Lưu</button>
-        <a asp-action="Index" class="btn btn-primary">Back to list</a>
+        <div class="row">
+            <div class="col-sm-6">
+                <button style="width:100px;" type="submit" class="btn btn-primary">Lưu</button>
+            </div>
+            <div class="col-sm-6 text-end">
+                <a asp-action="Index" class="btn btn-primary" style="width:100px;">Quay lại</a>
+            </div>
+        </div>
     </form>
 </div>

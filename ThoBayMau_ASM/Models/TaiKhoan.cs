@@ -22,9 +22,11 @@ namespace ThoBayMau_ASM.Models
         public string MatKhau { get; set; }
         [Column(TypeName = "Varchar(11)")]
         [Required(ErrorMessage = "SDT không được để trống")]
+        [RegularExpression(@"^0\d{9,10}$", ErrorMessage = "SDT không hợp lệ")]
         public string SDT { get; set; }
         [Column(TypeName = "Varchar(30)")]
         [Required(ErrorMessage = "Email không được để trống")]
+        [EmailAddress(ErrorMessage = "Email không hợp lệ")]
         public string Email { get; set; }
         [Display(Name = "Địa chỉ")]
         public string DiaChi { get; set; }

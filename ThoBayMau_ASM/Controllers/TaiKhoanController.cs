@@ -13,9 +13,33 @@ namespace ThoBayMau_ASM.Controllers
             _db = db;
         }
 
+        public const int ITEM_PER_PAGE = 5;
+
+        [BindProperty(SupportsGet = true, Name = "p")]
+        public int currentpage { get; set; }
+
+        public int countpages { get; set; }
+
         public IActionResult Index()
         {
-            return View(_db.TaiKhoan.ToList());
+            int total = _db.TaiKhoan.Count();
+            countpages = (int)Math.Ceiling((double)total / ITEM_PER_PAGE);
+
+            if (currentpage < 1)
+            {
+                currentpage = 1;
+            }
+            if (currentpage > countpages)
+            {
+                currentpage = countpages;
+            }
+
+            ViewBag.CurrentPage = currentpage;
+            ViewBag.CountPages = countpages;
+
+            var result = _db.TaiKhoan.Skip((currentpage-1)*ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
+
+            return View(result);
         }
 
         public IActionResult Create()
@@ -27,6 +51,18 @@ namespace ThoBayMau_ASM.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(TaiKhoan obj)
         {
+            if (_db.TaiKhoan.Any(x => x.TenTK == obj.TenTK))
+            {
+                ModelState.AddModelError("TenTK", "Tên tài khoản đã tồn tại");
+            }
+            if (_db.TaiKhoan.Any(x => x.SDT == obj.SDT))
+            {
+                ModelState.AddModelError("SDT", "SDT đã liên kết với tài khoản khác");
+            }
+            if (_db.TaiKhoan.Any(x => x.Email == obj.Email))
+            {
+                ModelState.AddModelError("Email", "Email đã liên kết với tài khoản khác");
+            }
             if (ModelState.IsValid)
             {
                 obj.NgayDangKy = DateTime.Now;
@@ -51,10 +87,33 @@ namespace ThoBayMau_ASM.Controllers
             }
             return View(obj);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(TaiKhoan obj)
         {
+            var tkNow = _db.TaiKhoan.FirstOrDefault(x => x.Id == obj.Id);
+            if (tkNow == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                if (tkNow.SDT != obj.SDT)
+                {
+                    if (_db.TaiKhoan.Any(x => x.SDT == obj.SDT))
+                    {
+                        ModelState.AddModelError("SDT", "SDT đã liên kết với tài khoản khác");
+                    }
+                }
+                if (tkNow.Email != obj.Email)
+                {
+                    if (_db.TaiKhoan.Any(x => x.Email == obj.Email))
+                    {
+                        ModelState.AddModelError("Email", "Email đã liên kết với tài khoản khác");
+                    }
+                }
+            }
             if (ModelState.IsValid)
             {
                 _db.TaiKhoan.Update(obj);
@@ -62,6 +121,27 @@ namespace ThoBayMau_ASM.Controllers
                 return RedirectToAction("Index");
             }
             return View(obj);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(int? txt_ID)
+        {
+            if (txt_ID == null || txt_ID == 0)
+            {
+                return NotFound();
+            }
+            var obj = _db.TaiKhoan.FirstOrDefault(x => x.Id == txt_ID);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                obj.TrangThai = false;
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+            }
         }
     }
 }
