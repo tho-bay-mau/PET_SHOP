@@ -146,5 +146,38 @@ namespace ThoBayMau_ASM.Controllers
                 return RedirectToAction("Index");
             }
         }
+        
+        public IActionResult Search(string Key)
+        {
+            if (!string.IsNullOrEmpty(Key))
+            {
+                // Lưu Key vào phiên
+                HttpContext.Session.SetString("SearchKey", Key);
+            }
+            else
+            {
+                // Lấy Key từ phiên
+                Key = HttpContext.Session.GetString("SearchKey");
+            }
+
+            int total = _db.TaiKhoan.Where(x=>x.DiaChi == Key).Count();
+            countpages = (int)Math.Ceiling((double)total / ITEM_PER_PAGE);
+
+            if (currentpage < 1)
+            {
+                currentpage = 1;
+            }
+            if (currentpage > countpages)
+            {
+                currentpage = countpages;
+            }
+
+            ViewBag.CurrentPage = currentpage;
+            ViewBag.CountPages = countpages;
+
+            var result = _db.TaiKhoan.Where(x => x.DiaChi == Key).Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
+
+            return View("Index",result);
+        }
     }
 }
