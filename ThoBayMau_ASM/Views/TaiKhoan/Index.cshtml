@@ -3,15 +3,76 @@
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var pagingmodel = new ThoBayMau_ASM.Helpers.PagingModel()
+            {
+                currentpage = (int)(@ViewBag.CurrentPage),
+                countpages = (int)(@ViewBag.CountPages),
+                generateUrl = (int? p) => Url.Page("", new { p = p })
+    };
 }
 
+<style>
+    .btn-red{
+        border:solid 1px red;
+        color:red;
+    }
+
+    .btn-red:hover {
+        background-color:red;
+        color: white;
+    }
+</style>
+
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="container mt-1">
+                <div class="cancel-dndk d-flex flex-row-reverse">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <!-- Tab panes -->
+                <div class="tab-content px-5 pb-3">
+                    <div class="container tab-pane active">
+                        <form name="frm_Delete" asp-action="Delete" method="POST">
+                            <div class="mb-3">
+                                <input id="txt_ID" class="visually-hidden" type="text" name="txt_ID" />
+                            </div>
+                            <div class="mb-3 text-center">
+                                <h5>Bạn muốn xóa tài khoản này không?</h5>
+                            </div>
+                            <div class="d-flex justify-content-evenly text-center">
+                                <button type="submit" class="btn btn-primary" style="width:100px;">
+                                    Có
+                                </button>
+                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close" style="width:100px;">
+                                    Không
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="container p-3">
-    <div class="row pt-4">
+    <div class="row">
+        <div class="col-12">
+            <h3>Quản lý tài khoản</h3>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-6">
-            <h2>Quản lý tài khoản</h2>
+            <form class="d-flex" role="search" asp-action="Search">
+                <input style="max-width:50%;" name="Key" value="@ViewBag.search" class="form-control me-2" type="search" placeholder="Nhập từ khóa tìm kiếm" aria-label="Tìm kiếm">
+                <button class="btn btn-outline-success" type="submit">Tìm kiếm</button>
+            </form>
         </div>
         <div class="col-6 text-end">
-            <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus"></i>Tạo mới</a>
+            <a asp-action="Create" class="btn btn-primary" style="height:100%;"><i class="bi bi-plus"></i>Tạo mới</a>
         </div>
     </div>
     <br /><br />
@@ -88,19 +149,21 @@
                             @if (item.TrangThai)
                             {
                                 <div class="form-check d-flex align-items-center justify-content-center">
-                                    <input class="form-check-input" style="background-image:none; background-color:#2ECC71;filter:none" type="radio" checked>
+                                    <input class="form-check-input" style="background-image:none; background-color:springgreen;filter:none" type="radio" checked>
                                 </div>
                             }
                             else
                             {
                                 <div class="form-check d-flex align-items-center justify-content-center">
-                                    <input class="form-check-input" style="background-image:none; background-color:#E74C3C;filter:none;" type="radio" checked>
+                                    <input class="form-check-input" style="background-image:none; background-color:red;filter:none;" type="radio" checked>
                                 </div>
                             }
                         </td>
                         <td>
-                            <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>
-                            <a class="btn btn-primary" asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash3"></i></a>
+                            <a class="btn btn-outline-primary" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>
+                            <button type="button" class="btn btn-red" data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-id="@item.Id" onclick="setId(this)">
+                                <i class="bi bi-trash3"></i>
+                            </button>
                         </td>
                     </tr>
                 }
@@ -108,3 +171,4 @@
         </table>
     </div>
 </div>
+<partial name="_Paging" model="pagingmodel" />
