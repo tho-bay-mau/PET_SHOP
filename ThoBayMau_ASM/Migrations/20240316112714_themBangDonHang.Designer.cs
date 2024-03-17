@@ -12,15 +12,15 @@ using ThoBayMau_ASM.Data;
 namespace ThoBayMau_ASM.Migrations
 {
     [DbContext(typeof(ThoBayMau_ASMContext))]
-    [Migration("20240314142240_PET_SHOP")]
-    partial class PET_SHOP
+    [Migration("20240316112714_themBangDonHang")]
+    partial class themBangDonHang
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.2")
+                .HasAnnotation("ProductVersion", "8.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -91,13 +91,14 @@ namespace ThoBayMau_ASM.Migrations
                     b.Property<int>("TaiKhoanId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("ThoiGianTao")
+                    b.Property<DateTime?>("ThoiGianTao")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("TrangThaiDonHang")
-                        .HasColumnType("bit");
+                    b.Property<string>("TrangThaiDonHang")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("TrangThaiThanhToan")
+                    b.Property<bool?>("TrangThaiThanhToan")
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
@@ -115,10 +116,10 @@ namespace ThoBayMau_ASM.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("DonHangId")
+                    b.Property<int>("ChiTiet_SPId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SanPhamId")
+                    b.Property<int>("DonHangId")
                         .HasColumnType("int");
 
                     b.Property<int>("SoLuong")
@@ -126,9 +127,9 @@ namespace ThoBayMau_ASM.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DonHangId");
+                    b.HasIndex("ChiTiet_SPId");
 
-                    b.HasIndex("SanPhamId");
+                    b.HasIndex("DonHangId");
 
                     b.ToTable("DONHANG_CHITIET");
                 });
@@ -225,24 +226,25 @@ namespace ThoBayMau_ASM.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("Varchar(30)");
 
                     b.Property<bool>("LoaiTK")
                         .HasColumnType("bit");
 
-                    b.Property<string>("MakKhau")
+                    b.Property<string>("MatKhau")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("Varchar(50)");
 
                     b.Property<DateTime>("NgayDangKy")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("SDT")
-                        .HasColumnType("int");
+                    b.Property<string>("SDT")
+                        .IsRequired()
+                        .HasColumnType("Varchar(11)");
 
                     b.Property<string>("TenTK")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("Varchar(50)");
 
                     b.Property<bool>("TrangThai")
                         .HasColumnType("bit");
@@ -250,6 +252,40 @@ namespace ThoBayMau_ASM.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TAI_KHOAN");
+                });
+
+            modelBuilder.Entity("ThoBayMau_ASM.Models.ThongTin_NhanHang", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("DiaChi")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DonhangId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("GhiChu")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HoTen")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SDT")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DonhangId")
+                        .IsUnique();
+
+                    b.ToTable("THONGTIN_NHANHANG");
                 });
 
             modelBuilder.Entity("ThoBayMau_ASM.Models.Anh", b =>
@@ -287,21 +323,21 @@ namespace ThoBayMau_ASM.Migrations
 
             modelBuilder.Entity("ThoBayMau_ASM.Models.DonHang_ChiTiet", b =>
                 {
+                    b.HasOne("ThoBayMau_ASM.Models.ChiTiet_SP", "ChiTiet_SP")
+                        .WithMany()
+                        .HasForeignKey("ChiTiet_SPId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("ThoBayMau_ASM.Models.DonHang", "DonHang")
                         .WithMany("DonHang_ChiTiets")
                         .HasForeignKey("DonHangId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ThoBayMau_ASM.Models.SanPham", "SanPham")
-                        .WithMany()
-                        .HasForeignKey("SanPhamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("ChiTiet_SP");
 
                     b.Navigation("DonHang");
-
-                    b.Navigation("SanPham");
                 });
 
             modelBuilder.Entity("ThoBayMau_ASM.Models.LichSu", b =>
@@ -326,9 +362,20 @@ namespace ThoBayMau_ASM.Migrations
                     b.Navigation("LoaiSP");
                 });
 
+            modelBuilder.Entity("ThoBayMau_ASM.Models.ThongTin_NhanHang", b =>
+                {
+                    b.HasOne("ThoBayMau_ASM.Models.DonHang", null)
+                        .WithOne("ThongTin_NhanHang")
+                        .HasForeignKey("ThoBayMau_ASM.Models.ThongTin_NhanHang", "DonhangId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("ThoBayMau_ASM.Models.DonHang", b =>
                 {
                     b.Navigation("DonHang_ChiTiets");
+
+                    b.Navigation("ThongTin_NhanHang");
                 });
 
             modelBuilder.Entity("ThoBayMau_ASM.Models.LoaiSP", b =>

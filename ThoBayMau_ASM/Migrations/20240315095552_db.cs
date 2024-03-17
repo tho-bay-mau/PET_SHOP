@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ThoBayMau_ASM.Migrations
 {
     /// <inheritdoc />
-    public partial class PET_SHOP : Migration
+    public partial class db : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -31,10 +31,10 @@ namespace ThoBayMau_ASM.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TenTK = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MakKhau = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SDT = table.Column<int>(type: "int", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TenTK = table.Column<string>(type: "Varchar(50)", nullable: false),
+                    MatKhau = table.Column<string>(type: "Varchar(50)", nullable: false),
+                    SDT = table.Column<string>(type: "Varchar(11)", nullable: false),
+                    Email = table.Column<string>(type: "Varchar(30)", nullable: false),
                     DiaChi = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     NgayDangKy = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LoaiTK = table.Column<bool>(type: "bit", nullable: false),
@@ -73,9 +73,9 @@ namespace ThoBayMau_ASM.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ThoiGianTao = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TrangThaiThanhToan = table.Column<bool>(type: "bit", nullable: false),
-                    TrangThaiDonHang = table.Column<bool>(type: "bit", nullable: false),
+                    ThoiGianTao = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    TrangThaiThanhToan = table.Column<bool>(type: "bit", nullable: true),
+                    TrangThaiDonHang = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TaiKhoanId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>

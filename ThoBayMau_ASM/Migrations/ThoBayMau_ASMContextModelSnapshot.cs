@@ -17,7 +17,7 @@ namespace ThoBayMau_ASM.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.2")
+                .HasAnnotation("ProductVersion", "8.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -41,7 +41,7 @@ namespace ThoBayMau_ASM.Migrations
 
                     b.HasIndex("SanphamId");
 
-                    b.ToTable("ANH", (string)null);
+                    b.ToTable("ANH");
                 });
 
             modelBuilder.Entity("ThoBayMau_ASM.Models.ChiTiet_SP", b =>
@@ -74,7 +74,7 @@ namespace ThoBayMau_ASM.Migrations
 
                     b.HasIndex("SanPhamId");
 
-                    b.ToTable("CHI_TIET_SP", (string)null);
+                    b.ToTable("CHI_TIET_SP");
                 });
 
             modelBuilder.Entity("ThoBayMau_ASM.Models.DonHang", b =>
@@ -92,6 +92,7 @@ namespace ThoBayMau_ASM.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("TrangThaiDonHang")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool?>("TrangThaiThanhToan")
@@ -101,7 +102,7 @@ namespace ThoBayMau_ASM.Migrations
 
                     b.HasIndex("TaiKhoanId");
 
-                    b.ToTable("DON_HANG", (string)null);
+                    b.ToTable("DON_HANG");
                 });
 
             modelBuilder.Entity("ThoBayMau_ASM.Models.DonHang_ChiTiet", b =>
@@ -112,10 +113,10 @@ namespace ThoBayMau_ASM.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("DonHangId")
+                    b.Property<int>("ChiTiet_SPId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SanPhamId")
+                    b.Property<int>("DonHangId")
                         .HasColumnType("int");
 
                     b.Property<int>("SoLuong")
@@ -123,11 +124,11 @@ namespace ThoBayMau_ASM.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ChiTiet_SPId");
+
                     b.HasIndex("DonHangId");
 
-                    b.HasIndex("SanPhamId");
-
-                    b.ToTable("DONHANG_CHITIET", (string)null);
+                    b.ToTable("DONHANG_CHITIET");
                 });
 
             modelBuilder.Entity("ThoBayMau_ASM.Models.LichSu", b =>
@@ -156,7 +157,7 @@ namespace ThoBayMau_ASM.Migrations
 
                     b.HasIndex("TaiKhoanId");
 
-                    b.ToTable("LICH_SU", (string)null);
+                    b.ToTable("LICH_SU");
                 });
 
             modelBuilder.Entity("ThoBayMau_ASM.Models.LoaiSP", b =>
@@ -176,7 +177,7 @@ namespace ThoBayMau_ASM.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("LOAI_SP", (string)null);
+                    b.ToTable("LOAI_SP");
                 });
 
             modelBuilder.Entity("ThoBayMau_ASM.Models.SanPham", b =>
@@ -205,7 +206,7 @@ namespace ThoBayMau_ASM.Migrations
 
                     b.HasIndex("LoaiSPId");
 
-                    b.ToTable("SAN_PHAM", (string)null);
+                    b.ToTable("SAN_PHAM");
                 });
 
             modelBuilder.Entity("ThoBayMau_ASM.Models.TaiKhoan", b =>
@@ -247,7 +248,41 @@ namespace ThoBayMau_ASM.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TAI_KHOAN", (string)null);
+                    b.ToTable("TAI_KHOAN");
+                });
+
+            modelBuilder.Entity("ThoBayMau_ASM.Models.ThongTin_NhanHang", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("DiaChi")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DonhangId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("GhiChu")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HoTen")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SDT")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DonhangId")
+                        .IsUnique();
+
+                    b.ToTable("THONGTIN_NHANHANG");
                 });
 
             modelBuilder.Entity("ThoBayMau_ASM.Models.Anh", b =>
@@ -285,21 +320,21 @@ namespace ThoBayMau_ASM.Migrations
 
             modelBuilder.Entity("ThoBayMau_ASM.Models.DonHang_ChiTiet", b =>
                 {
+                    b.HasOne("ThoBayMau_ASM.Models.ChiTiet_SP", "ChiTiet_SP")
+                        .WithMany()
+                        .HasForeignKey("ChiTiet_SPId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("ThoBayMau_ASM.Models.DonHang", "DonHang")
                         .WithMany("DonHang_ChiTiets")
                         .HasForeignKey("DonHangId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ThoBayMau_ASM.Models.SanPham", "SanPham")
-                        .WithMany()
-                        .HasForeignKey("SanPhamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("ChiTiet_SP");
 
                     b.Navigation("DonHang");
-
-                    b.Navigation("SanPham");
                 });
 
             modelBuilder.Entity("ThoBayMau_ASM.Models.LichSu", b =>
@@ -324,9 +359,20 @@ namespace ThoBayMau_ASM.Migrations
                     b.Navigation("LoaiSP");
                 });
 
+            modelBuilder.Entity("ThoBayMau_ASM.Models.ThongTin_NhanHang", b =>
+                {
+                    b.HasOne("ThoBayMau_ASM.Models.DonHang", null)
+                        .WithOne("ThongTin_NhanHang")
+                        .HasForeignKey("ThoBayMau_ASM.Models.ThongTin_NhanHang", "DonhangId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("ThoBayMau_ASM.Models.DonHang", b =>
                 {
                     b.Navigation("DonHang_ChiTiets");
+
+                    b.Navigation("ThongTin_NhanHang");
                 });
 
             modelBuilder.Entity("ThoBayMau_ASM.Models.LoaiSP", b =>
