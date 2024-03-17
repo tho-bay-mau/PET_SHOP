@@ -69,6 +69,7 @@ namespace ThoBayMau_ASM.Controllers
                 obj.TrangThai = true;
                 _db.TaiKhoan.Add(obj);
                 _db.SaveChanges();
+                TempData["Sucess"] = "Thêm tài khoản thành công";
                 return RedirectToAction("Index");
             }
             return View(obj);
@@ -118,6 +119,7 @@ namespace ThoBayMau_ASM.Controllers
             {
                 _db.TaiKhoan.Update(obj);
                 _db.SaveChanges();
+                TempData["Sucess"] = "Chỉnh sửa tài khoản thành công";
                 return RedirectToAction("Index");
             }
             return View(obj);
@@ -140,6 +142,7 @@ namespace ThoBayMau_ASM.Controllers
             {
                 obj.TrangThai = false;
                 _db.SaveChanges();
+                TempData["Sucess"] = "Xóa tài khoản thành công";
                 return RedirectToAction("Index");
             }
         }
