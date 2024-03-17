@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<ThoBayMau_ASM.Models.SanPham>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -52,7 +54,6 @@
             </div>
         </div>
     </section>
-
     <section class="ftco-section ftco-category ftco-no-pt">
         <div class="container">
             <div class="row">
@@ -110,15 +111,17 @@
         </div>
         <div class="container">
             <div class="row">
+            @foreach (var item in Model)
+            {
                 <div class="col-md-6 col-lg-3 ftco-animate">
                     <div class="product">
                         <a href="#" class="img-prod">
-                        <img class="img-fluid" src="vega/images/product-1.jpg" alt="Colorlib Template">
+                            <img class="img-fluid" src="@Url.Action("GetImage", "Home" , new { id_sp = item.Id })" alt="Colorlib Template">
                             <span class="status">30%</span>
                             <div class="overlay"></div>
                         </a>
                         <div class="text py-3 pb-4 px-3 text-center">
-                            <h3><a href="#">Bell Pepper</a></h3>
+                            <h3><a href="#">@item.Ten</a></h3>
                             <div class="d-flex">
                                 <div class="pricing">
                                     <p class="price"><span class="mr-2 price-dc">$120.00</span><span class="price-sale">$80.00</span></p>
@@ -140,6 +143,9 @@
                         </div>
                     </div>
                 </div>
+            }
+            
+
                 <div class="col-md-6 col-lg-3 ftco-animate">
                     <div class="product">
                         <a href="#" class="img-prod">
