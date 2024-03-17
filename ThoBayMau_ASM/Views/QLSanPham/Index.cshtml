@@ -17,11 +17,12 @@
     <br /><br />
     <table class="table table-bordered table-striped">
         <thead>
-        <th>ID</th>
-        <th>Tên</th>
-        <th>Mô tả</th>
-        <th>Trạng thái</th>
-        <th>Mã loại sản phẩm</th>
+            <th>ID</th>
+            <th>Tên</th>
+            <th>Hình ảnh</th>
+            <th>Mô tả</th>
+            <th>Trạng thái</th>
+            <th>Mã loại sản phẩm</th>
         </thead>
         <tbody>
             @foreach (var item in Model)
@@ -29,6 +30,7 @@
                 <tr>
                     <td>@item.Id</td>
                     <td>@item.Ten</td>
+                    <td></td>
                     <td>@item.Mota</td>
                     <td>@item.TrangThai</td>
                     <td>@item.LoaiSPId</td>

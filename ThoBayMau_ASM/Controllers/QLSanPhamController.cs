@@ -1,5 +1,7 @@
 ﻿
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using ThoBayMau_ASM.Data;
 using ThoBayMau_ASM.Models;
 
@@ -15,16 +17,25 @@ namespace ThoBayMau_ASM.Controllers
         }
         public IActionResult Index()
         {
-            var obj = _context.SanPham.ToList();
-            return View(obj);
+            var spChiTiet = _context.SanPham
+                .Include(x => x.ChiTietSPs)
+                .Include(y => y.Anhs)
+                .ToList();
+            return View(spChiTiet);
         }
         public IActionResult Create()
         {
+            List<string> listTrangThai = new List<string> { "Đang bán", "Ngừng bán", "Mới" };
+            ViewBag.TrangThai = new SelectList(listTrangThai);
+
             return View();
+
         }
         [HttpPost]
         public IActionResult Create(SanPham obj)
         {
+            List<string> listTrangThai = new List<string> { "Đang bán", "Ngừng bán", "Mới" };
+            ViewBag.TrangThai = new SelectList(listTrangThai);
             if (ModelState.IsValid)
             {
                 _context.Add(obj);
@@ -32,10 +43,14 @@ namespace ThoBayMau_ASM.Controllers
                 TempData["Sucess"] = "Thêm sản phẩm thành công!!";
                 return RedirectToAction("Index");
             }
+
+            
             return View(obj);
         }
         public IActionResult Edit(int? id)
         {
+            List<string> listTrangThai = new List<string> { "Đang bán", "Ngừng bán", "Mới" };
+            ViewBag.TrangThai = new SelectList(listTrangThai);
             if (id == null || id == 0)
             {
                 return NotFound();
@@ -51,6 +66,8 @@ namespace ThoBayMau_ASM.Controllers
         [HttpPost]
         public IActionResult Edit(SanPham obj)
         {
+            List<string> listTrangThai = new List<string> { "Đang bán", "Ngừng bán", "Mới" };
+            ViewBag.TrangThai = new SelectList(listTrangThai);
             if (ModelState.IsValid)
             {
                 _context.Update(obj);
@@ -60,6 +77,7 @@ namespace ThoBayMau_ASM.Controllers
             }
             return View(obj);
         }
+
 
     }
 }
