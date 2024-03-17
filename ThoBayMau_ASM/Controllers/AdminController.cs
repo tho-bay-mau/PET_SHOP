@@ -17,27 +17,6 @@ namespace ThoBayMau_ASM.Controllers
 		{
 			return View();
 		}
-		public IActionResult DonHang()
-		{
-			var donhang = _context.DonHang
-				.Include(x => x.TaiKhoan)
-				.ToList();
-			return View(donhang);
-		}
-        // duyệt đơn
-        public IActionResult DuyetDon(int id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            } else
-            {
-                var DonHang = _context.DonHang.FirstOrDefault(a => a.Id == id);
-                DonHang.TrangThaiDonHang = "dang giao";
-                _context.Update(DonHang);
-                _context.SaveChanges();
-                return RedirectToAction("DonHang", "Admin");
-            }
-        }
+		
     }
 }

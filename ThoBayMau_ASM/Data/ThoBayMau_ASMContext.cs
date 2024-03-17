@@ -9,8 +9,7 @@ namespace ThoBayMau_ASM.Data
 {
     public class ThoBayMau_ASMContext : DbContext
     {
-        public ThoBayMau_ASMContext (DbContextOptions<ThoBayMau_ASMContext> options)
-            : base(options)
+        public ThoBayMau_ASMContext (DbContextOptions<ThoBayMau_ASMContext> options): base(options)
         {
         }
 
