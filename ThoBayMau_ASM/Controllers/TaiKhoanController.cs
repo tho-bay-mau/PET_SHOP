@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ThoBayMau_ASM.Data;
+using ThoBayMau_ASM.Helpers;
 using ThoBayMau_ASM.Models;
 
 namespace ThoBayMau_ASM.Controllers
@@ -37,7 +38,7 @@ namespace ThoBayMau_ASM.Controllers
             ViewBag.CurrentPage = currentpage;
             ViewBag.CountPages = countpages;
 
-            var result = _db.TaiKhoan.Skip((currentpage-1)*ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
+            var result = _db.TaiKhoan.Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
 
             return View(result);
         }
@@ -79,7 +80,7 @@ namespace ThoBayMau_ASM.Controllers
         {
             if (id == null || id == 0)
             {
-                return NotFound(); 
+                return NotFound();
             }
             var obj = _db.TaiKhoan.FirstOrDefault(x => x.Id == id);
             if (obj == null)
@@ -146,38 +147,51 @@ namespace ThoBayMau_ASM.Controllers
                 return RedirectToAction("Index");
             }
         }
-        
+
         public IActionResult Search(string Key)
         {
-            if (!string.IsNullOrEmpty(Key))
+            if (string.IsNullOrEmpty(Key))
             {
-                // Lưu Key vào phiên
-                HttpContext.Session.SetString("SearchKey", Key);
+                int total = _db.TaiKhoan.Count();
+                countpages = (int)Math.Ceiling((double)total / ITEM_PER_PAGE);
+
+                if (currentpage < 1)
+                {
+                    currentpage = 1;
+                }
+                if (currentpage > countpages)
+                {
+                    currentpage = countpages;
+                }
+
+                ViewBag.CurrentPage = currentpage;
+                ViewBag.CountPages = countpages;
+                ViewBag.Search = Key;
+
+                var result = _db.TaiKhoan.Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
+                return View("Index", result);
             }
             else
             {
-                // Lấy Key từ phiên
-                Key = HttpContext.Session.GetString("SearchKey");
+                int total = _db.TaiKhoan.Where(x => x.DiaChi == Key).Count();
+                countpages = (int)Math.Ceiling((double)total / ITEM_PER_PAGE);
+
+                if (currentpage < 1)
+                {
+                    currentpage = 1;
+                }
+                if (currentpage > countpages)
+                {
+                    currentpage = countpages;
+                }
+
+                ViewBag.CurrentPage = currentpage;
+                ViewBag.CountPages = countpages;
+                ViewBag.Search = Key;
+
+                var result = _db.TaiKhoan.Where(x => x.DiaChi == Key).Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
+                return View("Index", result);
             }
-
-            int total = _db.TaiKhoan.Where(x=>x.DiaChi == Key).Count();
-            countpages = (int)Math.Ceiling((double)total / ITEM_PER_PAGE);
-
-            if (currentpage < 1)
-            {
-                currentpage = 1;
-            }
-            if (currentpage > countpages)
-            {
-                currentpage = countpages;
-            }
-
-            ViewBag.CurrentPage = currentpage;
-            ViewBag.CountPages = countpages;
-
-            var result = _db.TaiKhoan.Where(x => x.DiaChi == Key).Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
-
-            return View("Index",result);
         }
     }
 }
