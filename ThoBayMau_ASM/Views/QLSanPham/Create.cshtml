@@ -1,4 +1,4 @@
-﻿@model ThoBayMau_ASM.Models.ViewModel.SanPhamViewModel
+﻿@model ThoBayMau_ASM.Models.SanPham
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -14,21 +14,16 @@
             <span asp-validation-for="Ten" class="text-danger"></span>
         </div>
         <div class="mb-2">
-            <label asp-for="TenAnh" class="form-label">Hình ảnh</label>
+            <label  class="form-label">Hình ảnh</label>
             <div>
                 <img id="previewImage" src="#" class="img-thumbnail" alt="Product Image">
             </div>
-            <input type="file" asp-for="TenAnh" class="form-control" multiple id="exampleInputFile" onchange="previewFile()">
-            <span asp-validation-for="TenAnh" class="text-danger"></span>
+            <input type="file" name="files" files class="form-control" multiple id="exampleInputFile" onchange="previewFile()">
+            <span  class="text-danger"></span>
         </div>
         <div class="mb-2">
             <label asp-for="Mota" class="form-label">Mô tả</label>
             <input asp-for="Mota" class="form-control" id="exampleInputEmail1">
-            <span asp-validation-for="Ten" class="text-danger"></span>
-        </div>
-        <div class="mb-2">
-            <label asp-for="TrangThai" class="form-label">Trạng thái</label>
-            <select asp-for="TrangThai" class="form-control" asp-items="ViewBag.TrangThai"></select>
             <span asp-validation-for="Ten" class="text-danger"></span>
         </div>
         <div class="mb-2">

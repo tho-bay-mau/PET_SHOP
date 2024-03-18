@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ThoBayMau_ASM.Data;
 using ThoBayMau_ASM.Models;
-using ThoBayMau_ASM.Models.ViewModel;
 using System.IO;
 
 namespace ThoBayMau_ASM.Controllers
@@ -22,17 +21,11 @@ namespace ThoBayMau_ASM.Controllers
         }
         public IActionResult Index()
         {
-            var SanPham = _context.SanPham.ToList();
-            var HinhAnh = _context.Anh.ToList();
-            var result = SanPham.Where(x => x.TrangThai != "Ngừng bán").Select(p => new SanPhamViewModel
-            {
-                Id = p.Id,
-                Ten = p.Ten,
-                Mota = p.Mota,
-                TrangThai = p.TrangThai,
-                LoaiSPId = p.LoaiSPId,
-                /*TenAnh = HinhAnh.Where(x => x.Id == p.Id).Select(x => x.TenAnh).ToList(),*/
-            }).ToList();
+            var result = _context.SanPham
+                .Include(x => x.Anhs)
+                .Include(x => x.ChiTietSPs)
+                .Where(x => x.TrangThai == true)
+                .ToList();
             return View(result);
         }
         public IActionResult Create()
@@ -44,28 +37,28 @@ namespace ThoBayMau_ASM.Controllers
 
         }
         [HttpPost]
-        public IActionResult Create( SanPhamViewModel obj)
+        public IActionResult Create( SanPham sp, IFormFile[] files)
         {
             List<string> listTrangThai = new List<string> { "Đang bán", "Ngừng bán", "Mới" };
             ViewBag.TrangThai = new SelectList(listTrangThai);
+            sp.TrangThai = true;
             if (ModelState.IsValid)
             {
-                
-                foreach (var item in obj.TenAnh)
+                _context.SanPham.Add(sp);
+                _context.SaveChanges();
+                foreach (var item in files)
                 {
-                    string stringFileName = Uploadfile(item);
-                    var productImage = new Anh
-                    {
-                        TenAnh = stringFileName,
-                        SanPham = obj.SanPham,
-                    };
-                    _context.Anh.Add(productImage);
+                    Uploadfile(item);
+                    Anh anh = new Anh();
+                    anh.SanphamId = sp.Id;
+                    anh.TenAnh = item.FileName;
+                    _context.Anh.Add(anh);
                 }
                 _context.SaveChanges();
                 TempData["Sucess"] = "Thêm sản phẩm thành công!!";
                 return RedirectToAction("Index");
             }
-            return View(obj);
+            return View(sp);
         }
         public IActionResult Edit(int? id)
         {
@@ -97,21 +90,12 @@ namespace ThoBayMau_ASM.Controllers
             }
             return View(obj);
         }
-        public string Uploadfile(IFormFile file)
+        public void Uploadfile(IFormFile file)
         {
-            string fileName = null;
             if (file != null)
             {
                 
-                string uploadDir = Path.Combine(_webhost.WebRootPath, "images"); // đưa ảnh vào file
-                fileName = Guid.NewGuid().ToString() + "-" + file.FileName; // đưa ảnh vào file
-                string filePath = Path.Combine(uploadDir, fileName); // đưa ảnh vào file
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
-                {
-                    file.CopyTo(fileStream);
-                }
             }
-            return fileName;
         }
 
     }
