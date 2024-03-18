@@ -6,11 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ThoBayMau_ASM.Migrations
 {
     /// <inheritdoc />
-<<<<<<<< HEAD:ThoBayMau_ASM/Migrations/20240318005653_updatedatabase.cs
-    public partial class updatedatabase : Migration
-========
     public partial class updatedb : Migration
->>>>>>>> ddd7b569ac7dbbd86a1f58eebc30f5f7f4deaf47:ThoBayMau_ASM/Migrations/20240318060506_updatedb.cs
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
