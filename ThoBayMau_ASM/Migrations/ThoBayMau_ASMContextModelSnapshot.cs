@@ -267,7 +267,6 @@ namespace ThoBayMau_ASM.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("GhiChu")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("HoTen")

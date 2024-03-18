@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ThoBayMau_ASM.Migrations
 {
     /// <inheritdoc />
-    public partial class db : Migration
+    public partial class updatedatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -156,6 +156,29 @@ namespace ThoBayMau_ASM.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "THONGTIN_NHANHANG",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    HoTen = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SDT = table.Column<int>(type: "int", nullable: false),
+                    DiaChi = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    GhiChu = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DonhangId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_THONGTIN_NHANHANG", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_THONGTIN_NHANHANG_DON_HANG_DonhangId",
+                        column: x => x.DonhangId,
+                        principalTable: "DON_HANG",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "DONHANG_CHITIET",
                 columns: table => new
                 {
@@ -163,21 +186,21 @@ namespace ThoBayMau_ASM.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     SoLuong = table.Column<int>(type: "int", nullable: false),
                     DonHangId = table.Column<int>(type: "int", nullable: false),
-                    SanPhamId = table.Column<int>(type: "int", nullable: false)
+                    ChiTiet_SPId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_DONHANG_CHITIET", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_DONHANG_CHITIET_DON_HANG_DonHangId",
-                        column: x => x.DonHangId,
-                        principalTable: "DON_HANG",
+                        name: "FK_DONHANG_CHITIET_CHI_TIET_SP_ChiTiet_SPId",
+                        column: x => x.ChiTiet_SPId,
+                        principalTable: "CHI_TIET_SP",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_DONHANG_CHITIET_SAN_PHAM_SanPhamId",
-                        column: x => x.SanPhamId,
-                        principalTable: "SAN_PHAM",
+                        name: "FK_DONHANG_CHITIET_DON_HANG_DonHangId",
+                        column: x => x.DonHangId,
+                        principalTable: "DON_HANG",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -198,14 +221,14 @@ namespace ThoBayMau_ASM.Migrations
                 column: "TaiKhoanId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_DONHANG_CHITIET_ChiTiet_SPId",
+                table: "DONHANG_CHITIET",
+                column: "ChiTiet_SPId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_DONHANG_CHITIET_DonHangId",
                 table: "DONHANG_CHITIET",
                 column: "DonHangId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_DONHANG_CHITIET_SanPhamId",
-                table: "DONHANG_CHITIET",
-                column: "SanPhamId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_LICH_SU_TaiKhoanId",
@@ -216,6 +239,12 @@ namespace ThoBayMau_ASM.Migrations
                 name: "IX_SAN_PHAM_LoaiSPId",
                 table: "SAN_PHAM",
                 column: "LoaiSPId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_THONGTIN_NHANHANG_DonhangId",
+                table: "THONGTIN_NHANHANG",
+                column: "DonhangId",
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -225,13 +254,16 @@ namespace ThoBayMau_ASM.Migrations
                 name: "ANH");
 
             migrationBuilder.DropTable(
-                name: "CHI_TIET_SP");
-
-            migrationBuilder.DropTable(
                 name: "DONHANG_CHITIET");
 
             migrationBuilder.DropTable(
                 name: "LICH_SU");
+
+            migrationBuilder.DropTable(
+                name: "THONGTIN_NHANHANG");
+
+            migrationBuilder.DropTable(
+                name: "CHI_TIET_SP");
 
             migrationBuilder.DropTable(
                 name: "DON_HANG");
