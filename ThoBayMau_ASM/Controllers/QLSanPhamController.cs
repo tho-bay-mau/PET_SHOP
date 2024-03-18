@@ -23,7 +23,7 @@ namespace ThoBayMau_ASM.Controllers
         public IActionResult Index()
         {
             var SanPham = _context.SanPham.ToList();
-            var HinhAnh = _context.Anh.ToList();
+            var HinhAnh = _context.Anhs.ToList();
             var result = SanPham.Where(x => x.TrangThai != "Ngừng bán").Select(p => new SanPhamViewModel
             {
                 Id = p.Id,
@@ -59,7 +59,7 @@ namespace ThoBayMau_ASM.Controllers
                         TenAnh = stringFileName,
                         SanPham = obj.SanPham,
                     };
-                    _context.Anh.Add(productImage);
+                    _context.Anhs.Add(productImage);
                 }
                 _context.SaveChanges();
                 TempData["Sucess"] = "Thêm sản phẩm thành công!!";
