@@ -24,7 +24,7 @@ namespace ThoBayMau_ASM.Controllers
             var result = _context.SanPham
                 .Include(x => x.Anhs)
                 .Include(x => x.ChiTietSPs)
-                .Where(x => x.TrangThai == true)
+                /*.Where(x => x.TrangThai == "Đang bán")*/
                 .ToList();
             return View(result);
         }
@@ -41,7 +41,7 @@ namespace ThoBayMau_ASM.Controllers
         {
             List<string> listTrangThai = new List<string> { "Đang bán", "Ngừng bán", "Mới" };
             ViewBag.TrangThai = new SelectList(listTrangThai);
-            sp.TrangThai = true;
+            
             if (ModelState.IsValid)
             {
                 _context.SanPham.Add(sp);
@@ -83,6 +83,7 @@ namespace ThoBayMau_ASM.Controllers
             ViewBag.TrangThai = new SelectList(listTrangThai);
             if (ModelState.IsValid)
             {
+
                 _context.Update(obj);
                 _context.SaveChanges();
                 TempData["Sucess"] = "Sửa sản phẩm thành công!!";
@@ -94,9 +95,17 @@ namespace ThoBayMau_ASM.Controllers
         {
             if (file != null)
             {
-                
+
+                string uploadDir = Path.Combine(_webhost.WebRootPath, "img"); // đưa ảnh vào file
+
+                string filePath = Path.Combine(uploadDir,file.FileName); // đưa ảnh vào file
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    file.CopyTo(fileStream);
+                }
             }
         }
+
 
     }
 }
