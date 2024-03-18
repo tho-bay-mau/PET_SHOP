@@ -2,6 +2,42 @@
 	ViewData["Title"] = "Details";
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+<style>
+	.carousel-control-prev, .carousel-control-next {
+		background-color: transparent;
+		color: black;
+		border: none;
+		padding: 0;
+		font-size: 20px;
+	}
+
+	.carousel-control-prev:hover, .carousel-control-next:hover {
+		color: black;
+	}
+
+	#small-img {
+		position: initial
+	}
+
+	#small-img a {
+		border: 0.5px solid gray;
+		padding: 0;
+	}
+
+	#small-img a:hover {
+		border: 1px solid red;
+	}
+
+	.form-check-label {
+		color: black;
+	}
+
+	.ftco-section{
+		padding-bottom:0;
+	}
+</style>
+
 <section class="ftco-section">
 	<div class="container">
 		<div class="row">
@@ -31,36 +67,6 @@
 					</div>
 				</div>
 			</div>
-			<style>
-				.carousel-control-prev, .carousel-control-next{
-					background-color: transparent;
-					color: black;
-					border: none;
-					padding:0;
-					font-size:20px;
-				}
-
-				.carousel-control-prev:hover, .carousel-control-next:hover{
-					color:black;
-				}
-
-				#small-img{
-					position:initial
-				}
-
-				#small-img a{
-					border: 0.5px solid gray;
-					padding: 0;
-				}
-
-				#small-img a:hover {
-					border: 1px solid red;
-				}
-
-				.form-check-label{
-					color:black;
-				}
-			</style>
 			<div class="col-lg-6 product-details pl-md-5 ftco-animate">
 				<h3>Bell Pepper</h3>
 				<div class="form-check form-check-inline">
@@ -98,14 +104,14 @@
 					A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth. Text should turn around and return to its own, safe country. But nothing the copy said could convince her and so it didn’t take long until.
 				</div>
 				<div class="product-service mt-3">
-					<ul class="infoList-service">
-						<li>
+					<ul class="infoList-service list-group">
+						<li class="list-group-item">
 							<span>
 								<img src="//theme.hstatic.net/1000356051/1001056962/14/product_deliverly_1_icons.png?v=355" alt="Cam kết 100% chính hãng">
 							</span>
 							Cam kết 100% chính hãng
 						</li>
-						<li>
+						<li class="list-group-item">
 							<span>
 								<img src="//theme.hstatic.net/1000356051/1001056962/14/product_deliverly_2_icons.png?v=355" alt="Miễn phí vận chuyển
 									 Trong 60 phút tại TP Buôn Ma Thuột với đơn hàng>599k
@@ -114,12 +120,12 @@
 							</span>
 							Miễn phí vận chuyển
 							<br>
-							Trong 60 phút tại Hồ Chí Minh với đơn hàng &gt;599k
+							Trong 60 phút tại TP Buôn Ma Thuột với đơn hàng &gt;599k
 							<br>
 							Giao hàng toàn quốc từ 1-2 ngày
 
 						</li>
-						<li>
+						<li class="list-group-item">
 							<span>
 								<img src="//theme.hstatic.net/1000356051/1001056962/14/product_deliverly_3_icons.png?v=355" alt="Đổi sản phẩm nhanh trong 24h">
 							</span>
@@ -135,9 +141,7 @@
 	<div class="container">
 		<div class="row justify-content-center mb-3 pb-3">
 			<div class="col-md-12 heading-section text-center ftco-animate">
-				<span class="subheading">Products</span>
-				<h2 class="mb-4">Related Products</h2>
-				<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia</p>
+				<h2 class="mb-4">Sản Phẩm liên quan</h2>
 			</div>
 		</div>
 	</div>
@@ -146,8 +150,8 @@
 			<div class="col-md-6 col-lg-3 ftco-animate">
 				<div class="product">
 					<a href="#" class="img-prod">
-						<img class="img-fluid" src="images/product-1.jpg" alt="Colorlib Template">
-						<span class="status">30%</span>
+						<img class="img-fluid" src="~/vega/pro_images/1_2b07728470ac48888e65cc4d13efc298_master.jpg" alt="Colorlib Template">
+						@* <span class="status">30%</span> *@
 						<div class="overlay"></div>
 					</a>
 					<div class="text py-3 pb-4 px-3 text-center">
@@ -155,93 +159,6 @@
 						<div class="d-flex">
 							<div class="pricing">
 								<p class="price"><span class="mr-2 price-dc">$120.00</span><span class="price-sale">$80.00</span></p>
-							</div>
-						</div>
-						<div class="bottom-area d-flex px-3">
-							<div class="m-auto d-flex">
-								<a href="#" class="add-to-cart d-flex justify-content-center align-items-center text-center">
-									<span><i class="ion-ios-menu"></i></span>
-								</a>
-								<a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
-									<span><i class="ion-ios-cart"></i></span>
-								</a>
-								<a href="#" class="heart d-flex justify-content-center align-items-center ">
-									<span><i class="ion-ios-heart"></i></span>
-								</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-6 col-lg-3 ftco-animate">
-				<div class="product">
-					<a href="#" class="img-prod">
-						<img class="img-fluid" src="images/product-2.jpg" alt="Colorlib Template">
-						<div class="overlay"></div>
-					</a>
-					<div class="text py-3 pb-4 px-3 text-center">
-						<h3><a href="#">Strawberry</a></h3>
-						<div class="d-flex">
-							<div class="pricing">
-								<p class="price"><span>$120.00</span></p>
-							</div>
-						</div>
-						<div class="bottom-area d-flex px-3">
-							<div class="m-auto d-flex">
-								<a href="#" class="add-to-cart d-flex justify-content-center align-items-center text-center">
-									<span><i class="ion-ios-menu"></i></span>
-								</a>
-								<a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
-									<span><i class="ion-ios-cart"></i></span>
-								</a>
-								<a href="#" class="heart d-flex justify-content-center align-items-center ">
-									<span><i class="ion-ios-heart"></i></span>
-								</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-6 col-lg-3 ftco-animate">
-				<div class="product">
-					<a href="#" class="img-prod">
-						<img class="img-fluid" src="images/product-3.jpg" alt="Colorlib Template">
-						<div class="overlay"></div>
-					</a>
-					<div class="text py-3 pb-4 px-3 text-center">
-						<h3><a href="#">Green Beans</a></h3>
-						<div class="d-flex">
-							<div class="pricing">
-								<p class="price"><span>$120.00</span></p>
-							</div>
-						</div>
-						<div class="bottom-area d-flex px-3">
-							<div class="m-auto d-flex">
-								<a href="#" class="add-to-cart d-flex justify-content-center align-items-center text-center">
-									<span><i class="ion-ios-menu"></i></span>
-								</a>
-								<a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
-									<span><i class="ion-ios-cart"></i></span>
-								</a>
-								<a href="#" class="heart d-flex justify-content-center align-items-center ">
-									<span><i class="ion-ios-heart"></i></span>
-								</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-6 col-lg-3 ftco-animate">
-				<div class="product">
-					<a href="#" class="img-prod">
-						<img class="img-fluid" src="images/product-4.jpg" alt="Colorlib Template">
-						<div class="overlay"></div>
-					</a>
-					<div class="text py-3 pb-4 px-3 text-center">
-						<h3><a href="#">Purple Cabbage</a></h3>
-						<div class="d-flex">
-							<div class="pricing">
-								<p class="price"><span>$120.00</span></p>
 							</div>
 						</div>
 						<div class="bottom-area d-flex px-3">
