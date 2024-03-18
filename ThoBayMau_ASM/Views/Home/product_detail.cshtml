@@ -7,20 +7,15 @@
 		<div class="row">
 			<div class="col-lg-6 mb-5 ftco-animate">
 				<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
-					<div class="carousel-indicators justify-content-sm-around" id="small-img">
-						<a data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"><img src="~/vega/images/product-1.jpg" style="width:100px;" alt="..."></a>
-						<a data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"><img src="~/vega/images/product-2.jpg" style="width:100px;" alt="..."></a>
-						<a data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"><img src="~/vega/images/product-3.jpg" style="width:100px;" alt="..."></a>
-					</div>
 					<div class="carousel-inner">
-						<div class="carousel-item active">
-							<img src="~/vega/images/product-1.jpg" class="d-block w-100" alt="...">
+                        <div class="carousel-item active">
+							<img src="~/vega/pro_images/1_2b07728470ac48888e65cc4d13efc298_master.jpg" class="d-block w-100" alt="...">
 						</div>
-						<div class="carousel-item">
-							<img src="~/vega/images/product-2.jpg" class="d-block w-100" alt="...">
+                        <div class="carousel-item">
+							<img src="~/vega/pro_images/1_42eb4e7ac2d04669886a51c96cd766a6_master.jpg" class="d-block w-100" alt="...">
 						</div>
-						<div class="carousel-item">
-							<img src="~/vega/images/product-3.jpg" class="d-block w-100" alt="...">
+                        <div class="carousel-item">
+							<img src="~/vega/pro_images/1_a2bff92357c949beae6cc690ccfd1897_master.png" class="d-block w-100" alt="...">
 						</div>
 					</div>
 					<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
@@ -29,6 +24,11 @@
 					<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
 						<i class="bi bi-caret-right-fill"></i>
 					</button>
+					<div class="carousel-indicators justify-content-sm-around" id="small-img">
+						<a data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"><img src="~/vega/pro_images/1_2b07728470ac48888e65cc4d13efc298_master.jpg" style="width:100px;" alt="..."></a>
+						<a data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"><img src="~/vega/pro_images/1_42eb4e7ac2d04669886a51c96cd766a6_master.jpg" style="width:100px;" alt="..."></a>
+						<a data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"><img src="~/vega/pro_images/1_a2bff92357c949beae6cc690ccfd1897_master.png" style="width:100px;" alt="..."></a>
+					</div>
 				</div>
 			</div>
 			<style>
@@ -36,10 +36,16 @@
 					background-color: transparent;
 					color: black;
 					border: none;
+					padding:0;
+					font-size:20px;
 				}
 
 				.carousel-control-prev:hover, .carousel-control-next:hover{
 					color:black;
+				}
+
+				#small-img{
+					position:initial
 				}
 
 				#small-img a{
@@ -50,23 +56,24 @@
 				#small-img a:hover {
 					border: 1px solid red;
 				}
+
+				.form-check-label{
+					color:black;
+				}
 			</style>
-			@* <div class="col-lg-6 mb-5 ftco-animate">
-				<a href="images/product-1.jpg" class="image-popup"><img src="images/product-1.jpg" class="img-fluid" alt="Colorlib Template"></a>
-			</div> *@
 			<div class="col-lg-6 product-details pl-md-5 ftco-animate">
 				<h3>Bell Pepper</h3>
 				<div class="form-check form-check-inline">
 					<input class="form-check-input" type="radio" name="Radio" value="option1">
-					<label class="form-check-label">1 kg</label>
+					<label class="form-check-label fw-bold">1 kg</label>
 				</div>
 				<div class="form-check form-check-inline">
 					<input class="form-check-input" type="radio" name="Radio" value="option2">
-					<label class="form-check-label">2 kg</label>
+					<label class="form-check-label fw-bold">2 kg</label>
 				</div>
 				<div class="form-check form-check-inline">
 					<input class="form-check-input" type="radio" name="Radio" value="option3">
-					<label class="form-check-label">3 kg</label>
+					<label class="form-check-label fw-bold">3 kg</label>
 				</div>
 				<p class="price m-0"><span>$120.00</span></p>
 				<div class="row align-items-center">
@@ -76,7 +83,7 @@
 								<i class="ion-ios-remove"></i>
 							</button>
 						</span>
-						<input type="text" id="quantity" name="quantity" class="form-control input-number" value="1" min="1" max="100">
+						<input style="max-width:80px;" type="text" id="quantity" name="quantity" class="form-control input-number" value="1" min="1" max="100">
 						<span class="input-group-btn ml-2">
 							<button type="button" class="quantity-right-plus btn" data-type="plus" data-field="">
 								<i class="ion-ios-add"></i>
@@ -90,8 +97,189 @@
 				<div class="mt-4">
 					A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth. Text should turn around and return to its own, safe country. But nothing the copy said could convince her and so it didn’t take long until.
 				</div>
+				<div class="product-service mt-3">
+					<ul class="infoList-service">
+						<li>
+							<span>
+								<img src="//theme.hstatic.net/1000356051/1001056962/14/product_deliverly_1_icons.png?v=355" alt="Cam kết 100% chính hãng">
+							</span>
+							Cam kết 100% chính hãng
+						</li>
+						<li>
+							<span>
+								<img src="//theme.hstatic.net/1000356051/1001056962/14/product_deliverly_2_icons.png?v=355" alt="Miễn phí vận chuyển
+									 Trong 60 phút tại TP Buôn Ma Thuột với đơn hàng>599k
+
+								Giao hàng toàn quốc từ 1-2 ngày">
+							</span>
+							Miễn phí vận chuyển
+							<br>
+							Trong 60 phút tại Hồ Chí Minh với đơn hàng &gt;599k
+							<br>
+							Giao hàng toàn quốc từ 1-2 ngày
+
+						</li>
+						<li>
+							<span>
+								<img src="//theme.hstatic.net/1000356051/1001056962/14/product_deliverly_3_icons.png?v=355" alt="Đổi sản phẩm nhanh trong 24h">
+							</span>
+							Đổi sản phẩm nhanh trong 24h
+						</li>
+					</ul>
+				</div>
 			</div>
 		</div>
 	</div>
 </section>
+<section class="ftco-section">
+	<div class="container">
+		<div class="row justify-content-center mb-3 pb-3">
+			<div class="col-md-12 heading-section text-center ftco-animate">
+				<span class="subheading">Products</span>
+				<h2 class="mb-4">Related Products</h2>
+				<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia</p>
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6 col-lg-3 ftco-animate">
+				<div class="product">
+					<a href="#" class="img-prod">
+						<img class="img-fluid" src="images/product-1.jpg" alt="Colorlib Template">
+						<span class="status">30%</span>
+						<div class="overlay"></div>
+					</a>
+					<div class="text py-3 pb-4 px-3 text-center">
+						<h3><a href="#">Bell Pepper</a></h3>
+						<div class="d-flex">
+							<div class="pricing">
+								<p class="price"><span class="mr-2 price-dc">$120.00</span><span class="price-sale">$80.00</span></p>
+							</div>
+						</div>
+						<div class="bottom-area d-flex px-3">
+							<div class="m-auto d-flex">
+								<a href="#" class="add-to-cart d-flex justify-content-center align-items-center text-center">
+									<span><i class="ion-ios-menu"></i></span>
+								</a>
+								<a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
+									<span><i class="ion-ios-cart"></i></span>
+								</a>
+								<a href="#" class="heart d-flex justify-content-center align-items-center ">
+									<span><i class="ion-ios-heart"></i></span>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6 col-lg-3 ftco-animate">
+				<div class="product">
+					<a href="#" class="img-prod">
+						<img class="img-fluid" src="images/product-2.jpg" alt="Colorlib Template">
+						<div class="overlay"></div>
+					</a>
+					<div class="text py-3 pb-4 px-3 text-center">
+						<h3><a href="#">Strawberry</a></h3>
+						<div class="d-flex">
+							<div class="pricing">
+								<p class="price"><span>$120.00</span></p>
+							</div>
+						</div>
+						<div class="bottom-area d-flex px-3">
+							<div class="m-auto d-flex">
+								<a href="#" class="add-to-cart d-flex justify-content-center align-items-center text-center">
+									<span><i class="ion-ios-menu"></i></span>
+								</a>
+								<a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
+									<span><i class="ion-ios-cart"></i></span>
+								</a>
+								<a href="#" class="heart d-flex justify-content-center align-items-center ">
+									<span><i class="ion-ios-heart"></i></span>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6 col-lg-3 ftco-animate">
+				<div class="product">
+					<a href="#" class="img-prod">
+						<img class="img-fluid" src="images/product-3.jpg" alt="Colorlib Template">
+						<div class="overlay"></div>
+					</a>
+					<div class="text py-3 pb-4 px-3 text-center">
+						<h3><a href="#">Green Beans</a></h3>
+						<div class="d-flex">
+							<div class="pricing">
+								<p class="price"><span>$120.00</span></p>
+							</div>
+						</div>
+						<div class="bottom-area d-flex px-3">
+							<div class="m-auto d-flex">
+								<a href="#" class="add-to-cart d-flex justify-content-center align-items-center text-center">
+									<span><i class="ion-ios-menu"></i></span>
+								</a>
+								<a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
+									<span><i class="ion-ios-cart"></i></span>
+								</a>
+								<a href="#" class="heart d-flex justify-content-center align-items-center ">
+									<span><i class="ion-ios-heart"></i></span>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6 col-lg-3 ftco-animate">
+				<div class="product">
+					<a href="#" class="img-prod">
+						<img class="img-fluid" src="images/product-4.jpg" alt="Colorlib Template">
+						<div class="overlay"></div>
+					</a>
+					<div class="text py-3 pb-4 px-3 text-center">
+						<h3><a href="#">Purple Cabbage</a></h3>
+						<div class="d-flex">
+							<div class="pricing">
+								<p class="price"><span>$120.00</span></p>
+							</div>
+						</div>
+						<div class="bottom-area d-flex px-3">
+							<div class="m-auto d-flex">
+								<a href="#" class="add-to-cart d-flex justify-content-center align-items-center text-center">
+									<span><i class="ion-ios-menu"></i></span>
+								</a>
+								<a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
+									<span><i class="ion-ios-cart"></i></span>
+								</a>
+								<a href="#" class="heart d-flex justify-content-center align-items-center ">
+									<span><i class="ion-ios-heart"></i></span>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		var minusButton = document.querySelector('.quantity-left-minus');
+		var plusButton = document.querySelector('.quantity-right-plus');
+		var quantityInput = document.getElementById('quantity');
+
+		minusButton.addEventListener('click', function () {
+			var currentValue = parseInt(quantityInput.value);
+			if (currentValue > 1) {
+				quantityInput.value = currentValue - 1;
+			}
+		});
+
+		plusButton.addEventListener('click', function () {
+			var currentValue = parseInt(quantityInput.value);
+			quantityInput.value = currentValue + 1;
+		});
+	});
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
