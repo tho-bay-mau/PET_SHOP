@@ -9,8 +9,7 @@ namespace ThoBayMau_ASM.Data
 {
     public class ThoBayMau_ASMContext : DbContext
     {
-        public ThoBayMau_ASMContext (DbContextOptions<ThoBayMau_ASMContext> options)
-            : base(options)
+        public ThoBayMau_ASMContext (DbContextOptions<ThoBayMau_ASMContext> options): base(options)
         {
         }
 
@@ -18,6 +17,7 @@ namespace ThoBayMau_ASM.Data
         public DbSet<ThoBayMau_ASM.Models.DonHang> DonHang { get; set; } = default!;
         public DbSet<ThoBayMau_ASM.Models.TaiKhoan> TaiKhoan { get; set; } = default!;
         public DbSet<ThoBayMau_ASM.Models.LoaiSP> LoaiSP { get; set; } = default!;
-        public DbSet<ThoBayMau_ASM.Models.Anh> Anh { get; set; } = default!;
+        public DbSet<ThoBayMau_ASM.Models.ChiTiet_SP> chiTiet_SPs { get; set; } = default!;
+        public DbSet<ThoBayMau_ASM.Models.Anh> Anhs { get; set; } = default!;
     }
 }

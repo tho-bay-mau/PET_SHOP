@@ -23,6 +23,11 @@ namespace ThoBayMau_ASM.Controllers
         {
             var donhang = _context.DonHang
                 .Include(x => x.TaiKhoan)
+                .Include(x => x.ThongTin_NhanHang)
+                .Include(x => x.DonHang_ChiTiets)
+                .ThenInclude(x => x.ChiTiet_SP)
+                .ThenInclude(x => x.SanPham)
+                .ThenInclude(x => x.LoaiSP)
                 .ToList();
             return View(donhang);
         }
@@ -39,7 +44,7 @@ namespace ThoBayMau_ASM.Controllers
                 DonHang.TrangThaiDonHang = "dang giao";
                 _context.Update(DonHang);
                 _context.SaveChanges();
-                return RedirectToAction("DonHang", "Admin");
+                return RedirectToAction("Index", "DonHang");
             }
         }
         public IActionResult GiaoHangThanhCong(int id)
@@ -54,8 +59,24 @@ namespace ThoBayMau_ASM.Controllers
                 DonHang.TrangThaiDonHang = "da giao";
                 _context.Update(DonHang);
                 _context.SaveChanges();
-                return RedirectToAction("DonHang", "Admin");
+                return RedirectToAction("Index", "DonHang");
             }
         }
+        public IActionResult HuyDon(int id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                var DonHang = _context.DonHang.FirstOrDefault(a => a.Id == id);
+                DonHang.TrangThaiDonHang = "da huy";
+                _context.Update(DonHang);
+                _context.SaveChanges();
+                return RedirectToAction("Index", "DonHang");
+            }
+        }
+
     }
 }

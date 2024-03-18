@@ -12,15 +12,15 @@ using ThoBayMau_ASM.Data;
 namespace ThoBayMau_ASM.Migrations
 {
     [DbContext(typeof(ThoBayMau_ASMContext))]
-    [Migration("20240314172250_1")]
-    partial class _1
+    [Migration("20240315095552_db")]
+    partial class db
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.2")
+                .HasAnnotation("ProductVersion", "8.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -91,13 +91,14 @@ namespace ThoBayMau_ASM.Migrations
                     b.Property<int>("TaiKhoanId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("ThoiGianTao")
+                    b.Property<DateTime?>("ThoiGianTao")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("TrangThaiDonHang")
-                        .HasColumnType("bit");
+                    b.Property<string>("TrangThaiDonHang")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("TrangThaiThanhToan")
+                    b.Property<bool?>("TrangThaiThanhToan")
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
@@ -230,7 +231,7 @@ namespace ThoBayMau_ASM.Migrations
                     b.Property<bool>("LoaiTK")
                         .HasColumnType("bit");
 
-                    b.Property<string>("MakKhau")
+                    b.Property<string>("MatKhau")
                         .IsRequired()
                         .HasColumnType("Varchar(50)");
 

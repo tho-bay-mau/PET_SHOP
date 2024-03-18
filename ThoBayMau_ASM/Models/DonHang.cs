@@ -15,5 +15,6 @@ namespace ThoBayMau_ASM.Models
 		public int TaiKhoanId { get; set; }
 		public TaiKhoan TaiKhoan { get; set; }
 		public ICollection<DonHang_ChiTiet>? DonHang_ChiTiets { get; set; }
+        public ThongTin_NhanHang? ThongTin_NhanHang { get; set; }
 	}
 }

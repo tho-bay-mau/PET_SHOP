@@ -113,16 +113,18 @@ namespace ThoBayMau_ASM.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("DonHangId")
+                    b.Property<int>("ChiTiet_SPId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SanPhamId")
+                    b.Property<int>("DonHangId")
                         .HasColumnType("int");
 
                     b.Property<int>("SoLuong")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ChiTiet_SPId");
 
                     b.HasIndex("DonHangId");
 
@@ -251,6 +253,37 @@ namespace ThoBayMau_ASM.Migrations
                     b.ToTable("TAI_KHOAN");
                 });
 
+            modelBuilder.Entity("ThoBayMau_ASM.Models.ThongTin_NhanHang", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("DiaChi")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DonhangId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("GhiChu")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HoTen")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SDT")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TAI_KHOAN");
+                });
+
             modelBuilder.Entity("ThoBayMau_ASM.Models.Anh", b =>
                 {
                     b.HasOne("ThoBayMau_ASM.Models.SanPham", "SanPham")
@@ -286,21 +319,21 @@ namespace ThoBayMau_ASM.Migrations
 
             modelBuilder.Entity("ThoBayMau_ASM.Models.DonHang_ChiTiet", b =>
                 {
+                    b.HasOne("ThoBayMau_ASM.Models.ChiTiet_SP", "ChiTiet_SP")
+                        .WithMany()
+                        .HasForeignKey("ChiTiet_SPId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("ThoBayMau_ASM.Models.DonHang", "DonHang")
                         .WithMany("DonHang_ChiTiets")
                         .HasForeignKey("DonHangId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ThoBayMau_ASM.Models.SanPham", "SanPham")
-                        .WithMany()
-                        .HasForeignKey("SanPhamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("ChiTiet_SP");
 
                     b.Navigation("DonHang");
-
-                    b.Navigation("SanPham");
                 });
 
             modelBuilder.Entity("ThoBayMau_ASM.Models.LichSu", b =>
@@ -325,9 +358,20 @@ namespace ThoBayMau_ASM.Migrations
                     b.Navigation("LoaiSP");
                 });
 
+            modelBuilder.Entity("ThoBayMau_ASM.Models.ThongTin_NhanHang", b =>
+                {
+                    b.HasOne("ThoBayMau_ASM.Models.DonHang", null)
+                        .WithOne("ThongTin_NhanHang")
+                        .HasForeignKey("ThoBayMau_ASM.Models.ThongTin_NhanHang", "DonhangId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("ThoBayMau_ASM.Models.DonHang", b =>
                 {
                     b.Navigation("DonHang_ChiTiets");
+
+                    b.Navigation("ThongTin_NhanHang");
                 });
 
             modelBuilder.Entity("ThoBayMau_ASM.Models.LoaiSP", b =>
