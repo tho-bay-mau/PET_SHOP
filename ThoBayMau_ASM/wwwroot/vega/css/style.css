@@ -8930,8 +8930,9 @@ h1, h2, h3, h4, h5,
   text-align: center; }
   .table th {
     font-weight: 500; }
-  .table .thead-primary {
-    background: #82ae46; }
+    .table .thead-primary {
+        background: #17a2b8;
+    }
     .table .thead-primary tr th {
       padding: 20px 10px;
       color: #fff !important;
