@@ -14,6 +14,13 @@
             <span asp-validation-for="Ten" class="text-danger"></span>
         </div>
         <div class="mb-2">
+            <label for="imageUpload" class="form-label">Chọn ảnh mới:</label>
+            <div>
+                <img id="previewImage" src="#" class="img-thumbnail" alt="Product Image">
+            </div>
+            <input type="file" class="form-control" id="imageUpload" name="files" multiple onchange="previewFile()">
+        </div>
+        <div class="mb-2">
             <label asp-for="Mota" class="form-label">Mô tả</label>
             <input asp-for="Mota" class="form-control" id="exampleInputEmail1">
             <span asp-validation-for="Ten" class="text-danger"></span>
@@ -32,4 +39,22 @@
         <a asp-controller="QLSanPham" asp-action="Index" class="btn btn-primary">Trở về</a>
     </div>
 </form>
+@section Scripts {
+    <script>
+        function previewFile() {
+            var preview = document.getElementById('previewImage');
+            var file = document.querySelector('input[type=file]').files[0];
+            var reader = new FileReader();
 
+            reader.onloadend = function () {
+                preview.src = reader.result;
+            }
+
+            if (file) {
+                reader.readAsDataURL(file);
+            } else {
+                preview.src = "";
+            }
+        }
+    </script>
+}

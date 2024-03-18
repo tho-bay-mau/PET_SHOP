@@ -77,17 +77,32 @@ namespace ThoBayMau_ASM.Controllers
 
         }
         [HttpPost]
-        public IActionResult Edit(SanPham obj)
+        public IActionResult Edit(SanPham obj, IFormFile[] files)
         {
             List<string> listTrangThai = new List<string> { "Đang bán", "Ngừng bán", "Mới" };
             ViewBag.TrangThai = new SelectList(listTrangThai);
             if (ModelState.IsValid)
             {
-
-                _context.Update(obj);
-                _context.SaveChanges();
-                TempData["Sucess"] = "Sửa sản phẩm thành công!!";
-                return RedirectToAction("Index");
+                
+                    _context.Update(obj);
+                    _context.SaveChanges();
+                    var anhdaco = _context.Anh.Where(x => x.SanphamId == obj.Id).ToList();
+                    foreach (var existingImage in anhdaco)
+                    {
+                        _context.Anh.Remove(existingImage);
+                        _context.SaveChanges();
+                    }
+                    foreach (var item in files)
+                    {
+                        Uploadfile(item);
+                        Anh anh = new Anh();
+                        anh.SanphamId = obj.Id;
+                        anh.TenAnh = item.FileName;
+                        _context.Anh.Add(anh);
+                    }
+                    _context.SaveChanges();
+                    TempData["Sucess"] = "Sửa sản phẩm thành công!!";
+                    return RedirectToAction("Index");
             }
             return View(obj);
         }
@@ -95,9 +110,7 @@ namespace ThoBayMau_ASM.Controllers
         {
             if (file != null)
             {
-
                 string uploadDir = Path.Combine(_webhost.WebRootPath, "img"); // đưa ảnh vào file
-
                 string filePath = Path.Combine(uploadDir,file.FileName); // đưa ảnh vào file
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
