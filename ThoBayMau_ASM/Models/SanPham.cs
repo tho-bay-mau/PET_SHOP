@@ -13,7 +13,7 @@ namespace ThoBayMau_ASM.Models
 		[Column(TypeName = "ntext")]
 		public string? Mota { get; set; }
 		[Column(TypeName = "nvarchar(50)")]
-		public string TrangThai { get; set; }
+		public bool TrangThai { get; set; }
 		public int LoaiSPId { get; set; }
 		public LoaiSP? LoaiSP { get; set; }
 		public ICollection<ChiTiet_SP>? ChiTietSPs { get; set; }
