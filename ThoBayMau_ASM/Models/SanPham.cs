@@ -9,12 +9,11 @@ namespace ThoBayMau_ASM.Models
 	{
 		[Key]
 		public int Id { get; set; }
-		
 		public string Ten { get; set; }
 		[Column(TypeName = "ntext")]
 		public string? Mota { get; set; }
 		[Column(TypeName = "nvarchar(50)")]
-		public bool TrangThai { get; set; }
+		public string TrangThai { get; set; }
 		public int LoaiSPId { get; set; }
 		public LoaiSP? LoaiSP { get; set; }
 		public ICollection<ChiTiet_SP>? ChiTietSPs { get; set; }

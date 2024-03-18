@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SanPham>
+﻿@model IEnumerable<ThoBayMau_ASM.Models.ViewModel.SanPhamViewModel>
 
 @{
     ViewData["Title"] = "Details";
@@ -11,7 +11,7 @@
             <h2>Product types management</h2>
         </div>
         <div class="col-6 text-end">
-            <a asp-controller="SanPham" asp-action="Create" class="btn btn-primary"><i class="bi bi-plus"></i>Create new category</a>
+            <a asp-controller="QLSanPham" asp-action="Create" class="btn btn-primary"><i class="bi bi-plus"></i>Create new category</a>
         </div>
     </div>
     <br /><br />

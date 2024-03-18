@@ -1,11 +1,10 @@
-﻿@model SanPham
-
+﻿@model ThoBayMau_ASM.Models.ViewModel.SanPhamViewModel
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<form method="post">
+<form method="post" asp-action="Create" enctype="multipart/form-data">
 
     <div class="card-body">
 
@@ -13,6 +12,14 @@
             <label asp-for="Ten" class="form-label">Tên</label>
             <input asp-for="Ten" class="form-control" id="exampleInputEmail1">
             <span asp-validation-for="Ten" class="text-danger"></span>
+        </div>
+        <div class="mb-2">
+            <label asp-for="TenAnh" class="form-label">Hình ảnh</label>
+            <div>
+                <img id="previewImage" src="#" class="img-thumbnail" alt="Product Image">
+            </div>
+            <input type="file" asp-for="TenAnh" class="form-control" multiple id="exampleInputFile" onchange="previewFile()">
+            <span asp-validation-for="TenAnh" class="text-danger"></span>
         </div>
         <div class="mb-2">
             <label asp-for="Mota" class="form-label">Mô tả</label>
@@ -29,8 +36,28 @@
             <input asp-for="LoaiSPId" class="form-control" id="exampleInputEmail1">
             <span asp-validation-for="Ten" class="text-danger"></span>
         </div>
+
         <br />
         <button type="submit" class="btn btn-primary">Thêm</button>
-        <a asp-controller="SanPham" asp-action="Index" class="btn btn-primary">Trở về</a>
+        <a asp-controller="QLSanPham" asp-action="Index" class="btn btn-primary">Trở về</a>
     </div>
 </form>
+@section Scripts {
+    <script>
+        function previewFile() {
+            var preview = document.getElementById('previewImage');
+            var file = document.querySelector('input[type=file]').files[0];
+            var reader = new FileReader();
+
+            reader.onloadend = function () {
+                preview.src = reader.result;
+            }
+
+            if (file) {
+                reader.readAsDataURL(file);
+            } else {
+                preview.src = "";
+            }
+        }
+    </script>
+}

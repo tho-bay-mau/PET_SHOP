@@ -28,5 +28,6 @@ namespace ThoBayMau_ASM.Controllers
 		{
 			return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
 		}
+
 	}
 }
