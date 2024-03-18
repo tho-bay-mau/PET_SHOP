@@ -2,8 +2,15 @@
 	ViewData["Title"] = "Details";
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style>
+	
+</style>
+<link rel="stylesheet" href="/giohang/css/Layout.css">
 <section class="ftco-section ftco-cart">
 	<div class="container">
+		<div class="heading-page-cart text-center pt-3 pb-4">
+			<h4 class="m-0">Giỏ hàng của bạn</h4>
+		</div>
 		<div class="row">
 			<div class="col-md-12 ftco-animate">
 				<div class="cart-list">
@@ -12,54 +19,70 @@
 							<tr class="text-center">
 								<th>&nbsp;</th>
 								<th>&nbsp;</th>
-								<th>Product name</th>
-								<th>Price</th>
-								<th>Quantity</th>
-								<th>Total</th>
+								<th>Tên sản phẩm</th>
+								<th>Giá</th>
+								<th>Kích thước</th>
+								<th>Số lượng</th>
+								<th>Tổng</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr class="text-center">
 								<td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
 
-								<td class="image-prod"><div class="img" style="background-image:url(images/product-3.jpg);"></div></td>
+                                <td class="image-prod"><img src="~/vega/pro_images/1_2b07728470ac48888e65cc4d13efc298_master.jpg" style="height: 100px" /></div></td>
 
 								<td class="product-name">
-									<h3>Bell Pepper</h3>
-									<p>Far far away, behind the word mountains, far from the countries</p>
+									<h3>
+										THỨC ĂN HẠT KHÔ GANADOR CHÓ LỚN GÀ XANH NGỌC
+									</h3>
 								</td>
 
-								<td class="price">$4.90</td>
+								<td class="price">200.000đ</td>
 
-								<td class="quantity">
-									<div class="input-group mb-3">
-										<input type="text" name="quantity" class="quantity form-control input-number" value="1" min="1" max="100">
-									</div>
+								<td style="color: black;">
+									2Kg
 								</td>
 
+				<td class="total">
+					<div class="input-group">
+						<span class="input-group-btn">
+							<button type="button" class="quantity-left-minus btn" data-type="minus" data-field="" style="border-radius: 0;">
+								<i class="ion-ios-remove"></i>
+							</button>
+						</span>
+						<input style="max-width:80px;" type="text" id="quantity" name="quantity" class="form-control input-number" value="1" min="1" max="100">
+						<span class="input-group-btn">
+							<button type="button" class="quantity-right-plus btn" data-type="plus" data-field="">
+								<i class="ion-ios-add"></i>
+							</button>
+						</span>
+					</div>
+				</td>
 								<td class="total">$4.90</td>
 							</tr><!-- END TR-->
 
-							<tr class="text-center">
-								<td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
+						<tr class="text-center">
+							<td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
 
-								<td class="image-prod"><div class="img" style="background-image:url(images/product-4.jpg);"></div></td>
+								<td class="image-prod"><img src="~/vega/pro_images/1_2b07728470ac48888e65cc4d13efc298_master.jpg" style="height: 100px" />
+						</div></td>
 
-								<td class="product-name">
-									<h3>Bell Pepper</h3>
-									<p>Far far away, behind the word mountains, far from the countries</p>
-								</td>
+						<td class="product-name">
+							<h3>
+								THỨC ĂN HẠT KHÔ GANADOR CHÓ LỚN GÀ XANH NGỌC
+							</h3>
+						</td>
 
-								<td class="price">$15.70</td>
+						<td class="price">200.000đ</td>
 
-								<td class="quantity">
-									<div class="input-group mb-3">
-										<input type="text" name="quantity" class="quantity form-control input-number" value="1" min="1" max="100">
-									</div>
-								</td>
+						<td style="color: black;">
+							2Kg
+						</td>
 
-								<td class="total">$15.70</td>
-							</tr><!-- END TR-->
+						<td class="total">$4.90</td>
+						<td class="total">$4.90</td>
+						</tr><!-- END TR-->
 						</tbody>
 					</table>
 				</div>
@@ -126,3 +149,14 @@
 		</div>
 	</div>
 </section>
+<style>
+	.input-group {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.input-group-btn button {
+		margin: 0;
+	}
+</style>
