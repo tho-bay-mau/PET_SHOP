@@ -1,28 +1,26 @@
-﻿@model IEnumerable<ThoBayMau_ASM.Models.SanPham>
-
+﻿@model IEnumerable<LoaiSP>
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-
 <div class="container p-3">
     <div class="row pt-4">
         <div class="col-6">
-            <h2>Product types management</h2>
+            <h2>Quản lí loại sản phẩm</h2>
         </div>
         <div class="col-6 text-end">
-            <a asp-controller="QLSanPham" asp-action="Create" class="btn btn-primary"><i class="bi bi-plus"></i>Create new category</a>
+            <a asp-controller="LoaiSPController" asp-action="Create" class="btn btn-primary"><i class="bi bi-plus"></i>Tạo mới</a>
         </div>
     </div>
     <br /><br />
     <table class="table table-bordered table-striped">
         <thead>
-            <th>ID</th>
-            <th>Tên</th>
-            <th>Hình ảnh</th>
-            <th>Mô tả</th>
-            <th>Trạng thái</th>
-            <th>Mã loại sản phẩm</th>
+        <th>ID</th>
+        <th>Tên</th>
+        <th>Trạng thái</th>
+        <th>Sửa</th>
+        <th>Xóa</th>
+        
         </thead>
         <tbody>
             @foreach (var item in Model)
@@ -30,12 +28,8 @@
                 <tr>
                     <td>@item.Id</td>
                     <td>@item.Ten</td>
-                    <td></td>
-                    <td>@item.Mota</td>
                     <td>@item.TrangThai</td>
-                    <td>@item.LoaiSPId</td>
                     <td>
-
                         <a asp-action="Edit" asp-route-id=@item.Id class="btn btn-primary"><i class="bi bi-pencil-square"></i></a>
                     </td>
                     <td>
@@ -43,8 +37,6 @@
                     </td>
                 </tr>
             }
-
-
         </tbody>
     </table>
 </div>

@@ -22,5 +22,17 @@ namespace ThoBayMau_ASM.Controllers
             var result = _db.SanPham.Include(x => x.ChiTietSPs).Include(x => x.Anhs).ToList();
 			return View(result);
 		}
+        public IActionResult product_detail()
+        {
+            return View();
+        }
+        public IActionResult Cart()
+        {
+            return View();
+        }
+        public IActionResult Shop_list()
+        {
+            return View();
+        }
 	}
 }

@@ -3,7 +3,6 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ThoBayMau_ASM.Data;
 
@@ -12,16 +11,9 @@ using ThoBayMau_ASM.Data;
 namespace ThoBayMau_ASM.Migrations
 {
     [DbContext(typeof(ThoBayMau_ASMContext))]
-<<<<<<<< HEAD:ThoBayMau_ASM/Migrations/20240318005653_updatedatabase.Designer.cs
-    [Migration("20240318005653_updatedatabase")]
-    partial class updatedatabase
-========
-    [Migration("20240318060506_updatedb")]
-    partial class updatedb
->>>>>>>> ddd7b569ac7dbbd86a1f58eebc30f5f7f4deaf47:ThoBayMau_ASM/Migrations/20240318060506_updatedb.Designer.cs
+    partial class ThoBayMau_ASMContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
