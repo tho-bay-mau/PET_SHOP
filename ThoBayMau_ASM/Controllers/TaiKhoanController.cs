@@ -37,10 +37,14 @@ namespace ThoBayMau_ASM.Controllers
 
             ViewBag.CurrentPage = currentpage;
             ViewBag.CountPages = countpages;
-
-            var result = _db.TaiKhoan.Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
-
-            return View(result);
+            if(total > 0)
+            {
+                var result = _db.TaiKhoan.Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
+                return View(result);
+            } else
+            {
+                return View(null);
+            }
         }
 
         public IActionResult Create()
@@ -167,9 +171,15 @@ namespace ThoBayMau_ASM.Controllers
                 ViewBag.CurrentPage = currentpage;
                 ViewBag.CountPages = countpages;
                 ViewBag.Search = Key;
-
-                var result = _db.TaiKhoan.Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
-                return View("Index", result);
+                if (total > 0)
+                {
+                    var result = _db.TaiKhoan.Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
+                    return View("Index", result);
+                }
+                else
+                {
+                    return View("Index", null);
+                }
             }
             else
             {
@@ -188,9 +198,15 @@ namespace ThoBayMau_ASM.Controllers
                 ViewBag.CurrentPage = currentpage;
                 ViewBag.CountPages = countpages;
                 ViewBag.Search = Key;
-
-                var result = _db.TaiKhoan.Where(x => x.DiaChi == Key).Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
-                return View("Index", result);
+                if (total > 0)
+                {
+                    var result = _db.TaiKhoan.Where(x => x.DiaChi == Key).Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
+                    return View("Index", result);
+                }
+                else
+                {
+                    return View("Index", null);
+                }  
             }
         }
     }

@@ -128,8 +128,6 @@ namespace ThoBayMau_ASM.Migrations
 
                     b.HasIndex("DonHangId");
 
-                    b.HasIndex("SanPhamId");
-
                     b.ToTable("DONHANG_CHITIET");
                 });
 
@@ -269,7 +267,6 @@ namespace ThoBayMau_ASM.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("GhiChu")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("HoTen")
@@ -281,7 +278,10 @@ namespace ThoBayMau_ASM.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TAI_KHOAN");
+                    b.HasIndex("DonhangId")
+                        .IsUnique();
+
+                    b.ToTable("THONGTIN_NHANHANG");
                 });
 
             modelBuilder.Entity("ThoBayMau_ASM.Models.Anh", b =>
