@@ -29,8 +29,23 @@
     <link rel="stylesheet" href="/vega/css/style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
+<style>
+    #txt-frm-email{
+        width:400px;
+    }
+
+    #txt-frm-email-submit {
+        width:100px;
+        border:none;
+        color:white;
+        background-color: #17a2b8;
+    }
+
+    #txt-frm-email-submit:hover {
+        background-color: #34919f;
+    }
+</style>
 <body class="goto-here">
-    
     <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
         <div class="container">
             <a class="navbar-brand" asp-action="Index" asp-controller="Home">Pethouses</a>
@@ -60,14 +75,14 @@
         <div class="container py-4">
             <div class="row d-flex justify-content-center py-5">
                 <div class="col-md-6">
-                    <h2 style="font-size: 22px;" class="mb-0">Subcribe to our Newsletter</h2>
-                    <span>Get e-mail updates about our latest shops and special offers</span>
+                    <h2 style="font-size: 22px;" class="mb-0">Theo dõi bản tin của chúng tôi</h2>
+                    <span>Nhận thông tin cập nhật qua email về các cửa hàng mới nhất và ưu đãi đặc biệt của chúng tôi</span>
                 </div>
                 <div class="col-md-6 d-flex align-items-center">
-                    <form action="#" class="subscribe-form">
+                    <form action="#" class="frm-email">
                         <div class="form-group d-flex">
-                            <input type="text" class="form-control" placeholder="Enter email address">
-                            <input type="submit" value="Subscribe" class="submit px-3">
+                            <input id="txt-frm-email" type="text" class="form-control" placeholder="Nhập địa chỉ email">
+                            <input id="txt-frm-email-submit" type="submit" value="Gửi">
                         </div>
                     </form>
                 </div>
