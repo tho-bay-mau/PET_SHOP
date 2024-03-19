@@ -2,10 +2,7 @@
 	ViewData["Title"] = "Details";
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<style>
-	
-</style>
-<link rel="stylesheet" href="/giohang/css/Layout.css">
+
 <section class="ftco-section ftco-cart">
 	<div class="container">
 		<div class="heading-page-cart text-center pt-3 pb-4">
@@ -46,17 +43,13 @@
 
 				<td class="total">
 					<div class="input-group">
-						<span class="input-group-btn">
-							<button type="button" class="quantity-left-minus btn" data-type="minus" data-field="" style="border-radius: 0;">
-								<i class="ion-ios-remove"></i>
-							</button>
-						</span>
+						<button type="button" id="quantity-left" class="quantity-left-minus btn" data-type="minus" data-field="">
+							<i class="ion-ios-remove"></i>
+						</button>
 						<input style="max-width:80px;" type="text" id="quantity" name="quantity" class="form-control input-number" value="1" min="1" max="100">
-						<span class="input-group-btn">
-							<button type="button" class="quantity-right-plus btn" data-type="plus" data-field="">
-								<i class="ion-ios-add"></i>
-							</button>
-						</span>
+						<button type="button" id="quantity-right" class="quantity-right-plus btn" data-type="plus" data-field="">
+							<i class="ion-ios-add"></i>
+						</button>
 					</div>
 				</td>
 								<td class="total">$4.90</td>
@@ -158,5 +151,10 @@
 
 	.input-group-btn button {
 		margin: 0;
+	}
+
+	#quantity-left, #quantity-right {
+		padding:10px 20px;
+		border-radius:initial;
 	}
 </style>
