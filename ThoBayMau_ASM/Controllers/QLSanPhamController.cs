@@ -86,12 +86,12 @@ namespace ThoBayMau_ASM.Controllers
                 
                     _context.Update(obj);
                     _context.SaveChanges();
-                    var anhdaco = _context.Anh.Where(x => x.SanphamId == obj.Id).ToList();
+                    /*var anhdaco = _context.Anh.Where(x => x.SanphamId == obj.Id).ToList();
                     foreach (var existingImage in anhdaco)
                     {
                         _context.Anh.Remove(existingImage);
                         _context.SaveChanges();
-                    }
+                    }*/
                     foreach (var item in files)
                     {
                         Uploadfile(item);
