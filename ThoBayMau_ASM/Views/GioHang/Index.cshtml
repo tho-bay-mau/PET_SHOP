@@ -14,8 +14,8 @@
 					<table class="table">
 						<thead class="thead-primary" style="background: #17a2b8;">
 							<tr class="text-center">
-								<th>&nbsp;</th>
-								<th>&nbsp;</th>
+								<th>Hủy</th>
+								<th>Hình ảnh</th>
 								<th>Tên sản phẩm</th>
 								<th>Giá</th>
 								<th>Kích thước</th>
@@ -52,7 +52,7 @@
 						</button>
 					</div>
 				</td>
-								<td class="total">$4.90</td>
+								<td class="total">200.000đ</td>
 							</tr><!-- END TR-->
 
 						<tr class="text-center">
@@ -73,8 +73,18 @@
 							2Kg
 						</td>
 
-						<td class="total">$4.90</td>
-						<td class="total">$4.90</td>
+			<td class="total">
+				<div class="input-group">
+					<button type="button" id="quantity-left" class="quantity-left-minus btn" data-type="minus" data-field="">
+						<i class="ion-ios-remove"></i>
+					</button>
+					<input style="max-width:80px;" type="text" id="quantity" name="quantity" class="form-control input-number" value="1" min="1" max="100">
+					<button type="button" id="quantity-right" class="quantity-right-plus btn" data-type="plus" data-field="">
+						<i class="ion-ios-add"></i>
+					</button>
+				</div>
+			</td>
+						<td class="total">200.000đ</td>
 						</tr><!-- END TR-->
 						</tbody>
 					</table>
