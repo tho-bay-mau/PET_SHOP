@@ -55,8 +55,8 @@
 
 <section class="ftco-section">
 	<div class="container">
-		@foreach (var item in Model)
-		{
+			@foreach (var item in Model)
+			{
 			<div class="row">
 				<div class="col-lg-6 mb-5 ftco-animate">
 					<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
@@ -64,7 +64,7 @@
 							<div class="carousel-item active">
 								<img src="@Url.Action("GetImage", "Home", new { id_sp = @item.Id})" class="d-block w-100" alt="...">
 							</div>
-							
+
 						</div>
 						<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
 							<i class="bi bi-caret-left-fill"></i>
@@ -78,44 +78,47 @@
 								<a data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"><img src="@Url.Action("GetImage", "Home", new { id_hinh = @img.Id})" style="width:100px;" alt="..."></a>
 							}
 							@* <a data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"><img src="~/vega/pro_images/1_2b07728470ac48888e65cc4d13efc298_master.jpg" style="width:100px;" alt="..."></a>
-							<a data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"><img src="~/vega/pro_images/1_42eb4e7ac2d04669886a51c96cd766a6_master.jpg" style="width:100px;" alt="..."></a>
-							<a data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"><img src="~/vega/pro_images/1_a2bff92357c949beae6cc690ccfd1897_master.png" style="width:100px;" alt="..."></a> *@
+						<a data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"><img src="~/vega/pro_images/1_42eb4e7ac2d04669886a51c96cd766a6_master.jpg" style="width:100px;" alt="..."></a>
+						<a data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"><img src="~/vega/pro_images/1_a2bff92357c949beae6cc690ccfd1897_master.png" style="width:100px;" alt="..."></a> *@
 						</div>
 					</div>
 				</div>
 				<div class="col-lg-6 product-details pl-md-5 ftco-animate">
-					<h3>@item.Ten</h3>
-					@foreach (var ct_sp in item?.ChiTietSPs)
-					{
-						<div class="form-check form-check-inline">
-							<input class="form-check-input" type="radio" name="Radio" value="@ct_sp.KichThuoc" onchange="showPrice('@ct_sp.KichThuoc')">
-							<label class="form-check-label fw-bold">@(ct_sp.KichThuoc)KG</label>
-						</div>
-					}
-					<br />
-					@foreach (var ct_sp in item?.ChiTietSPs)
-					{
+					<form method="post" asp-action="AddToGioHang" asp-controller="GioHang" asp-route-sanPhamId="@item.Id">
+						<h3>@item.Ten</h3>
+						@foreach (var ct_sp in item?.ChiTietSPs)
+						{
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" id="kichThuoc" name="kichThuoc" value="@ct_sp.KichThuoc" onchange="showPrice('@ct_sp.KichThuoc')">
+								<label class="form-check-label fw-bold">@(ct_sp.KichThuoc)KG</label>
+							</div>
+						}
+						<br />
+						@foreach (var ct_sp in item?.ChiTietSPs)
+						{
 
-						<p id="@ct_sp.KichThuoc" class="price m-0" style="display: none"><span>@(ct_sp.Gia.ToString("#,0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")))đ</span></p>
-					}
-					<div class="row align-items-center">
-						<div class="input-group col-md-6 d-flex">
-							<span class="input-group-btn mr-2">
-								<button type="button" class="quantity-left-minus btn" data-type="minus" data-field="">
-									<i class="ion-ios-remove"></i>
-								</button>
-							</span>
-							<input style="max-width:80px;" type="text" id="quantity" name="quantity" class="form-control input-number" value="1" min="1" max="100">
-							<span class="input-group-btn ml-2">
-								<button type="button" class="quantity-right-plus btn" data-type="plus" data-field="">
-									<i class="ion-ios-add"></i>
-								</button>
-							</span>
+							<p id="@ct_sp.KichThuoc" class="price m-0" style="display: none"><span>@(ct_sp.Gia.ToString("#,0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")))đ</span></p>
+						}
+						<div class="row align-items-center">
+							<div class="input-group col-md-6 d-flex">
+								<span class="input-group-btn mr-2">
+									<button type="button" class="quantity-left-minus btn" data-type="minus" data-field="">
+										<i class="ion-ios-remove"></i>
+									</button>
+								</span>
+								<input style="max-width:80px;" type="text" id="quantity" name="quantity" class="form-control input-number" value="1" min="1" max="100">
+								<span class="input-group-btn ml-2">
+									<button type="button" class="quantity-right-plus btn" data-type="plus" data-field="">
+										<i class="ion-ios-add"></i>
+									</button>
+								</span>
+							</div>
+							<div class="col-md-6">
+								<input type="submit" class="btn btn-black py-3 px-5" value="Thêm vào giỏ hàng"></input>
+							</div>
 						</div>
-						<div class="col-md-6">
-							<a href="cart.html" id="btn-add-cart" class="btn btn-black py-3 px-5">Mua ngay</a>
-						</div>
-					</div>
+					</form>
+					
 					<div class="mt-4">
 						@item.Mota
 					</div>
@@ -149,7 +152,8 @@
 					</div>
 				</div>
 			</div>
-		}
+			}
+		
 		
 	</div>
 </section>
