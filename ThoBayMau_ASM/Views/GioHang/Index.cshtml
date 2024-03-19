@@ -1,4 +1,6 @@
-﻿@{
+﻿@model GioHang
+
+@{
 	ViewData["Title"] = "Details";
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -47,62 +49,36 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr class="text-center">
-								<td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
+							@foreach (var item in Model?.Lines)
+							{
+								<tr class="text-center">
+									<td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
 
-                                <td class="image-prod"><img src="~/vega/pro_images/1_2b07728470ac48888e65cc4d13efc298_master.jpg" style="height: 100px" /></div></td>
+									<td class="image-prod"><img src="@Url.Action("GetImage", "Home", new { id_sp = item.ChiTiet_SP.SanPham.Id})" style="height: 100px" /></td>
+									<td class="product-name">
+										<h3>
+											@item.ChiTiet_SP.SanPham.Ten
+										</h3>
+									</td>
 
-								<td class="product-name">
-									<h3>
-										THỨC ĂN HẠT KHÔ GANADOR CHÓ LỚN GÀ XANH NGỌC
-									</h3>
-								</td>
+									<td class="price">@(item.ChiTiet_SP.Gia)đ</td>
 
-								<td class="price">200.000đ</td>
+									<td style="color: black;">
+                                        @item.ChiTiet_SP.KichThuoc
+									</td>
 
-								<td style="color: black;">
+									<td class="total">
+										<div class="line-item_quantity product-quantity qty-click d-inline-block">
+											<button type="button" id="tang_@item.ChiTiet_SP.Id" class="qtyminus qty-btn border float-left">-</button>
+											<input type="text" size="4" name="updates[]" min="1" id="sl_@item.ChiTiet_SP.Id" value="@(item.SoLuong)" class="item-quantity float-left text-center border border-right-0 border-left-0">
+											<button type="button" id="tang_@item.ChiTiet_SP.Id" class="qtyplus qty-btn border float-left">+</button>
+										</div>
+									</td>
+									<td class="total">400.000đ</td>
+								</tr>
 
-									2Kg
-								</td>
-
-								<td class="total">
-									<div class="line-item_quantity product-quantity qty-click d-inline-block">
-										<button type="button" class="qtyminus qty-btn border float-left">-</button>
-										<input type="text" size="4" name="updates[]" min="1" id="quantity" value="1" class="item-quantity float-left text-center border border-right-0 border-left-0">
-										<button type="button" class="qtyplus qty-btn border float-left">+</button>
-									</div>
-								</td>
-								<td class="total">400.000đ</td>
-							</tr><!-- END TR-->
-
-						<tr class="text-center">
-							<td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
-
-								<td class="image-prod"><img src="~/vega/pro_images/1_2b07728470ac48888e65cc4d13efc298_master.jpg" style="height: 100px" />
-						</div></td>
-
-						<td class="product-name">
-							<h3>
-								THỨC ĂN HẠT KHÔ GANADOR CHÓ LỚN GÀ XANH NGỌC
-							</h3>
-						</td>
-
-						<td class="price">200.000đ</td>
-
-						<td style="color: black;">
-							2Kg
-						</td>
-
-						<td class="total">
-							<div class="line-item_quantity product-quantity qty-click d-inline-block">
-								<button type="button" class="qtyminus qty-btn border float-left">-</button>
-								<input type="text" size="4" name="updates[]" min="1" id="quantity" value="1" class="item-quantity float-left text-center border border-right-0 border-left-0">
-								<button type="button" class="qtyplus qty-btn border float-left">+</button>
-							</div>
-						</td>
-						<td class="total">200.000đ</td>
-						</tr><!-- END TR-->
-						</tbody>
+								<!-- END TR-->
+							}
 					</table>
 				</div>
 			</div>
