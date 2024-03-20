@@ -1,9 +1,34 @@
-﻿@{
+﻿@model GioHang
+
+@{
 	ViewData["Title"] = "Details";
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style>
+	.qty-btn {
+		width: 25px;
+		height: 25px;
+		font-size: 14px;
+		font-weight: 500;
+		outline: none;
+		cursor: pointer;
+		background: #fff;
+		color: #999999;
+		-webkit-appearance: none;
+	}
 
-<section class="ftco-section ftco-cart">
+	.item-quantity {
+		width: 35px;
+		height: 25px;
+		font-size: 14px;
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		appearance: none;
+	}
+
+</style>
+<link rel="stylesheet" href="/giohang/css/Layout.css">
+<section class="ftco-section">
 	<div class="container">
 		<div class="heading-page-cart text-center pt-3 pb-4">
 			<h4 class="m-0">Giỏ hàng của bạn</h4>
@@ -24,69 +49,36 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr class="text-center">
-								<td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
+							@foreach (var item in Model?.Lines)
+							{
+								<tr class="text-center">
+									<td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
 
-                                <td class="image-prod"><img src="~/vega/pro_images/1_2b07728470ac48888e65cc4d13efc298_master.jpg" style="height: 100px" /></div></td>
+									<td class="image-prod"><img src="@Url.Action("GetImage", "Home", new { id_sp = item.ChiTiet_SP.SanPham.Id})" style="height: 100px" /></td>
+									<td class="product-name">
+										<h3>
+											@item.ChiTiet_SP.SanPham.Ten
+										</h3>
+									</td>
 
-								<td class="product-name">
-									<h3>
-										THỨC ĂN HẠT KHÔ GANADOR CHÓ LỚN GÀ XANH NGỌC
-									</h3>
-								</td>
+									<td class="price">@(item.ChiTiet_SP.Gia)đ</td>
 
-								<td class="price">200.000đ</td>
+									<td style="color: black;">
+                                        @item.ChiTiet_SP.KichThuoc
+									</td>
 
-								<td style="color: black;">
-									2Kg
-								</td>
+									<td class="total">
+										<div class="line-item_quantity product-quantity qty-click d-inline-block">
+											<button type="button" id="tang_@item.ChiTiet_SP.Id" class="qtyminus qty-btn border float-left">-</button>
+											<input type="text" size="4" name="updates[]" min="1" id="sl_@item.ChiTiet_SP.Id" value="@(item.SoLuong)" class="item-quantity float-left text-center border border-right-0 border-left-0">
+											<button type="button" id="tang_@item.ChiTiet_SP.Id" class="qtyplus qty-btn border float-left">+</button>
+										</div>
+									</td>
+									<td class="total">400.000đ</td>
+								</tr>
 
-				<td class="total">
-					<div class="input-group">
-						<button type="button" id="quantity-left" class="quantity-left-minus btn" data-type="minus" data-field="">
-							<i class="ion-ios-remove"></i>
-						</button>
-						<input style="max-width:80px;" type="text" id="quantity" name="quantity" class="form-control input-number" value="1" min="1" max="100">
-						<button type="button" id="quantity-right" class="quantity-right-plus btn" data-type="plus" data-field="">
-							<i class="ion-ios-add"></i>
-						</button>
-					</div>
-				</td>
-								<td class="total">200.000đ</td>
-							</tr><!-- END TR-->
-
-						<tr class="text-center">
-							<td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
-
-								<td class="image-prod"><img src="~/vega/pro_images/1_2b07728470ac48888e65cc4d13efc298_master.jpg" style="height: 100px" />
-						</div></td>
-
-						<td class="product-name">
-							<h3>
-								THỨC ĂN HẠT KHÔ GANADOR CHÓ LỚN GÀ XANH NGỌC
-							</h3>
-						</td>
-
-						<td class="price">200.000đ</td>
-
-						<td style="color: black;">
-							2Kg
-						</td>
-
-			<td class="total">
-				<div class="input-group">
-					<button type="button" id="quantity-left" class="quantity-left-minus btn" data-type="minus" data-field="">
-						<i class="ion-ios-remove"></i>
-					</button>
-					<input style="max-width:80px;" type="text" id="quantity" name="quantity" class="form-control input-number" value="1" min="1" max="100">
-					<button type="button" id="quantity-right" class="quantity-right-plus btn" data-type="plus" data-field="">
-						<i class="ion-ios-add"></i>
-					</button>
-				</div>
-			</td>
-						<td class="total">200.000đ</td>
-						</tr><!-- END TR-->
-						</tbody>
+								<!-- END TR-->
+							}
 					</table>
 				</div>
 			</div>
@@ -152,6 +144,25 @@
 		</div>
 	</div>
 </section>
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		var minusButton = document.querySelector('.qtyminus');
+		var plusButton = document.querySelector('.qtyplus');
+		var quantityInput = document.getElementById('quantity');
+
+		minusButton.addEventListener('click', function () {
+			var currentValue = parseInt(quantityInput.value);
+			if (currentValue > 1) {
+				quantityInput.value = currentValue - 1;
+			}
+		});
+
+		plusButton.addEventListener('click', function () {
+			var currentValue = parseInt(quantityInput.value);
+			quantityInput.value = currentValue + 1;
+		});
+	});
+</script>
 <style>
 	.input-group {
 		display: flex;
