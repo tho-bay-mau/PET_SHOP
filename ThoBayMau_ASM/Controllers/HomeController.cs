@@ -22,7 +22,7 @@ namespace ThoBayMau_ASM.Controllers
             var result = _db.SanPham.Include(x => x.ChiTietSPs).Include(x => x.Anhs).ToList();
 			return View(result);
 		}
-		public IActionResult GetImage(int? id_sp, int? id_hinh)
+		/*public IActionResult GetImage(int? id_sp, int? id_hinh)
 		{
 			if (id_hinh != null)
 			{
@@ -51,7 +51,7 @@ namespace ThoBayMau_ASM.Controllers
 			{
 				return NotFound();
 			}
-		}
+		}*/
 		public IActionResult product_detail(int id_sp)
         {
             var result = _db.SanPham
