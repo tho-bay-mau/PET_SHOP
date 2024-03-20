@@ -19,7 +19,7 @@ namespace ThoBayMau_ASM.Controllers
 
         public IActionResult Index()
 		{
-            var result = _db.SanPham.Include(x => x.ChiTietSPs).Include(x => x.Anhs).ToList();
+            var result = _db.SanPham.Include(x => x.ChiTietSPs).Include(x => x.Anhs).Take(8).ToList();
 			return View(result);
 		}
 		public IActionResult GetImage(int? id_sp, int? id_hinh)

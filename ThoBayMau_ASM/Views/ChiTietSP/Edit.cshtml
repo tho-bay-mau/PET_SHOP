@@ -1,0 +1,46 @@
+﻿@model ChiTiet_SP
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+}
+<form method="post" asp-action="Edit">
+
+    <div class="card-body">
+
+        <div class="mb-2">
+            <label asp-for="Gia" class="form-label">Giá</label>
+            <input asp-for="Gia" class="form-control" id="exampleInputEmail1">
+            <span asp-validation-for="Gia" class="text-danger"></span>
+        </div>
+
+        <div class="mb-2">
+            <label asp-for="SoLuong" class="form-label">Số lượng</label>
+            <input asp-for="SoLuong" class="form-control" id="exampleInputEmail1">
+            <span asp-validation-for="SoLuong" class="text-danger"></span>
+        </div>
+        <div class="mb-2">
+            <label asp-for="KichThuoc" class="form-label">Kích thước</label>
+            <input asp-for="KichThuoc" class="form-control" id="exampleInputEmail1">
+            <span asp-validation-for="KichThuoc" class="text-danger"></span>
+        </div>
+        <div class="mb-2">
+            <label asp-for="NgaySanXuat" class="form-label">Ngày sản xuất</label>
+            <input asp-for="NgaySanXuat" type="date" class="form-control" id="ngaySanXuatInput">
+            <span asp-validation-for="NgaySanXuat" class="text-danger"></span>
+        </div>
+        <div class="mb-2">
+            <label asp-for="HanSuDung" class="form-label">Hạn sử dụng</label>
+            <input asp-for="HanSuDung" type="date" class="form-control">
+            <span asp-validation-for="HanSuDung" class="text-danger"></span>
+        </div>
+        <div class="mb-2">
+            <label asp-for="SanPhamId" class="form-label">Mã sản phẩm</label>
+            <input asp-for="SanPhamId" class="form-control" id="exampleInputEmail1">
+            <span asp-validation-for="SanPhamId" class="text-danger"></span>
+        </div>
+        <br />
+        <button type="submit" class="btn btn-primary">Thêm</button>
+        <a asp-controller="QLSanPham" asp-action="Index" class="btn btn-primary">Trở về</a>
+    </div>
+</form>
