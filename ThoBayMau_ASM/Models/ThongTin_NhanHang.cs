@@ -9,7 +9,7 @@ namespace ThoBayMau_ASM.Models
         [Key]
         public int Id { get; set; }
         public string HoTen { get; set; }
-        public int SDT { get; set; }
+        public string SDT { get; set; }
         public string DiaChi { get; set; }
         public string? GhiChu { get; set; }
         [ForeignKey("DonHang")]

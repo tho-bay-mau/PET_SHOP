@@ -9,9 +9,8 @@ namespace ThoBayMau_ASM.Models
 		[Key]
 		public int Id { get; set; }
 		public DateTime? ThoiGianTao { get; set; } = DateTime.Now;
-		public bool? TrangThaiThanhToan { get; set; }
-		[Required]
-		public string? TrangThaiDonHang { get; set; }
+		public bool? TrangThaiThanhToan { get; set; } = false;
+		public string? TrangThaiDonHang { get; set; } = "cho duyet";
 		public int TaiKhoanId { get; set; }
 		public TaiKhoan TaiKhoan { get; set; }
 		public ICollection<DonHang_ChiTiet>? DonHang_ChiTiets { get; set; }

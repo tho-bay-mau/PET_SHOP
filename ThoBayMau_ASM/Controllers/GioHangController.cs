@@ -49,8 +49,8 @@ namespace ThoBayMau_ASM.Controllers
 
 			if (string.IsNullOrEmpty(returnUrl))
 			{
-				return View("Index", GioHang);
-			}
+                return RedirectToAction("Index", "GioHang");
+            }
 			else
 			{
 				return Redirect(returnUrl);
@@ -130,6 +130,33 @@ namespace ThoBayMau_ASM.Controllers
 			}
 			return RedirectToAction(nameof(Index), GioHang);
 		}
+		public IActionResult AddToDonHang(string HoTen, string SDT, string DiaChi, string GhiChu)
+		{
+            GioHang = HttpContext.Session.GetJson<GioHang>("giohang") ?? new GioHang();
+            var donHang = new DonHang();
+			donHang.TaiKhoanId = 4;
+            _context.Add(donHang);
+            _context.SaveChanges();
+            GioHang = HttpContext.Session.GetJson<GioHang>("giohang");
+            foreach (var item in GioHang.Lines)
+            {
+                var donHang_chiTiet = new DonHang_ChiTiet();
+                donHang_chiTiet.ChiTiet_SPId = item.ChiTiet_SP.Id;
+                donHang_chiTiet.DonHangId = donHang.Id;
+                donHang_chiTiet.SoLuong = item.SoLuong;
+                _context.Add(donHang_chiTiet);
+            }
+            var TT_NH = new ThongTin_NhanHang();
+            TT_NH.DonhangId = donHang.Id;
+            TT_NH.HoTen = HoTen;
+            TT_NH.SDT = SDT;
+            TT_NH.DiaChi = DiaChi;
+            TT_NH.GhiChu = GhiChu;
+            _context.Add(TT_NH);
+            _context.SaveChanges();
+            HttpContext.Session.Remove("giohang");
+            return RedirectToAction("Index", "GioHang");
+        }
 
-	}
+    }
 }

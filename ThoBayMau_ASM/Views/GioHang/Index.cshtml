@@ -90,13 +90,13 @@
 				</div>
 			</div>
 		</div>
-		<form action="#">
+		<form method="post" asp-action="AddToDonHang" asp-controller="GioHang">
 			<div class="row justify-content-end">
 				<div class="col-lg-4 mt-5 cart-wrap ftco-animate">
 					<div class="cart-total mb-3">
 						<h3>Ghi chú</h3>
 							<div class="form-group">
-								<textarea name="" id="" cols="30" rows="7" class="form-control" placeholder="Nội dung"></textarea>
+							<textarea name="GhiChu" id="" cols="30" rows="7" class="form-control" placeholder="Nội dung"></textarea>
 							</div>
 					</div>
 				</div>
@@ -105,15 +105,15 @@
 						<h3>Thông tin nhận hàng</h3>
 							<div class="form-group">
 								<label for="">Họ và tên</label>
-								<input type="text" class="form-control text-left px-3" placeholder="">
+								<input name="HoTen" type="text" class="form-control text-left px-3" placeholder="">
 							</div>
 							<div class="form-group">
 								<label for="">Số điện thoại</label>
-								<input type="text" class="form-control text-left px-3" placeholder="">
+								<input name="SDT" type="text" class="form-control text-left px-3" placeholder="">
 							</div>
 							<div class="form-group">
 								<label for="">Địa chỉ</label>
-								<input type="text" class="form-control text-left px-3" placeholder="">
+								<input name="DiaChi" type="text" class="form-control text-left px-3" placeholder="">
 							</div>
 					</div>
 				</div>
@@ -122,19 +122,19 @@
 						<h3>Tổng tiền</h3>
 						<p class="d-flex">
 							<span>Tạm tính</span>
-							<span>$20.60</span>
+							<span id="TamTinh">@Model.TamTinh()</span>
 						</p>
 						<p class="d-flex">
 							<span>Phí ship</span>
-							<span>$0.00</span>
+							<span>20.000</span>
 						</p>
 						<hr>
 						<p class="d-flex total-price">
 							<span>Tổng</span>
-							<span>$17.60</span>
+							<span id="TongTien">@Model.TongTien()</span>
 						</p>
 					</div>
-					<p class="text-center"><a href="checkout.html" class="btn btn-primary py-3 px-5" id="order">Đặt hàng</a></p>
+					<p class="text-center"><button type="submit" class="btn btn-primary py-3 px-5" id="order">Đặt hàng</button></p>
 				</div>
 			</div>
 		</form>
