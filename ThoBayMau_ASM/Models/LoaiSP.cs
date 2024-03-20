@@ -8,10 +8,10 @@ namespace ThoBayMau_ASM.Models
 	{
 		[Key]
 		public int Id { get; set; }
-		[Required]
-		[Column(TypeName = "NVARCHAR(100)")]
+		[Required(ErrorMessage ="Tên không được để trống")]
+		[Column(TypeName = "NVARCHAR(50)")]
 		public string Ten { get; set; }
-		public bool TrangThai { get; set; }
+        public bool TrangThai { get; set; }
 		public ICollection<SanPham> SanPhams { get; set; }
 	}
 }

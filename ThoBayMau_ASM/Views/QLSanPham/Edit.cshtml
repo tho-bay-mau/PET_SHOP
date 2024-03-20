@@ -4,41 +4,75 @@
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-
+<div class="container" style="width:50%">
 <form method="post" asp-action="Edit" enctype="multipart/form-data">
     <div class="card-body">
 
-        <div class="mb-2">
+            <div class="mb-3 mt-3">
             <label asp-for="Ten" class="form-label">Tên</label>
             <input asp-for="Ten" class="form-control" id="exampleInputEmail1">
             <span asp-validation-for="Ten" class="text-danger"></span>
         </div>
-        <div class="mb-2">
+            <div class="mb-3 mt-3">
             <label for="imageUpload" class="form-label">Chọn ảnh mới:</label>
             <div>
                 <img id="previewImage" src="#" class="img-thumbnail" alt="Product Image">
             </div>
             <input type="file" class="form-control" id="imageUpload" name="files" multiple onchange="previewFile()">
         </div>
-        <div class="mb-2">
+            <div class="mb-3 mt-3">
             <label asp-for="Mota" class="form-label">Mô tả</label>
             <input asp-for="Mota" class="form-control" id="exampleInputEmail1">
             <span asp-validation-for="Ten" class="text-danger"></span>
         </div>
-        <div class="mb-2">
+            <div class="mb-3 mt-3">
             <label asp-for="TrangThai" class="form-label">Trạng thái</label>
             <select asp-for="TrangThai" class="form-control" asp-items="ViewBag.TrangThai"></select>
             <span asp-validation-for="TrangThai" class="text-danger"></span>
         </div>
-        <div class="mb-2">
+        <div class=" mb-3 mt-3">
             <label asp-for="LoaiSPId" class="form-label">Mã loại sản phẩm</label>
             <input asp-for="LoaiSPId" class="form-control" id="exampleInputEmail1">
+            <span asp-validation-for="LoaiSPId" class="text-danger"></span>
+        </div>
+
+        <div class=" mb-3 mt-3">
+            <label asp-for="Mota" class="form-label">Giá</label>
+            <input name="gia" class="form-control" id="exampleInputEmail1">
+            <span name="gia" class="text-danger"></span>
+        </div>
+
+        <div class=" mb-3 mt-3">
+            <label asp-for="Mota" class="form-label">Số lượng</label>
+            <input name="soluong" class="form-control" id="exampleInputEmail1">
+            <span name="soluong" class="text-danger"></span>
+        </div>
+
+        <div class=" mb-3 mt-3">
+            <label asp-for="Mota" class="form-label">Kích thước</label>
+            <input name="kichthuoc" class="form-control" id="exampleInputEmail1">
             <span asp-validation-for="Ten" class="text-danger"></span>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3 mt-3">
+                <label class="form-label">Ngày sản xuất</label>
+                <input name="ngaysanxuat" type="date" class="form-control" id="datepicker">
+                <span class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6 mb-3 mt-3">
+                <label class="form-label">Hạn sử dụng</label>
+                <input name="hansudung" type="date" class="form-control">
+                <span class="text-danger"></span>
+            </div>
+
         </div>
         <button type="submit" class="btn btn-primary">Sửa</button>
         <a asp-controller="QLSanPham" asp-action="Index" class="btn btn-primary">Trở về</a>
     </div>
 </form>
+</div>
 @section Scripts {
     <script>
         function previewFile() {

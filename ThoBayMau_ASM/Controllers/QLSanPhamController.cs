@@ -26,26 +26,37 @@ namespace ThoBayMau_ASM.Controllers
                 .Include(x => x.ChiTietSPs)
                 /*.Where(x => x.TrangThai == "Đang bán")*/
                 .ToList();
+            var detail = _context.ChiTiet_SP.ToList();
+            
             return View(result);
+
         }
         public IActionResult Create()
         {
-
+            ViewBag.LoaiSPid = new SelectList(_context.LoaiSP.OrderBy(x => x.Id), "Id", "Ten");
             List<string> listTrangThai = new List<string> { "Đang bán", "Ngừng bán", "Mới" };
             ViewBag.TrangThai = new SelectList(listTrangThai);
             return View();
 
         }
         [HttpPost]
-        public IActionResult Create( SanPham sp, IFormFile[] files)
+        public IActionResult Create( SanPham sp, IFormFile[] files,int gia, int soluong, int kichthuoc, DateTime ngaysanxuat, DateTime hansudung)
         {
             List<string> listTrangThai = new List<string> { "Đang bán", "Ngừng bán", "Mới" };
             ViewBag.TrangThai = new SelectList(listTrangThai);
             
             if (ModelState.IsValid)
             {
-                var txt = files.Count();
-                _context.SanPham.Add(sp);
+                _context.Add(sp);
+                _context.SaveChanges();
+                var SP_CT = new ChiTiet_SP();
+                SP_CT.SanPhamId = sp.Id;
+                SP_CT.Gia = gia;
+                SP_CT.SoLuong = soluong;
+                SP_CT.KichThuoc = kichthuoc;
+                SP_CT.NgaySanXuat = ngaysanxuat;
+                SP_CT.HanSuDung = hansudung;
+                _context.Add(SP_CT);
                 _context.SaveChanges();
                 foreach (var item in files)
                 {
@@ -69,7 +80,7 @@ namespace ThoBayMau_ASM.Controllers
             {
                 return NotFound();
             }
-            var SanPhamID = _context.SanPham.SingleOrDefault(x => x.Id == id);
+            var SanPhamID = _context.SanPham.FirstOrDefault(x => x.Id == id);
             if (SanPhamID == null)
             {
                 return NotFound();
@@ -82,9 +93,9 @@ namespace ThoBayMau_ASM.Controllers
         {
             List<string> listTrangThai = new List<string> { "Đang bán", "Ngừng bán", "Mới" };
             ViewBag.TrangThai = new SelectList(listTrangThai);
+            
             if (ModelState.IsValid)
             {
-                
                     _context.Update(obj);
                     _context.SaveChanges();
                 var anhdaco = _context.Anh.Where(x => x.SanphamId == obj.Id).ToList();
@@ -94,13 +105,13 @@ namespace ThoBayMau_ASM.Controllers
                     _context.SaveChanges();
                 }
                 foreach (var item in files)
-                    {
+                {
                         Uploadfile(item);
                         Anh anh = new Anh();
                         anh.SanphamId = obj.Id;
                         anh.TenAnh = item.FileName;
                         _context.Anh.Add(anh);
-                    }
+                }
                     _context.SaveChanges();
                     TempData["Sucess"] = "Sửa sản phẩm thành công!!";
                     return RedirectToAction("Index");
@@ -119,7 +130,25 @@ namespace ThoBayMau_ASM.Controllers
                 }
             }
         }
-
+        public IActionResult Delete(int? txt_ID)
+        {
+            if (txt_ID == null || txt_ID == 0)
+            {
+                return NotFound();
+            }
+            var obj = _context.SanPham.FirstOrDefault(x => x.Id == txt_ID);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                obj.TrangThai = "Ngừng bán";
+                _context.SaveChanges();
+                TempData["Sucess"] = "Xóa sản phẩm thành công";
+                return RedirectToAction("Index");
+            }
+        }
 
     }
 }

@@ -8,12 +8,24 @@ namespace ThoBayMau_ASM.Models
 	{
 		[Key]
 		public int Id { get; set; }
-		public int Gia { get; set; }
-		public int SoLuong { get; set; }
-		public int KichThuoc { get; set; }
-		public DateTime NgaySanXuat { get; set; }
-		public DateTime HanSuDung { get; set; }
+        [Required(ErrorMessage = "Giá không được để trống")]
+        [RegularExpression(@"^[a-zA-Z0-9]+$", ErrorMessage = "Gía không được chứa khoảng trắng")]
+        [Range(minimum: 0, maximum: 2000000000, ErrorMessage = "giá không hợp lệ")]
+        public int Gia { get; set; }
+		[Required(ErrorMessage = "Số lượng không được để trống")]
+        [RegularExpression(@"^[a-zA-Z0-9]+$", ErrorMessage = "Số lượng không được chứa khoảng trắng")]
+        [Range(minimum: 0, maximum: 2000000000, ErrorMessage = "Số lượng không hợp lệ")]
+        public int SoLuong { get; set; }
+        [Required(ErrorMessage = "Số lượng không được để trống")]
+        [RegularExpression(@"^[a-zA-Z0-9]+$", ErrorMessage = "Số lượng không được chứa khoảng trắng")]
+        [Range(minimum: 0, maximum: 2000000000, ErrorMessage = "Số lượng không hợp lệ")]
+        public int KichThuoc { get; set; }
+        [Required(ErrorMessage = "Ngày sản xuất không được để trống")]
+        public DateTime NgaySanXuat { get; set; }
+        [Required(ErrorMessage = "Hạn sử dụng không được để trống")]
+        public DateTime HanSuDung { get; set; }
 		public int SanPhamId { get; set; }
 		public SanPham SanPham { get; set; }
+		public bool TrangThai { get; set; }
 	}
 }

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ThoBayMau_ASM.Migrations
 {
     /// <inheritdoc />
-    public partial class updatedb : Migration
+    public partial class updateall : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -142,7 +142,8 @@ namespace ThoBayMau_ASM.Migrations
                     KichThuoc = table.Column<int>(type: "int", nullable: false),
                     NgaySanXuat = table.Column<DateTime>(type: "datetime2", nullable: false),
                     HanSuDung = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    SanPhamId = table.Column<int>(type: "int", nullable: false)
+                    SanPhamId = table.Column<int>(type: "int", nullable: false),
+                    TrangThai = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {

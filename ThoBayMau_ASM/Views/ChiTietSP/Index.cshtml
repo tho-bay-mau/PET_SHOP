@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ThoBayMau_ASM.Models.SanPham>
+﻿@model IEnumerable<ThoBayMau_ASM.Models.ChiTiet_SP>
 
 @{
     ViewData["Title"] = "Details";
@@ -41,36 +41,52 @@
 <div class="container p-3">
     <div class="row pt-4">
         <div class="col-6">
-            <h2>Product types management</h2>
+            <h2>Quản lý chi tiết sản phẩm</h2>
         </div>
         <div class="col-6 text-end">
-            <a asp-controller="QLSanPham" asp-action="Create" class="btn btn-primary"><i class="bi bi-plus"></i>Create new category</a>
+            <a asp-controller="ChiTietSP" asp-action="Create" class="btn btn-primary"><i class="bi bi-plus"></i>Tạo mới</a>
         </div>
     </div>
     <br /><br />
     <table class="table table-bordered table-striped">
         <thead>
             <th>ID</th>
-            <th>Tên</th>
-            <th>Hình ảnh</th>
-            <th>Mô tả</th>
-            <th>Trạng thái</th>
-            <th>Mã loại sản phẩm</th>
+            <th>Giá</th>
+            <th>Số lượng</th>
+            <th>Kích thước</th>
+            <th>Ngày sản suất</th>
+            <th>Hạn sử dụng</th>
+            <th>Mã sản phẩm</th>
             <th>Sửa</th>
             <th>Xóa</th>
-            <th>Chi tiết</th>
-        </thead>
+         </thead>
         <tbody>
+            @if(Model != null){
             @foreach (var item in Model)
             {
                 <tr>
                     <td>@item.Id</td>
-                    <td>@item.Ten</td>
-                    <td></td>
-                    <td>@item.Mota</td>
-                    <td>@item.TrangThai</td>
-                    <td>@item.LoaiSPId</td>
-                    <td class="">
+                    <td>@item.Gia</td>
+                    <td>@item.SoLuong</td>
+                    <td>@item.KichThuoc</td>
+                    <td>@item.NgaySanXuat</td>
+                    <td>@item.HanSuDung</td>
+                    <td>@item.SanPhamId</td>
+                    <td>
+                        @if (item.TrangThai)
+                        {
+                            <div class="form-check d-flex align-items-center justify-content-center">
+                                <input class="form-check-input" style="background-image:none; background-color:springgreen;filter:none" type="radio" checked>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="form-check d-flex align-items-center justify-content-center">
+                                <input class="form-check-input" style="background-image:none; background-color:red;filter:none;" type="radio" checked>
+                            </div>
+                        }
+                    </td>
+                    <td>
 
                         <a asp-action="Edit" asp-route-id=@item.Id class="btn btn-primary" style=""><i class="bi bi-pencil-square"></i></a>
                     </td>
@@ -79,20 +95,9 @@
                             <i class="bi bi-trash3"></i>
                         </button>
                     </td>
-                    <td>
-                        <a data-bs-toggle="collapse" href="#@item.Id" role="button" aria-expanded="false"
-                           aria-controls="@item.Id" style="font-size: 30px"><i class="bi bi-plus-circle"></i></a>
-                    </td>
-                </tr>
-                <tr class="collapse" id="@item.Id">
-
-                    <td colspan="8">
-                        <p style="text-align:center"><strong>Ảnh sản phẩm</strong></p>
-                    </td>
                 </tr>
             }
-
-
+        }
         </tbody>
     </table>
 </div>
