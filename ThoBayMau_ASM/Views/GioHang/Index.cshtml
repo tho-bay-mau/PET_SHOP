@@ -27,7 +27,7 @@
 	}
 
 </style>
-<link rel="stylesheet" href="/giohang/css/Layout.css">
+
 <section class="ftco-section">
 	<div class="container">
 		<div class="heading-page-cart text-center pt-3 pb-4">
@@ -69,15 +69,13 @@
 
 									<td class="total">
 										<div class="line-item_quantity product-quantity qty-click d-inline-block">
-											<button type="button" id="tang_@item.ChiTiet_SP.Id" class="qtyminus qty-btn border float-left">-</button>
-											<input type="text" size="4" name="updates[]" min="1" id="sl_@item.ChiTiet_SP.Id" value="@(item.SoLuong)" class="item-quantity float-left text-center border border-right-0 border-left-0">
-											<button type="button" id="tang_@item.ChiTiet_SP.Id" class="qtyplus qty-btn border float-left">+</button>
+											<button onclick="qtyminus(@item.ChiTiet_SP.Id,@item.ChiTiet_SP.Gia)" type="button" id="tang_@item.ChiTiet_SP.Id" class="qtyminus qty-btn border float-left">-</button>
+											<input onchange="total(@item.ChiTiet_SP.Id, @item.ChiTiet_SP.Gia, this.value" type="text" size="4" name="updates[]" min="1" id="sl_@item.ChiTiet_SP.Id" value="@(item.SoLuong)" class="item-quantity float-left text-center border border-right-0 border-left-0">
+											<button onclick="qtyplus(@item.ChiTiet_SP.Id,@item.ChiTiet_SP.Gia)" type="button" id="tang_@item.ChiTiet_SP.Id" class="qtyplus qty-btn border float-left">+</button>
 										</div>
 									</td>
-									<td class="total">400.000đ</td>
+									<td id="total_@item.ChiTiet_SP.Id"></td>
 								</tr>
-
-								<!-- END TR-->
 							}
 					</table>
 				</div>
@@ -144,38 +142,44 @@
 		</div>
 	</div>
 </section>
+
 <script>
-	document.addEventListener("DOMContentLoaded", function () {
-		var minusButton = document.querySelector('.qtyminus');
-		var plusButton = document.querySelector('.qtyplus');
-		var quantityInput = document.getElementById('quantity');
+	function qtyminus(id, price) {
+		var quantityInput = document.getElementById('sl_' + id);
+		var currentValue = parseInt(quantityInput.value);
+		if (currentValue > 1) {
+			quantityInput.value = currentValue - 1;
+			total(id, price, quantityInput.value)
+		}
+	}
 
-		minusButton.addEventListener('click', function () {
-			var currentValue = parseInt(quantityInput.value);
-			if (currentValue > 1) {
-				quantityInput.value = currentValue - 1;
-			}
-		});
+	function qtyplus(id, price) {
+		var quantityInput = document.getElementById('sl_' + id);
+		var currentValue = parseInt(quantityInput.value);
+		quantityInput.value = currentValue + 1;
+		total(id, price, quantityInput.value)
+	}
 
-		plusButton.addEventListener('click', function () {
-			var currentValue = parseInt(quantityInput.value);
-			quantityInput.value = currentValue + 1;
-		});
-	});
+	function total(id, price, quantity) {
+		var totalElement = document.getElementById('total_'+id);
+		
+		if (totalElement) {
+			var total = parseInt(quantity) * parseInt(price);
+			totalElement.innerHTML = total;
+		}
+	}
+
+	window.onload = function () {
+		var gioHangData = @Html.Raw(Json.Serialize(Model));
+		// if (gioHangData.lines.length > 0) {
+		// 	for (var i = 0; i < gioHangData.lines.length; i++) {
+		// 		var id = gioHangData.lines[i].chiTiet_SP.id;
+		// 		var price = gioHangData.lines[i].chiTiet_SP.gia;
+		// 		var quantity = gioHangData.lines[i].soLuong;
+		// 		total(id, price, quantity);
+		// 	}
+		// } else {
+		// 	console.log("Không có sản phẩm trong giỏ hàng");
+		// }
+	};
 </script>
-<style>
-	.input-group {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-	}
-
-	.input-group-btn button {
-		margin: 0;
-	}
-
-	#quantity-left, #quantity-right {
-		padding:10px 20px;
-		border-radius:initial;
-	}
-</style>

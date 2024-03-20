@@ -51,6 +51,16 @@
 	#btn-add-cart:hover {
 		background-color :#B84517;
 	}
+
+	#btn-add-cart {
+		background-color: #17a2b8;
+		border: none;
+		color: white;
+	}
+
+	#btn-add-cart:hover {
+		background-color: #B84517;
+	}
 </style>
 
 <section class="ftco-section">
@@ -114,7 +124,7 @@
 								</span>
 							</div>
 							<div class="col-md-6">
-								<input type="submit" class="btn btn-black py-3 px-5" value="Thêm vào giỏ hàng"></input>
+								<input id="btn-add-cart" type="submit" class="btn btn-black py-3 px-5" value="Thêm vào giỏ hàng">
 							</div>
 						</div>
 					</form>
@@ -230,7 +240,7 @@
 	}
 
 	window.onload = function () {
-		var radios = document.querySelectorAll('input[type=radio][name="Radio"]');
+		var radios = document.querySelectorAll('input[type=radio][name="kichThuoc"]');
 
 		if (radios.length > 0) {
 			radios[0].checked = true;

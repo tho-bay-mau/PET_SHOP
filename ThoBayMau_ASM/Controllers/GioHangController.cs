@@ -15,12 +15,15 @@ namespace ThoBayMau_ASM.Controllers
 		{
 			_context = context;
 		}
+
 		public GioHang? GioHang { get; set; }
+
 		public IActionResult Index()
         {
 			GioHang = HttpContext.Session.GetJson<GioHang>("giohang") ?? new GioHang();
 			return View(GioHang);
         }
+
 		[HttpPost]
 		public IActionResult AddToGioHang(int sanPhamId, int? quantity, int? kichThuoc, string? returnUrl)
 		{
@@ -53,6 +56,12 @@ namespace ThoBayMau_ASM.Controllers
 			{
 				return Redirect(returnUrl);
 			}
+		}
+
+		public IActionResult loadTotal(int price, int quantity)
+		{
+			var total = price * quantity;
+			return Content(total.ToString());
 		}
 	}
 }
