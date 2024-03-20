@@ -19,16 +19,45 @@ namespace ThoBayMau_ASM.Controllers
             _webhost = webHostEnvironment;
             _context = context;
         }
+        public const int ITEM_PER_PAGE = 5;
+
+        [BindProperty(SupportsGet = true, Name = "p")]
+        public int currentpage { get; set; }
+
+        public int countpages { get; set; }
         public IActionResult Index()
         {
-            var result = _context.SanPham
+            int total = _context.SanPham.Where(x => x.TrangThai == "1").Count();
+            countpages = (int)Math.Ceiling((double)total / ITEM_PER_PAGE);
+
+            if (currentpage < 1)
+            {
+                currentpage = 1;
+            }
+            if (currentpage > countpages)
+            {
+                currentpage = countpages;
+            }
+
+            ViewBag.CurrentPage = currentpage;
+            ViewBag.CountPages = countpages;
+            if (total > 0)
+            {
+                var result = _context.SanPham.Where(x => x.TrangThai == "1").Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
+                return View(result);
+            }
+            else
+            {
+                return View(null);
+            }
+            /*var result = _context.SanPham
                 .Include(x => x.Anhs)
                 .Include(x => x.ChiTietSPs)
-                /*.Where(x => x.TrangThai == "Đang bán")*/
+                *//*.Where(x => x.TrangThai == "Đang bán")*//*
                 .ToList();
             var detail = _context.ChiTiet_SP.ToList();
             
-            return View(result);
+            return View(result);*/
 
         }
         public IActionResult Create()
@@ -147,6 +176,64 @@ namespace ThoBayMau_ASM.Controllers
                 _context.SaveChanges();
                 TempData["Sucess"] = "Xóa sản phẩm thành công";
                 return RedirectToAction("Index");
+            }
+        }
+        public IActionResult Search(string Key)
+        {
+            if (string.IsNullOrEmpty(Key))
+            {
+                int total = _context.SanPham.Where(x => x.TrangThai == "1").Count();
+                countpages = (int)Math.Ceiling((double)total / ITEM_PER_PAGE);
+
+                if (currentpage < 1)
+                {
+                    currentpage = 1;
+                }
+                if (currentpage > countpages)
+                {
+                    currentpage = countpages;
+                }
+
+                ViewBag.CurrentPage = currentpage;
+                ViewBag.CountPages = countpages;
+                ViewBag.Search = Key;
+                if (total > 0)
+                {
+                    var result = _context.SanPham.Where(x => x.TrangThai == "1").Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
+                    return View("Index", result);
+                }
+                else
+                {
+                    return View("Index", null);
+                }
+            }
+            else
+            {
+                int total = _context.SanPham.Where(x => x.TrangThai == "1" && x.Id.ToString() == Key).Count();
+                
+                countpages = (int)Math.Ceiling((double)total / ITEM_PER_PAGE);
+
+                if (currentpage < 1)
+                {
+                    currentpage = 1;
+                }
+                if (currentpage > countpages)
+                {
+                    currentpage = countpages;
+                }
+
+                ViewBag.CurrentPage = currentpage;
+                ViewBag.CountPages = countpages;
+                ViewBag.Search = Key;
+                if (total > 0)
+                {
+                    var result = _context.SanPham.Where(x => x.TrangThai == "1" && x.Id.ToString() == Key).Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
+                    return View("Index", result);
+                }
+                else
+                {
+                    return View("Index", null);
+                }
             }
         }
 

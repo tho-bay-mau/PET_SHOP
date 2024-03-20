@@ -57,6 +57,7 @@
             <th>Ngày sản suất</th>
             <th>Hạn sử dụng</th>
             <th>Mã sản phẩm</th>
+            <th>Trạng Thái</th>
             <th>Sửa</th>
             <th>Xóa</th>
          </thead>
@@ -65,7 +66,7 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>@item.Id</td>
+                        <td>@item.Id</td>
                     <td>@item.Gia</td>
                     <td>@item.SoLuong</td>
                     <td>@item.KichThuoc</td>

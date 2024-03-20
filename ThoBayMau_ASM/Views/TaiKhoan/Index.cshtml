@@ -7,20 +7,20 @@
             {
                 currentpage = (int)(@ViewBag.CurrentPage),
                 countpages = (int)(@ViewBag.CountPages),
-                generateUrl = (int? p) => Url.Page("", new { p = p, Key = @ViewBag.Search})
-    };
+                generateUrl = (int? p) => Url.Page("", new { p = p, Key = @ViewBag.Search })
+            };
 }
 
 <style>
-    .btn-red{
-        border:solid 1px red;
-        color:red;
+    .btn-red {
+        border: solid 1px red;
+        color: red;
     }
 
-    .btn-red:hover {
-        background-color:red;
-        color: white;
-    }
+        .btn-red:hover {
+            background-color: red;
+            color: white;
+        }
 </style>
 
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -77,9 +77,9 @@
     </div>
     <br /><br />
     <style>
-        th{
-            min-width:130px;
-            color:black;
+        th {
+            min-width: 130px;
+            color: black;
         }
     </style>
     <div class="table-responsive">
@@ -114,7 +114,8 @@
                 </tr>
             </thead>
             <tbody>
-                @if(Model != null){
+                @if (Model != null)
+                {
                     foreach (var item in Model)
                     {
                         <tr>

@@ -15,9 +15,10 @@ namespace ThoBayMau_ASM.Controllers
             _webhost = webHostEnvironment;
             _context = context;
         }
-        public IActionResult Index()
+        public IActionResult Index(int? Id)
         {
-            return View();
+            var detail = _context.ChiTiet_SP.Where(x => x.SanPhamId == Id).ToList();
+            return View(detail);
         }
         public IActionResult Create()
         {
@@ -48,6 +49,7 @@ namespace ThoBayMau_ASM.Controllers
             }
             return View(SanPhamID);
         }
+        [HttpPost]
         public IActionResult Edit(ChiTiet_SP ct)
         {
             if (ModelState.IsValid)
