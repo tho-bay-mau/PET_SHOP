@@ -24,7 +24,6 @@ namespace ThoBayMau_ASM.Controllers
 			return View(GioHang);
         }
 
-		[HttpPost]
 		public IActionResult AddToGioHang(int sanPhamId, int? quantity, int? kichThuoc, string? returnUrl)
 		{
 			/*SanPham? sanPham = _context.SanPham
@@ -120,11 +119,17 @@ namespace ThoBayMau_ASM.Controllers
 			return Json(json);
 
 		}
-
-		public IActionResult loadTotal(int price, int quantity)
+		public IActionResult XoaSPGioHang(int Id)
 		{
-			var total = price * quantity;
-			return Content(total.ToString());
+			GioHang = HttpContext.Session.GetJson<GioHang>("giohang");
+			GioHang.Lines.FirstOrDefault(p => p.ChiTiet_SP.Id == Id);
+			if (GioHang.Lines != null)
+			{
+				GioHang.RemoveSanPham(Id);
+				HttpContext.Session.SetJson("giohang", GioHang);
+			}
+			return RedirectToAction(nameof(Index), GioHang);
 		}
+
 	}
 }
