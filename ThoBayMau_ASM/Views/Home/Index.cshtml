@@ -4,6 +4,15 @@
     ViewData["Title"] = "Home Page";
 }
 
+<style>
+    .product-name{
+        white-space: initial;
+        overflow: hidden;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        display: -webkit-box;
+    }
+</style>
 
 <section id="home-section" class="hero">
     <div class="home-slider owl-carousel">
@@ -38,9 +47,7 @@
         <div class="container">
             <div class="row justify-content-center mb-3 pb-3">
                 <div class="col-md-12 heading-section text-center ftco-animate">
-                    <span class="subheading">Featured Products</span>
                     <h2 class="mb-4">Sản phẩm nổi bật</h2>
-                    <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia</p>
                 </div>
             </div>
         </div>
@@ -57,7 +64,7 @@
                                 <div class="overlay"></div>
                             </a>
                             <div class="text py-3 pb-4 px-3 text-center">
-                                <h3><a href="#">@item.Ten</a></h3>
+                                <h3 class="product-name"><a href="#">@item.Ten</a></h3>
                                 <div class="d-flex">
                                     <div class="pricing">
                                     @* <p class="price"><span class="mr-2 price-dc">$120.00</span><span class="price-sale">@item.ChiTietSPs.Min(ct => ct.Gia)đ</span></p> *@
