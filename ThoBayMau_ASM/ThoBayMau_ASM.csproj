@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\js\GioHang\GioHang.js" />
     <None Include="wwwroot\js\site.js" />
     <None Include="wwwroot\vega\css\.DS_Store" />
     <None Include="wwwroot\vega\css\bootstrap\.DS_Store" />

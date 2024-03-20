@@ -19,19 +19,18 @@ namespace ThoBayMau_ASM.Models
 				line.SoLuong += soluong;
 			}
 		}
-		/*public void RemoveSanPham(int Id) => Lines.Remove(Lines.Where(p => p.SanPham.Id == Id).FirstOrDefault());
-		public int TamTinh() => (int)Lines.Sum(p => p.SanPham.Gia * p.SoLuong);
+		public void RemoveSanPham(int Id) => Lines.Remove(Lines.Where(p => p.ChiTiet_SP.Id == Id).FirstOrDefault());
+		public int TamTinh() => (int)Lines.Sum(p => p.ChiTiet_SP.Gia * p.SoLuong);
 		public int TongTien() => (int)(TamTinh() + 20);
-		public void Clear() => Lines.Clear();*/
+		public void Clear() => Lines.Clear();
 
 	}
 	public class Giohang_Line
 	{
 		public int Giohang_Line_Id { get; set; }
-		public ChiTiet_SP ChiTiet_SP { get; set; } = new();
+		public ChiTiet_SP ChiTiet_SP { get; set; } = new();	
 		public int SoLuong { get; set; }
-
-		/*public int TongTienSp() => (int)(SoLuong * SanPham.Gia);*/
+		public int TongTienSp() => (int)(SoLuong * ChiTiet_SP.Gia);
 	}
 
 
