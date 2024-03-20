@@ -29,7 +29,7 @@ namespace ThoBayMau_ASM.Models
         [EmailAddress(ErrorMessage = "Email không hợp lệ")]
         public string Email { get; set; }
         [Display(Name = "Địa chỉ")]
-        public string DiaChi { get; set; }
+        public string? DiaChi { get; set; }
         [Display(Name = "Ngày đăng ký")]
         public DateTime NgayDangKy { get; set; }
         [Display(Name = "Loại tài khoản")]
