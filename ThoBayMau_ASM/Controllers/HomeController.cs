@@ -28,7 +28,7 @@ namespace ThoBayMau_ASM.Controllers
 			{
 				var hinh = _db.Anh
 				.FirstOrDefault(x => x.Id == id_hinh);
-				var imageBytes = System.IO.File.ReadAllBytes("wwwroot/img/" + hinh.TenAnh); // Đọc file ảnh thành mảng byte
+				var imageBytes = System.IO.File.ReadAllBytes("wwwroot/img/products/" + hinh.TenAnh); // Đọc file ảnh thành mảng byte
 				return File(imageBytes, "image/jpeg");
 			}
 			else if (id_sp != null)
@@ -37,7 +37,7 @@ namespace ThoBayMau_ASM.Controllers
 					.FirstOrDefault(x => x.SanphamId == id_sp);
 				if (hinh != null)
 				{
-					var imageBytes = System.IO.File.ReadAllBytes("wwwroot/img/" + hinh.TenAnh);
+					var imageBytes = System.IO.File.ReadAllBytes("wwwroot/img/products/" + hinh.TenAnh);
 					// Đọc file ảnh thành mảng byte
 					return File(imageBytes, "image/jpeg");
 				}

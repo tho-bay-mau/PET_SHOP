@@ -26,8 +26,17 @@
 		appearance: none;
 	}
 
+	#order, #send {
+		background-color: #17a2b8;
+		border: none;
+		color: white;
+	}
+
+	#send:hover, #order:hover {
+		background-color: #B84517;
+	}
 </style>
-<link rel="stylesheet" href="/giohang/css/Layout.css">
+
 <section class="ftco-section">
 	<div class="container">
 		<div class="heading-page-cart text-center pt-3 pb-4">
@@ -52,7 +61,7 @@
 							@foreach (var item in Model?.Lines)
 							{
 								<tr class="text-center">
-									<td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
+									<td class="product-remove"><a asp-action="XoaSPGioHang" asp-controller="GioHang" asp-route-id="@item.ChiTiet_SP.Id"><span class="ion-ios-close"></span></a></td>
 
 									<td class="image-prod"><img src="@Url.Action("GetImage", "Home", new { id_sp = item.ChiTiet_SP.SanPham.Id})" style="height: 100px" /></td>
 									<td class="product-name">
@@ -69,113 +78,81 @@
 
 									<td class="total">
 										<div class="line-item_quantity product-quantity qty-click d-inline-block">
-											<button type="button" id="tang_@item.ChiTiet_SP.Id" class="qtyminus qty-btn border float-left">-</button>
-											<input type="text" size="4" name="updates[]" min="1" id="sl_@item.ChiTiet_SP.Id" value="@(item.SoLuong)" class="item-quantity float-left text-center border border-right-0 border-left-0">
-											<button type="button" id="tang_@item.ChiTiet_SP.Id" class="qtyplus qty-btn border float-left">+</button>
+											<button @* onclick="qtyminus(@item.ChiTiet_SP.Id,@item.ChiTiet_SP.Gia)" *@ type="button" id="tang_@item.ChiTiet_SP.Id" class="qtyminus qty-btn border float-left giam" data-id="@item.ChiTiet_SP.Id">-</button>
+											<input @* onchange="total(@item.ChiTiet_SP.Id, @item.ChiTiet_SP.Gia, this.value" *@ type="text" size="4" name="updates[]" min="1" id="sl_@item.ChiTiet_SP.Id" value="@(item.SoLuong)" class="item-quantity float-left text-center border border-right-0 border-left-0" data-id="@item.ChiTiet_SP.Id">
+											<button @* onclick="qtyplus(@item.ChiTiet_SP.Id,@item.ChiTiet_SP.Gia)" type="button" *@ id="giam_@item.ChiTiet_SP.Id" class="qtyplus qty-btn border float-left tang" data-id="@item.ChiTiet_SP.Id">+</button>
 										</div>
 									</td>
-									<td class="total">400.000đ</td>
+									<td class="total" id="t @item.ChiTiet_SP.Id">@((item.ChiTiet_SP.Gia * item.SoLuong))</td>
 								</tr>
-
-								<!-- END TR-->
 							}
 					</table>
 				</div>
 			</div>
 		</div>
-		<div class="row justify-content-end">
-			<div class="col-lg-4 mt-5 cart-wrap ftco-animate">
-				<div class="cart-total mb-3">
-					<h3>Coupon Code</h3>
-					<p>Enter your coupon code if you have one</p>
-					<form action="#" class="info">
-						<div class="form-group">
-							<label for="">Coupon code</label>
-							<input type="text" class="form-control text-left px-3" placeholder="">
-						</div>
-					</form>
+		<form method="post" asp-action="AddToDonHang" asp-controller="GioHang">
+			<div class="row justify-content-end">
+				<div class="col-lg-4 mt-5 cart-wrap ftco-animate">
+					<div class="cart-total mb-3">
+						<h3>Ghi chú</h3>
+							<div class="form-group">
+							<textarea name="GhiChu" id="" cols="30" rows="7" class="form-control" placeholder="Nội dung"></textarea>
+							</div>
+					</div>
 				</div>
-				<p><a href="checkout.html" class="btn btn-primary py-3 px-4">Apply Coupon</a></p>
-			</div>
-			<div class="col-lg-4 mt-5 cart-wrap ftco-animate">
-				<div class="cart-total mb-3">
-					<h3>Estimate shipping and tax</h3>
-					<p>Enter your destination to get a shipping estimate</p>
-					<form action="#" class="info">
-						<div class="form-group">
-							<label for="">Country</label>
-							<input type="text" class="form-control text-left px-3" placeholder="">
-						</div>
-						<div class="form-group">
-							<label for="country">State/Province</label>
-							<input type="text" class="form-control text-left px-3" placeholder="">
-						</div>
-						<div class="form-group">
-							<label for="country">Zip/Postal Code</label>
-							<input type="text" class="form-control text-left px-3" placeholder="">
-						</div>
-					</form>
+				<div class="col-lg-4 mt-5 cart-wrap ftco-animate">
+					<div class="cart-total mb-3">
+						<h3>Thông tin nhận hàng</h3>
+							<div class="form-group">
+								<label for="">Họ và tên</label>
+								<input name="HoTen" type="text" class="form-control text-left px-3" placeholder="">
+							</div>
+							<div class="form-group">
+								<label for="">Số điện thoại</label>
+								<input name="SDT" type="text" class="form-control text-left px-3" placeholder="">
+							</div>
+							<div class="form-group">
+								<label for="">Địa chỉ</label>
+								<input name="DiaChi" type="text" class="form-control text-left px-3" placeholder="">
+							</div>
+					</div>
 				</div>
-				<p><a href="checkout.html" class="btn btn-primary py-3 px-4">Estimate</a></p>
-			</div>
-			<div class="col-lg-4 mt-5 cart-wrap ftco-animate">
-				<div class="cart-total mb-3">
-					<h3>Cart Totals</h3>
-					<p class="d-flex">
-						<span>Subtotal</span>
-						<span>$20.60</span>
-					</p>
-					<p class="d-flex">
-						<span>Delivery</span>
-						<span>$0.00</span>
-					</p>
-					<p class="d-flex">
-						<span>Discount</span>
-						<span>$3.00</span>
-					</p>
-					<hr>
-					<p class="d-flex total-price">
-						<span>Total</span>
-						<span>$17.60</span>
-					</p>
+				<div class="col-lg-4 mt-5 cart-wrap ftco-animate">
+					<div class="cart-total mb-3">
+						<h3>Tổng tiền</h3>
+						<p class="d-flex">
+							<span>Tạm tính</span>
+							<span id="TamTinh">@Model.TamTinh()</span>
+						</p>
+						<p class="d-flex">
+							<span>Phí ship</span>
+							<span>20.000</span>
+						</p>
+						<hr>
+						<p class="d-flex total-price">
+							<span>Tổng</span>
+							<span id="TongTien">@Model.TongTien()</span>
+						</p>
+					</div>
+					<p class="text-center"><button type="submit" class="btn btn-primary py-3 px-5" id="order">Đặt hàng</button></p>
 				</div>
-				<p><a href="checkout.html" class="btn btn-primary py-3 px-4">Proceed to Checkout</a></p>
 			</div>
-		</div>
+		</form>
 	</div>
 </section>
+<script src="~/js/GioHang/GioHang.js"></script>
 <script>
-	document.addEventListener("DOMContentLoaded", function () {
-		var minusButton = document.querySelector('.qtyminus');
-		var plusButton = document.querySelector('.qtyplus');
-		var quantityInput = document.getElementById('quantity');
+	function qtyminus(id, price) {
+		var quantityInput = document.getElementById('sl_' + id);
+		var currentValue = parseInt(quantityInput.value);
+		if (currentValue > 1) {
+			quantityInput.value = currentValue - 1;
+		}
+	}
 
-		minusButton.addEventListener('click', function () {
-			var currentValue = parseInt(quantityInput.value);
-			if (currentValue > 1) {
-				quantityInput.value = currentValue - 1;
-			}
-		});
-
-		plusButton.addEventListener('click', function () {
-			var currentValue = parseInt(quantityInput.value);
-			quantityInput.value = currentValue + 1;
-		});
-	});
+	function qtyplus(id, price) {
+		var quantityInput = document.getElementById('sl_' + id);
+		var currentValue = parseInt(quantityInput.value);
+		quantityInput.value = currentValue + 1;
+	}
 </script>
-<style>
-	.input-group {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-	}
-
-	.input-group-btn button {
-		margin: 0;
-	}
-
-	#quantity-left, #quantity-right {
-		padding:10px 20px;
-		border-radius:initial;
-	}
-</style>

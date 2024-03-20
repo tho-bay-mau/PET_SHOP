@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\js\GioHang\GioHang.js" />
     <None Include="wwwroot\js\site.js" />
     <None Include="wwwroot\vega\css\.DS_Store" />
     <None Include="wwwroot\vega\css\bootstrap\.DS_Store" />
@@ -148,6 +149,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.jQuery.Unobtrusive.Ajax" Version="3.2.6" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.2" />
   </ItemGroup>
 
