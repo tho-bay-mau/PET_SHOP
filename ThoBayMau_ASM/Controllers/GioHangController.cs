@@ -57,6 +57,69 @@ namespace ThoBayMau_ASM.Controllers
 				return Redirect(returnUrl);
 			}
 		}
+		// ===> tăng số lượng 
+		[HttpGet]
+		public JsonResult TangSoLuong(int id)
+		{
+			var GioHang = HttpContext.Session.GetJson<GioHang>("giohang");
+			var GioHang_line = GioHang.Lines.FirstOrDefault(p => p.ChiTiet_SP.Id == id);
+			GioHang_line.SoLuong++;
+			HttpContext.Session.SetJson("giohang", GioHang);
+
+			var DonGia = GioHang_line.ChiTiet_SP.Gia;
+
+			var json = new
+			{
+				SoLuong = GioHang_line.SoLuong,
+				TongTienSanPham = GioHang_line.TongTienSp(),
+				TamTinh = GioHang.TamTinh(),
+				TongTien = GioHang.TongTien(),
+			};
+
+			return Json(json);
+
+		}
+		// giảm số lượng
+		[HttpGet]
+		public JsonResult GiamSoLuong(int id)
+		{
+			var GioHang = HttpContext.Session.GetJson<GioHang>("giohang");
+			var GioHang_line = GioHang.Lines.FirstOrDefault(p => p.ChiTiet_SP.Id == id);
+			GioHang_line.SoLuong--;
+			HttpContext.Session.SetJson("giohang", GioHang);
+
+			var DonGia = GioHang_line.ChiTiet_SP.Gia;
+
+			var json = new
+			{
+				SoLuong = GioHang_line.SoLuong,
+				TongTienSanPham = GioHang_line.TongTienSp(),
+				TamTinh = GioHang.TamTinh(),
+				TongTien = GioHang.TongTien(),
+			};
+
+			return Json(json);
+
+		}
+		[HttpGet]
+		public JsonResult InputSoLuong(int id, int SoLuong)
+		{
+			GioHang = HttpContext.Session.GetJson<GioHang>("giohang");
+			var GioHang_line = GioHang.Lines.FirstOrDefault(p => p.ChiTiet_SP.Id == id);
+			GioHang_line.SoLuong = SoLuong;
+			HttpContext.Session.SetJson("giohang", GioHang);
+
+			var DonGia = _context.ChiTiet_SP.FirstOrDefault(a => a.Id == id);
+			var json = new
+			{
+				SoLuong = GioHang_line.SoLuong,
+				TongTienSanPham = GioHang_line.TongTienSp(),
+				TamTinh = GioHang.TamTinh(),
+				TongTien = GioHang.TongTien(),
+			};
+			return Json(json);
+
+		}
 
 		public IActionResult loadTotal(int price, int quantity)
 		{

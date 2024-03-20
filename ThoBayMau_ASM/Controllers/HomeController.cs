@@ -22,13 +22,13 @@ namespace ThoBayMau_ASM.Controllers
             var result = _db.SanPham.Include(x => x.ChiTietSPs).Include(x => x.Anhs).ToList();
 			return View(result);
 		}
-		/*public IActionResult GetImage(int? id_sp, int? id_hinh)
+		public IActionResult GetImage(int? id_sp, int? id_hinh)
 		{
 			if (id_hinh != null)
 			{
 				var hinh = _db.Anh
 				.FirstOrDefault(x => x.Id == id_hinh);
-				var imageBytes = System.IO.File.ReadAllBytes("wwwroot/img/" + hinh.TenAnh); // Đọc file ảnh thành mảng byte
+				var imageBytes = System.IO.File.ReadAllBytes("wwwroot/img/products/" + hinh.TenAnh); // Đọc file ảnh thành mảng byte
 				return File(imageBytes, "image/jpeg");
 			}
 			else if (id_sp != null)
@@ -37,7 +37,7 @@ namespace ThoBayMau_ASM.Controllers
 					.FirstOrDefault(x => x.SanphamId == id_sp);
 				if (hinh != null)
 				{
-                    var imageBytes = System.IO.File.ReadAllBytes("wwwroot/img/" + hinh.TenAnh);
+					var imageBytes = System.IO.File.ReadAllBytes("wwwroot/img/products/" + hinh.TenAnh);
 					// Đọc file ảnh thành mảng byte
 					return File(imageBytes, "image/jpeg");
 				}
@@ -51,7 +51,7 @@ namespace ThoBayMau_ASM.Controllers
 			{
 				return NotFound();
 			}
-		}*/
+		}
 		public IActionResult product_detail(int id_sp)
         {
             var result = _db.SanPham
