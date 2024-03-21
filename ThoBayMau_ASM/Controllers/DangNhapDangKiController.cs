@@ -17,7 +17,10 @@ namespace ThoBayMau_ASM.Controllers
 
         public IActionResult Index()
         {
+           
+
             return View();
+            
         }
 
         [HttpGet]
@@ -42,8 +45,7 @@ namespace ThoBayMau_ASM.Controllers
             if (user != null)
             {
                 HttpContext.Session.SetString("UserName", user.TenTK.ToString());
-
-
+                HttpContext.Session.SetString("UserName", user.TenTK);
                 if (user.LoaiTK)
                 {
                     return RedirectToAction("Index", "Admin");
@@ -61,6 +63,7 @@ namespace ThoBayMau_ASM.Controllers
 
         public IActionResult Logout()
         {
+
             HttpContext.Session.Clear();
             HttpContext.Session.Remove("UserName");
             return RedirectToAction("Login", "DangNhapDangKi");
@@ -79,21 +82,44 @@ namespace ThoBayMau_ASM.Controllers
         {
             if (ModelState.IsValid)
             {
-                var db = new TaiKhoan()
-                {
-                    TenTK = tk.TenTK,
-                    Email = tk.Email,
-                    MatKhau = tk.MatKhau,
-                    SDT = tk.SDT,
-                    DiaChi = tk.DiaChi,
-                    NgayDangKy = DateTime.Now,
-                    TrangThai = true,
 
-                };
-                _db.TaiKhoan.Add(db);
-                _db.SaveChanges();
-                TempData["successMessage"] = "Bạn đã đăng ký thành công!";
-                return RedirectToAction("Login");
+                var existingAccount = _db.TaiKhoan.FirstOrDefault(t => t.TenTK == tk.TenTK);
+                var existingEmail = _db.TaiKhoan.FirstOrDefault(t => t.Email == tk.Email);
+                var existingPhone = _db.TaiKhoan.FirstOrDefault(t => t.SDT == tk.SDT);
+
+
+                if (existingAccount != null)
+                {
+                    TempData["errorMessage"] = "Tài khoản đã tồn tại!";
+                    return View();
+                }
+                else if (existingEmail != null)
+                {
+                    TempData["errorMessage"] = "Email đã được sử dụng!";
+                    return View();
+                }
+                else if (existingPhone != null)
+                {
+                    TempData["errorMessage"] = "Số điện thoại đã được sử dụng!";
+                    return View();
+                }
+                else
+                {
+                    var db = new TaiKhoan()
+                    {
+                        TenTK = tk.TenTK,
+                        Email = tk.Email,
+                        MatKhau = tk.MatKhau,
+                        SDT = tk.SDT,
+                        DiaChi = tk.DiaChi,
+                        NgayDangKy = DateTime.Now,
+                        TrangThai = true,
+                    };
+                    _db.TaiKhoan.Add(db);
+                    _db.SaveChanges();
+                    TempData["successMessage"] = "Bạn đã đăng ký thành công!";
+                    return RedirectToAction("Login");
+                }
             }
             else
             {
@@ -101,5 +127,6 @@ namespace ThoBayMau_ASM.Controllers
                 return View();
             }
         }
+
     }
 }
