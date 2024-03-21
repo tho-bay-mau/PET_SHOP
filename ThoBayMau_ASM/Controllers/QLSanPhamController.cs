@@ -27,7 +27,7 @@ namespace ThoBayMau_ASM.Controllers
         public int countpages { get; set; }
         public IActionResult Index()
         {
-            int total = _context.SanPham.Where(x => x.TrangThai == "1").Count();
+            int total = _context.SanPham.Where(x => x.TrangThai == "Đang bán").Count();
             countpages = (int)Math.Ceiling((double)total / ITEM_PER_PAGE);
 
             if (currentpage < 1)
@@ -43,7 +43,7 @@ namespace ThoBayMau_ASM.Controllers
             ViewBag.CountPages = countpages;
             if (total > 0)
             {
-                var result = _context.SanPham.Where(x => x.TrangThai == "1").Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
+                var result = _context.SanPham.Where(x => x.TrangThai == "Đang bán").Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
                 return View(result);
             }
             else
@@ -71,6 +71,7 @@ namespace ThoBayMau_ASM.Controllers
         [HttpPost]
         public IActionResult Create( SanPham sp, IFormFile[] files,int gia, int soluong, int kichthuoc, DateTime ngaysanxuat, DateTime hansudung)
         {
+            ViewBag.LoaiSPid = new SelectList(_context.LoaiSP.OrderBy(x => x.Id), "Id", "Ten");
             List<string> listTrangThai = new List<string> { "Đang bán", "Ngừng bán", "Mới" };
             ViewBag.TrangThai = new SelectList(listTrangThai);
             
@@ -151,7 +152,7 @@ namespace ThoBayMau_ASM.Controllers
         {
             if (file != null)
             {
-                string uploadDir = Path.Combine(_webhost.WebRootPath, "img"); // đưa ảnh vào file
+                string uploadDir = Path.Combine(_webhost.WebRootPath, "img/products"); // đưa ảnh vào file
                 string filePath = Path.Combine(uploadDir,file.FileName); // đưa ảnh vào file
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
@@ -199,7 +200,7 @@ namespace ThoBayMau_ASM.Controllers
                 ViewBag.Search = Key;
                 if (total > 0)
                 {
-                    var result = _context.SanPham.Where(x => x.TrangThai == "1").Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
+                    var result = _context.SanPham.Where(x => x.TrangThai == "Đang bán").Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
                     return View("Index", result);
                 }
                 else
@@ -209,7 +210,7 @@ namespace ThoBayMau_ASM.Controllers
             }
             else
             {
-                int total = _context.SanPham.Where(x => x.TrangThai == "1" && x.Id.ToString() == Key).Count();
+                int total = _context.SanPham.Where(x => x.TrangThai == "Đang bán" && x.Id.ToString() == Key).Count();
                 
                 countpages = (int)Math.Ceiling((double)total / ITEM_PER_PAGE);
 
@@ -227,7 +228,7 @@ namespace ThoBayMau_ASM.Controllers
                 ViewBag.Search = Key;
                 if (total > 0)
                 {
-                    var result = _context.SanPham.Where(x => x.TrangThai == "1" && x.Id.ToString() == Key).Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
+                    var result = _context.SanPham.Where(x => x.TrangThai == "Đang bán" && x.Id.ToString() == Key).Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
                     return View("Index", result);
                 }
                 else
