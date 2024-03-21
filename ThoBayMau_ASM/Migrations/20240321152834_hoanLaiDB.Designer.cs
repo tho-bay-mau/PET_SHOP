@@ -12,8 +12,8 @@ using ThoBayMau_ASM.Data;
 namespace ThoBayMau_ASM.Migrations
 {
     [DbContext(typeof(ThoBayMau_ASMContext))]
-    [Migration("20240321142249_db")]
-    partial class db
+    [Migration("20240321152834_hoanLaiDB")]
+    partial class hoanLaiDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

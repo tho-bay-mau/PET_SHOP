@@ -5,7 +5,7 @@
 namespace ThoBayMau_ASM.Migrations
 {
     /// <inheritdoc />
-    public partial class update : Migration
+    public partial class hoanLaiDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
