@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ThoBayMau_ASM.Migrations
 {
     /// <inheritdoc />
-    public partial class update : Migration
+    public partial class updatedatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -35,7 +35,7 @@ namespace ThoBayMau_ASM.Migrations
                     MatKhau = table.Column<string>(type: "Varchar(50)", nullable: false),
                     SDT = table.Column<string>(type: "Varchar(11)", nullable: false),
                     Email = table.Column<string>(type: "Varchar(30)", nullable: false),
-                    DiaChi = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DiaChi = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     NgayDangKy = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LoaiTK = table.Column<bool>(type: "bit", nullable: false),
                     TrangThai = table.Column<bool>(type: "bit", nullable: false)
@@ -51,7 +51,7 @@ namespace ThoBayMau_ASM.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Ten = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Ten = table.Column<string>(type: "nvarchar(100)", nullable: false),
                     Mota = table.Column<string>(type: "ntext", nullable: true),
                     TrangThai = table.Column<string>(type: "nvarchar(50)", nullable: false),
                     LoaiSPId = table.Column<int>(type: "int", nullable: false)
@@ -142,7 +142,8 @@ namespace ThoBayMau_ASM.Migrations
                     KichThuoc = table.Column<int>(type: "int", nullable: false),
                     NgaySanXuat = table.Column<DateTime>(type: "datetime2", nullable: false),
                     HanSuDung = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    SanPhamId = table.Column<int>(type: "int", nullable: false)
+                    SanPhamId = table.Column<int>(type: "int", nullable: false),
+                    TrangThai = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {

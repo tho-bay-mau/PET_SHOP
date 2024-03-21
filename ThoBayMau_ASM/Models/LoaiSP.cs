@@ -12,6 +12,6 @@ namespace ThoBayMau_ASM.Models
 		[Column(TypeName = "NVARCHAR(50)")]
 		public string Ten { get; set; }
         public bool TrangThai { get; set; }
-		public ICollection<SanPham> SanPhams { get; set; }
+		public ICollection<SanPham>? SanPhams { get; set; }
 	}
 }

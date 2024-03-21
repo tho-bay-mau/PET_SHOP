@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Policy;
+using System.Text.RegularExpressions;
 using ThoBayMau_ASM.Data;
 using ThoBayMau_ASM.Models;
 
@@ -20,7 +21,14 @@ namespace ThoBayMau_ASM.Controllers
 
 		public IActionResult Index()
         {
-			GioHang = HttpContext.Session.GetJson<GioHang>("giohang") ?? new GioHang();
+            ViewBag.HoTen =TempData["HoTen"];
+            ViewBag.SDT = TempData["SDT"];
+            ViewBag.DiaChi = TempData["DiaChi"];
+            ViewBag.GhiChu = TempData["GhiChu"];
+            ViewBag.errHoTen = TempData["errHoTen"];
+            ViewBag.errSDT = TempData["errSDT"];
+            ViewBag.errDiaChi = TempData["errDiaChi"];
+            GioHang = HttpContext.Session.GetJson<GioHang>("giohang") ?? new GioHang();
 			return View(GioHang);
         }
 
@@ -132,31 +140,78 @@ namespace ThoBayMau_ASM.Controllers
 		}
 		public IActionResult AddToDonHang(string HoTen, string SDT, string DiaChi, string GhiChu)
 		{
-            GioHang = HttpContext.Session.GetJson<GioHang>("giohang") ?? new GioHang();
-            var donHang = new DonHang();
-			donHang.TaiKhoanId = 4;
-            _context.Add(donHang);
-            _context.SaveChanges();
-            GioHang = HttpContext.Session.GetJson<GioHang>("giohang");
-            foreach (var item in GioHang.Lines)
+			ViewBag.HoTen = HoTen;
+            TempData["HoTen"] = ViewBag.HoTen;
+            ViewBag.SDT = SDT;
+            TempData["SDT"] = ViewBag.SDT;
+            ViewBag.DiaChi = DiaChi;
+            TempData["DiaChi"] = ViewBag.DiaChi;
+            ViewBag.GhiChu = GhiChu;
+            TempData["GhiChu"] = ViewBag.GhiChu;
+            if (string.IsNullOrEmpty(HoTen))
             {
-                var donHang_chiTiet = new DonHang_ChiTiet();
-                donHang_chiTiet.ChiTiet_SPId = item.ChiTiet_SP.Id;
-                donHang_chiTiet.DonHangId = donHang.Id;
-                donHang_chiTiet.SoLuong = item.SoLuong;
-                _context.Add(donHang_chiTiet);
+				ViewBag.errHoTen = "Họ tên không được bỏ trống";
+                TempData["errHoTen"] = ViewBag.errHoTen;
             }
-            var TT_NH = new ThongTin_NhanHang();
-            TT_NH.DonhangId = donHang.Id;
-            TT_NH.HoTen = HoTen;
-            TT_NH.SDT = SDT;
-            TT_NH.DiaChi = DiaChi;
-            TT_NH.GhiChu = GhiChu;
-            _context.Add(TT_NH);
-            _context.SaveChanges();
-            HttpContext.Session.Remove("giohang");
-            return RedirectToAction("Index", "GioHang");
+			else
+			{
+                if (HoTen.Any(char.IsDigit))
+                {
+                    ViewBag.errHoTen = "Họ tên không có kí tự số";
+                    TempData["errHoTen"] = ViewBag.errHoTen;
+                }
+                if (Regex.IsMatch(HoTen, @"[^A-Za-z\sđĐ]"))
+                {
+                    ViewBag.errHoTen = "Họ tên không được có kí tự đặc biệt";
+                    TempData["errHoTen"] = ViewBag.errHoTen;
+                }
+            }
+            if (string.IsNullOrEmpty(SDT))
+            {
+                ViewBag.errSDT = "SDT không được bỏ trống";
+                TempData["errSDT"] = ViewBag.errSDT;
+            }
+			else
+			{
+                if (Regex.IsMatch(SDT, @"^0\d{9,10}$"))
+                {
+                    ViewBag.errSDT = "SDT không hợp lệ";
+                    TempData["errSDT"] = ViewBag.errSDT;
+                }
+            }
+            if (string.IsNullOrEmpty(DiaChi))
+            {
+                ViewBag.errDiaChi = "Địa chỉ không được bỏ trống";
+                TempData["errDiaChi"] = ViewBag.errDiaChi;
+            }
+			if (ViewBag.errHoTen != null || ViewBag.errSDT != null || ViewBag.errDiaChi != null)
+            {
+                return RedirectToAction("Index", "GioHang");
+            }
+            GioHang = HttpContext.Session.GetJson<GioHang>("giohang") ?? new GioHang();
+			var donHang = new DonHang();
+			donHang.TaiKhoanId = 4;
+			_context.Add(donHang);
+			_context.SaveChanges();
+			GioHang = HttpContext.Session.GetJson<GioHang>("giohang");
+			foreach (var item in GioHang.Lines)
+			{
+				var donHang_chiTiet = new DonHang_ChiTiet();
+				donHang_chiTiet.ChiTiet_SPId = item.ChiTiet_SP.Id;
+				donHang_chiTiet.DonHangId = donHang.Id;
+				donHang_chiTiet.SoLuong = item.SoLuong;
+				_context.Add(donHang_chiTiet);
+			}
+			var TT_NH = new ThongTin_NhanHang();
+			TT_NH.DonhangId = donHang.Id;
+			TT_NH.HoTen = HoTen;
+			TT_NH.SDT = SDT;
+			TT_NH.DiaChi = DiaChi;
+			TT_NH.GhiChu = GhiChu;
+			_context.Add(TT_NH);
+			_context.SaveChanges();
+			HttpContext.Session.Remove("giohang");
+			return RedirectToAction("Index", "GioHang");
         }
-
     }
 }
