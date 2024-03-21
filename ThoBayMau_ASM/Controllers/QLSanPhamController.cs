@@ -62,7 +62,14 @@ namespace ThoBayMau_ASM.Controllers
         }
         public IActionResult Create()
         {
-            ViewBag.LoaiSPid = new SelectList(_context.LoaiSP.OrderBy(x => x.Id), "Id", "Ten");
+            var loaiSPList = _context.LoaiSP.OrderBy(x => x.Id)
+                                     .Select(x => new SelectListItem
+                                     {
+                                         Value = x.Id.ToString(),
+                                         Text = x.Ten
+                                     })
+                                     .ToList();
+            ViewBag.LoaiSPid = new SelectList(loaiSPList, "Value", "Text");
             List<string> listTrangThai = new List<string> { "Đang bán", "Ngừng bán", "Mới" };
             ViewBag.TrangThai = new SelectList(listTrangThai);
             return View();
@@ -71,7 +78,14 @@ namespace ThoBayMau_ASM.Controllers
         [HttpPost]
         public IActionResult Create( SanPham sp, IFormFile[] files,int gia, int soluong, int kichthuoc, DateTime ngaysanxuat, DateTime hansudung)
         {
-            ViewBag.LoaiSPid = new SelectList(_context.LoaiSP.OrderBy(x => x.Id), "Id", "Ten");
+            var loaiSPList = _context.LoaiSP.OrderBy(x => x.Id)
+                                     .Select(x => new SelectListItem
+                                     {
+                                         Value = x.Id.ToString(),
+                                         Text = x.Ten
+                                     })
+                                     .ToList();
+            ViewBag.LoaiSPid = new SelectList(loaiSPList, "Value", "Text");
             List<string> listTrangThai = new List<string> { "Đang bán", "Ngừng bán", "Mới" };
             ViewBag.TrangThai = new SelectList(listTrangThai);
             
