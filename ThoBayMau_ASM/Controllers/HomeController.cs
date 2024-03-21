@@ -17,11 +17,23 @@ namespace ThoBayMau_ASM.Controllers
             _db = db;
         }
 
-        public IActionResult Index()
-		{
+
+        
+
+			public IActionResult Index()
+			{
+            if (HttpContext.Session.GetString("UserName") != null)
+            {
+                // Nếu có dữ liệu người dùng trong Session, lấy nó ra
+                string userName = HttpContext.Session.GetString("UserName");
+                // Truyền userName vào ViewBag để sử dụng trong View
+                ViewBag.UserName = userName;
+            }
+
+
             var result = _db.SanPham.Include(x => x.ChiTietSPs).Include(x => x.Anhs).ToList();
-			return View(result);
-		}
+				return View(result);
+			}
 		public IActionResult GetImage(int? id_sp, int? id_hinh)
 		{
 			if (id_hinh != null)
