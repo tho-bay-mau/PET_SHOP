@@ -3,6 +3,9 @@
 @{
 	ViewData["Title"] = "Details";
 	Layout = "~/Views/Shared/_Layout.cshtml";
+	bool isFirstItem = true;
+	bool isFirstItemSmall = true;
+	int STT = 0;
 }
 
 <style>
@@ -71,10 +74,13 @@
 				<div class="col-lg-6 mb-5 ftco-animate">
 					<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
 						<div class="carousel-inner">
-							<div class="carousel-item active">
-								<img src="@Url.Action("GetImage", "Home", new { id_sp = @item.Id})" class="d-block w-100" alt="...">
-							</div>
-
+							@foreach (var img in item?.Anhs)
+							{
+								<div class="carousel-item @(isFirstItem ? "active" : "")">
+									<img src="~/img/products/@img.TenAnh" class="d-block w-100" alt="...">
+								</div>
+								isFirstItem = false;
+							}
 						</div>
 						<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
 							<i class="bi bi-caret-left-fill"></i>
@@ -82,14 +88,13 @@
 						<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
 							<i class="bi bi-caret-right-fill"></i>
 						</button>
-						<div class="carousel-indicators justify-content-sm-around" id="small-img">
+						<div class="carousel-indicators justify-content-sm-around m-0" id="small-img">
 							@foreach (var img in item?.Anhs)
 							{
-								<a data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"><img src="@Url.Action("GetImage", "Home", new { id_hinh = @img.Id})" style="width:100px;" alt="..."></a>
+								<a data-bs-target="#carouselExampleIndicators" data-bs-slide-to="@STT" class="@(isFirstItemSmall ? "active" : "")" aria-current="@(isFirstItemSmall ? "true" : "")" aria-label="Slide @STT"><img src="~/img/products/@img.TenAnh" style="width:100px;" alt="..."></a>
+								isFirstItemSmall = false;
+								STT += 1;
 							}
-							@* <a data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"><img src="~/vega/pro_images/1_2b07728470ac48888e65cc4d13efc298_master.jpg" style="width:100px;" alt="..."></a>
-						<a data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"><img src="~/vega/pro_images/1_42eb4e7ac2d04669886a51c96cd766a6_master.jpg" style="width:100px;" alt="..."></a>
-						<a data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"><img src="~/vega/pro_images/1_a2bff92357c949beae6cc690ccfd1897_master.png" style="width:100px;" alt="..."></a> *@
 						</div>
 					</div>
 				</div>

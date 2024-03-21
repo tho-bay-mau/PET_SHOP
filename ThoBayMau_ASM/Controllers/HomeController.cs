@@ -8,8 +8,8 @@ using Microsoft.AspNetCore;
 
 namespace ThoBayMau_ASM.Controllers
 {
-	public class HomeController : Controller
-	{
+    public class HomeController : Controller
+    {
         private readonly ThoBayMau_ASMContext _db;
 
         public HomeController(ThoBayMau_ASMContext db)
@@ -17,11 +17,8 @@ namespace ThoBayMau_ASM.Controllers
             _db = db;
         }
 
-
-        
-
-			public IActionResult Index()
-			{
+        public IActionResult Index()
+        {
             if (HttpContext.Session.GetString("UserName") != null)
             {
                 // Nếu có dữ liệu người dùng trong Session, lấy nó ra
@@ -32,45 +29,45 @@ namespace ThoBayMau_ASM.Controllers
 
 
             var result = _db.SanPham.Include(x => x.ChiTietSPs).Include(x => x.Anhs).ToList();
-				return View(result);
-			}
-		public IActionResult GetImage(int? id_sp, int? id_hinh)
-		{
-			if (id_hinh != null)
-			{
-				var hinh = _db.Anh
-				.FirstOrDefault(x => x.Id == id_hinh);
-				var imageBytes = System.IO.File.ReadAllBytes("wwwroot/img/products/" + hinh.TenAnh); // Đọc file ảnh thành mảng byte
-				return File(imageBytes, "image/jpeg");
-			}
-			else if (id_sp != null)
-			{
-				var hinh = _db.Anh
-					.FirstOrDefault(x => x.SanphamId == id_sp);
-				if (hinh != null)
-				{
-					var imageBytes = System.IO.File.ReadAllBytes("wwwroot/img/products/" + hinh.TenAnh);
-					// Đọc file ảnh thành mảng byte
-					return File(imageBytes, "image/jpeg");
-				}
-				else
-				{
-					return NotFound();
-				}
+            return View(result);
+        }
+        public IActionResult GetImage(int? id_sp, int? id_hinh)
+        {
+            if (id_hinh != null)
+            {
+                var hinh = _db.Anh
+                .FirstOrDefault(x => x.Id == id_hinh);
+                var imageBytes = System.IO.File.ReadAllBytes("wwwroot/img/products/" + hinh.TenAnh); // Đọc file ảnh thành mảng byte
+                return File(imageBytes, "image/jpeg");
+            }
+            else if (id_sp != null)
+            {
+                var hinh = _db.Anh
+                    .FirstOrDefault(x => x.SanphamId == id_sp);
+                if (hinh != null)
+                {
+                    var imageBytes = System.IO.File.ReadAllBytes("wwwroot/img/products/" + hinh.TenAnh);
+                    // Đọc file ảnh thành mảng byte
+                    return File(imageBytes, "image/jpeg");
+                }
+                else
+                {
+                    return NotFound();
+                }
 
-			}
-			else
-			{
-				return NotFound();
-			}
-		}
-		public IActionResult product_detail(int id_sp)
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+        public IActionResult product_detail(int id_sp)
         {
             var result = _db.SanPham
-					.Include(x => x.ChiTietSPs)
-					.Include(x => x.Anhs)
-					.Where(x => x.Id == id_sp)
-					.ToList();
+                    .Include(x => x.ChiTietSPs)
+                    .Include(x => x.Anhs)
+                    .Where(x => x.Id == id_sp)
+                    .ToList();
             return View(result);
         }
         public IActionResult Cart()
@@ -89,5 +86,5 @@ namespace ThoBayMau_ASM.Controllers
         {
             return View();
         }
-	}
+    }
 }
