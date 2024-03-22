@@ -31,7 +31,7 @@
                                 <a href="#" class="text-nowrap logo-img text-center d-block py-3 w-100">
                                     <img src="~/img/logo/9218e4dd8166e4c2e96ceac558b6a6a6.jpg" width="180" alt="" />
                                 </a>
-                                <form action="~/DangNhapDangKi/Login" method="post" class="form">
+                                <form asp-action="Login" asp-controller="DangNhapDangKi" asp-route-returnUrl="@ViewBag.ReturnUrl" method="post" class="form">
                                     <div class="mb-3">
                                         <label class="form-label">Tên tài khoản</label>
                                         <input type="text" name="TenTK" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">

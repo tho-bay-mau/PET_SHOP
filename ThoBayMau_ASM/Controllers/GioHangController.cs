@@ -180,7 +180,7 @@ namespace ThoBayMau_ASM.Controllers
 				}
 				else
 				{
-					if (Regex.IsMatch(SDT, @"^0\d{9,10}$"))
+					if (!Regex.IsMatch(SDT, @"^0\d{9,10}$"))
 					{
 						ViewBag.errSDT = "SDT không hợp lệ";
 						TempData["errSDT"] = ViewBag.errSDT;

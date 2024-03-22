@@ -21,7 +21,7 @@ namespace ThoBayMau_ASM.Models
 		}
 		public void RemoveSanPham(int Id) => Lines.Remove(Lines.Where(p => p.ChiTiet_SP.Id == Id).FirstOrDefault());
 		public int TamTinh() => (int)Lines.Sum(p => p.ChiTiet_SP.Gia * p.SoLuong);
-		public int TongTien() => (int)(TamTinh() + 20);
+		public int TongTien() => (int)(TamTinh() + 20000);
 		public void Clear() => Lines.Clear();
 
 	}
