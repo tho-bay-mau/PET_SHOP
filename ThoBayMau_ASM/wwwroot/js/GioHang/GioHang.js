@@ -17,24 +17,23 @@ for (var i = 0; i < tang.length; i++) {
         soluong.value = slTang;
         var tongTien = document.getElementById(`t ${id}`)
 
-        var tongTien = document.getElementById(`t ${id}`)
         $.ajax({
             url: '/GioHang/TangSoLuong',
             type: 'GET',
             data: { id: id },
             dataType: 'json',
             success: function (result) {
-                let vndString = result.tongTienSanPham + "đ";
+                let vndString = result.tongTienSanPham;
+                let formattedVndString = new Intl.NumberFormat('vi-VN').format(vndString);
+                let tamTinh = result.tamTinh;
+                let formattedTamTinh = new Intl.NumberFormat('vi-VN').format(tamTinh);
+                let Tong = result.tongTien;
+                let formattedTong = new Intl.NumberFormat('vi-VN').format(Tong);
+                console.log(formattedVndString);
 
-                let tamTinh = result.tamTinh + "đ";
-
-                let Tong = result.tongTien + "đ";
-
-                console.log(result);
-
-                tongTien.innerHTML = vndString;
-                tamtinh.innerHTML = tamTinh;
-                tongtien.innerHTML = Tong;
+                tongTien.innerHTML = formattedVndString + 'đ';
+                tamtinh.innerHTML = formattedTamTinh + 'đ';
+                tongtien.innerHTML = formattedTong + 'đ';
             }
         })
     }); 
@@ -58,17 +57,17 @@ for (var i = 0; i < giam.length; i++) {
                 data: { id: id },
                 dataType: 'json',
                 success: function (result) {
-                    let vndString = result.tongTienSanPham+"đ";
+                    let vndString = result.tongTienSanPham;
+                    let formattedVndString = new Intl.NumberFormat('vi-VN').format(vndString);
+                    let tamTinh = result.tamTinh;
+                    let formattedTamTinh = new Intl.NumberFormat('vi-VN').format(tamTinh);
+                    let Tong = result.tongTien;
+                    let formattedTong = new Intl.NumberFormat('vi-VN').format(Tong);
+                    console.log(formattedVndString);
 
-                    let tamTinh = result.tamTinh + "đ";
-
-                    let Tong = result.tongTien + "đ";
-
-                    console.log(result);
-
-                    tongTien.innerHTML = vndString;
-                    tamtinh.innerHTML = tamTinh;
-                    tongtien.innerHTML = Tong;
+                    tongTien.innerHTML = formattedVndString + 'đ';
+                    tamtinh.innerHTML = formattedTamTinh + 'đ';
+                    tongtien.innerHTML = formattedTong + 'đ';
                 }
             })
         }
@@ -93,18 +92,17 @@ for (var i = 0; i < txt__soluong.length; i++) {
             data: { id: id, SoLuong: numericValue },
             dataType: 'json',
             success: function (result) {
-                console.log(result);
-                let vndString = result.tongTienSanPham.toLocaleString().replace(/,/g, ',') + ',000 ₫';
+                let vndString = result.tongTienSanPham;
+                let formattedVndString = new Intl.NumberFormat('vi-VN').format(vndString);
+                let tamTinh = result.tamTinh;
+                let formattedTamTinh = new Intl.NumberFormat('vi-VN').format(tamTinh);
+                let Tong = result.tongTien;
+                let formattedTong = new Intl.NumberFormat('vi-VN').format(Tong);
+                console.log(formattedVndString);
 
-                let tamTinh = result.tamTinh.toLocaleString().replace(/,/g, ',') + ',000 ₫';
-
-                let Tong = result.tongTien.toLocaleString().replace(/,/g, ',') + ',000 ₫';
-
-                tongTien.innerHTML = vndString;
-
-                tamtinh.innerHTML = tamTinh;
-
-                tongtien.innerHTML = Tong;
+                tongTien.innerHTML = formattedVndString + 'đ';
+                tamtinh.innerHTML = formattedTamTinh + 'đ';
+                tongtien.innerHTML = formattedTong + 'đ';
             }
         })
        
