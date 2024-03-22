@@ -78,7 +78,6 @@
             <thead>
             <th>ID</th>
             <th>Tên</th>
-            <th>Hình ảnh</th>
             <th>Mô tả</th>
             <th>Trạng thái</th>
             <th>Mã loại sản phẩm</th>
@@ -95,7 +94,6 @@
                         <tr>
                             <td>@item.Id</td>
                             <td>@item.Ten</td>
-                            <td></td>
                             <td>@item.Mota</td>
                             <td>@item.TrangThai</td>
                             <td>@item.LoaiSPId</td>
@@ -118,14 +116,20 @@
                         </tr>
                         <tr class="collapse" id="@item.Id">
 
-                            <td colspan="8">
+                            <td colspan="10">
                                 <p style="text-align:center"><strong>Ảnh sản phẩm</strong></p>
+                                <div class="row" style="justify-content: space-between">
+                                    @foreach (var img in item.Anhs)
+                                    {
+                                        <div class="col-3 ">
+                                            <img width="100%" src="~/img/products/@img.TenAnh" style="border: 3px solid gray" />
+                                        </div>
+                                    }
+                                </div>
                             </td>
                         </tr>
                     }
                 }
-
-
             </tbody>
         </table>
     </div>

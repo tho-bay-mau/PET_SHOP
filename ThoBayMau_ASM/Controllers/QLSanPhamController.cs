@@ -27,7 +27,7 @@ namespace ThoBayMau_ASM.Controllers
         public int countpages { get; set; }
         public IActionResult Index()
         {
-            int total = _context.SanPham.Where(x => x.TrangThai == "Đang bán").Count();
+            int total = _context.SanPham.Include(x => x.Anhs).Where(x => x.TrangThai == "Đang bán").Count();
             countpages = (int)Math.Ceiling((double)total / ITEM_PER_PAGE);
 
             if (currentpage < 1)
@@ -43,7 +43,7 @@ namespace ThoBayMau_ASM.Controllers
             ViewBag.CountPages = countpages;
             if (total > 0)
             {
-                var result = _context.SanPham.Where(x => x.TrangThai == "Đang bán").Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
+                var result = _context.SanPham.Include(x => x.Anhs).Where(x => x.TrangThai == "Đang bán").Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
                 return View(result);
             }
             else
@@ -255,6 +255,34 @@ namespace ThoBayMau_ASM.Controllers
                 }
             }
         }
+        public IActionResult GetImages(int? id_sp)
+        {
+            if (id_sp != null)
+            {
+                var danhSachHinh = _context.Anh
+                    .Where(x => x.SanphamId == id_sp)
+                    .ToList();
 
+                if (danhSachHinh.Any())
+                {
+                    List<byte[]> danhSachByteHinh = new List<byte[]>();
+                    foreach (var hinh in danhSachHinh)
+                    {
+                        var byteHinh = System.IO.File.ReadAllBytes("wwwroot/img/products/" + hinh.TenAnh);
+                        danhSachByteHinh.Add(byteHinh);
+                    }
+
+                    return Ok(danhSachByteHinh); // Trả về danh sách các byte của hình ảnh
+                }
+                else
+                {
+                    return NotFound(); // Không tìm thấy hình ảnh cho ID sản phẩm đã cho
+                }
+            }
+            else
+            {
+                return NotFound(); // ID sản phẩm không hợp lệ hoặc không tồn tại
+            }
+        }
     }
 }
