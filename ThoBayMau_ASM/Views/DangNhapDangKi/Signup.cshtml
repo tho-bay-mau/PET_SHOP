@@ -26,10 +26,9 @@
                     <div class="col-md-8 col-lg-6 col-xxl-3">
                         <div class="card mb-0">
                             <div class="card-body">
-                                <a href="./index.html" class="text-nowrap logo-img text-center d-block py-3 w-100">
-                                    <img src="../assets/images/logos/dark-logo.svg" width="180" alt="">
-                                </a>
-                                <p class="text-center">Your Social Campaigns</p>
+                                <div class="text-nowrap logo-img text-center d-block py-3 w-100">
+                                    <img src="~/img/logo/9218e4dd8166e4c2e96ceac558b6a6a6.jpg" width="180" alt="" />
+                                </div>
                                 @if (TempData["errorMessage"] != null)
                                 {
                                     <div class="alert alert-danger mt-3">
@@ -39,14 +38,9 @@
                                 <form method="post" action="~/DangNhapDangKi/Signup">
                                     @Html.AntiForgeryToken()
                                     <div class="mb-3">
-                                        <label for="TenTK" class="form-label">Name</label>
+                                        <label for="TenTK" class="form-label">Tên tài khoản</label>
                                         <input type="text" class="form-control" id="TenTK" name="TenTK" aria-describedby="textHelp">
                                         @Html.ValidationMessageFor(model => model.TenTK, "", new { @class = "text-danger" })
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="Email" class="form-label">Email Address</label>
-                                        <input type="email" class="form-control" id="Email" name="Email" aria-describedby="emailHelp">
-                                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="mb-3">
                                         <label for="MatKhau" class="form-label">Password</label>
@@ -54,19 +48,24 @@
                                         @Html.ValidationMessageFor(model => model.MatKhau, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="mb-3">
-                                        <label for="SDT" class="form-label">Phone Number</label>
+                                        <label for="Email" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="Email" name="Email" aria-describedby="emailHelp">
+                                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="SDT" class="form-label">SDT</label>
                                         <input type="text" class="form-control" id="SDT" name="SDT">
                                         @Html.ValidationMessageFor(model => model.SDT, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="mb-3">
-                                        <label for="DiaChi" class="form-label">Address</label>
+                                        <label for="DiaChi" class="form-label">Địa chỉ</label>
                                         <input type="text" class="form-control" id="DiaChi" name="DiaChi">
                                         @Html.ValidationMessageFor(model => model.DiaChi, "", new { @class = "text-danger" })
                                     </div>
-                                    <button type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">Sign Up</button>
+                                    <button type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">Đăng ký</button>
                                     <div class="d-flex align-items-center justify-content-center">
-                                        <p class="fs-4 mb-0 fw-bold">Already have an Account?</p>
-                                        <a class="text-primary fw-bold ms-2" href="/DangNhapDangKi/Login">Sign In</a>
+                                        <p class="fs-4 mb-0 fw-bold">Đã có tài khoản?</p>
+                                        <a class="text-primary fw-bold ms-2" href="/DangNhapDangKi/Login">Đăng nhập</a>
                                     </div>
                                 </form>
                             </div>

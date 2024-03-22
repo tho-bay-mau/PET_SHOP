@@ -25,10 +25,15 @@
         <div class="row justify-content-center">
             <div class="col-md-10 mb-5 text-center">
                 <ul class="product-category">
-                    <li><a asp-action="Shop_list" class="active">Tất cả</a></li>
+                    <li><a asp-action="Shop_list">Tất cả</a></li>
                     @foreach (var item in ViewBag.LoaiSP)
                     {
-                        <li><a asp-action="List_Type" asp-route-id="@item.Id">@item.Ten</a></li>
+                        bool isActive = false;
+                        if (ViewBag.SPID == item.Id)
+                        {
+                            isActive = true;
+                        }
+                        <li><a asp-action="List_Type" asp-route-id="@item.Id" class="@(isActive ? "active" : "")">@item.Ten</a></li>
                     }
                 </ul>
             </div>

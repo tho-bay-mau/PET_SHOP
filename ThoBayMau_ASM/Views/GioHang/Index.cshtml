@@ -70,7 +70,7 @@
                                         </h3>
                                     </td>
 
-                                    <td class="price">@(item.ChiTiet_SP.Gia)đ</td>
+                                    <td class="price">@(item.ChiTiet_SP.Gia.ToString("#,0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")))đ</td>
 
                                     <td style="color: black;">
                                         @item.ChiTiet_SP.KichThuoc
@@ -83,7 +83,7 @@
                                             <button @* onclick="qtyplus(@item.ChiTiet_SP.Id,@item.ChiTiet_SP.Gia)" type="button" *@ id="giam_@item.ChiTiet_SP.Id" class="qtyplus qty-btn border float-left tang" data-id="@item.ChiTiet_SP.Id">+</button>
                                         </div>
                                     </td>
-                                    <td class="total" id="t @item.ChiTiet_SP.Id">@((item.ChiTiet_SP.Gia * item.SoLuong))</td>
+                                    <td class="total" id="t @item.ChiTiet_SP.Id">@((item.ChiTiet_SP.Gia * item.SoLuong).ToString("#,0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")))đ</td>
                                 </tr>
                             }
                     </table>
@@ -125,16 +125,16 @@
                         <h3>Tổng tiền</h3>
                         <p class="d-flex">
                             <span>Tạm tính</span>
-                            <span id="TamTinh">@Model.TamTinh()</span>
+                            <span id="TamTinh">@(Model.TamTinh().ToString("#,0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")))đ</span>
                         </p>
                         <p class="d-flex">
                             <span>Phí ship</span>
-                            <span>20.000</span>
+                            <span>20.000đ</span>
                         </p>
                         <hr>
                         <p class="d-flex total-price">
                             <span>Tổng</span>
-                            <span id="TongTien">@Model.TongTien()</span>
+                            <span id="TongTien">@(Model.TongTien().ToString("#,0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")))đ</span>
                         </p>
                     </div>
                     <p class="text-center"><button type="submit" class="btn btn-primary py-3 px-5" id="order">Đặt hàng</button></p>

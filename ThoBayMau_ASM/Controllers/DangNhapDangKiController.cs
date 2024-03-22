@@ -2,6 +2,7 @@
 using ThoBayMau_ASM.Data;
 using ThoBayMau_ASM.Models;
 using System;
+using Aram.Infrastructure;
 
 namespace ThoBayMau_ASM.Controllers
 {
@@ -15,17 +16,13 @@ namespace ThoBayMau_ASM.Controllers
             _db = db;
         }
 
-        public IActionResult Index()
-        {
-           
-
-            return View();
-            
-        }
-
         [HttpGet]
-        public IActionResult Login()
+        public IActionResult Login(string? returnUrl)
         {
+            if(returnUrl != null)
+            {
+                ViewBag.returnUrl = returnUrl;
+            }
             if (HttpContext.Session.GetString("UserName") == null)
             {
                 return View();
@@ -38,14 +35,18 @@ namespace ThoBayMau_ASM.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login(TaiKhoan tk)
+        public IActionResult Login(TaiKhoan tk, string? returnUrl)
         {
             var user = _db.TaiKhoan.FirstOrDefault(x => x.TenTK == tk.TenTK && x.MatKhau == tk.MatKhau);
 
             if (user != null)
             {
                 HttpContext.Session.SetString("UserName", user.TenTK.ToString());
-                HttpContext.Session.SetString("UserName", user.TenTK);
+                HttpContext.Session.SetJson("User", tk);
+                if(returnUrl != null)
+                {
+                    return Redirect(returnUrl);
+                }
                 if (user.LoaiTK)
                 {
                     return RedirectToAction("Index", "Admin");
@@ -66,6 +67,7 @@ namespace ThoBayMau_ASM.Controllers
 
             HttpContext.Session.Clear();
             HttpContext.Session.Remove("UserName");
+            HttpContext.Session.Remove("User");
             return RedirectToAction("Login", "DangNhapDangKi");
         }
 
