@@ -1,0 +1,23 @@
+﻿@model LoaiSP
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="container" style="width:50%;">
+    <form method="post" asp-action="Edit">
+        <div class="card-body">
+
+            <div class="mb-3 mt-3">
+                <label asp-for="Ten" class="form-label">Tên</label>
+                <input asp-for="Ten" class="form-control" id="exampleInputEmail1">
+                <span asp-validation-for="Ten" class="text-danger"></span>
+            </div>
+            <input type="hidden" asp-for="TrangThai" />
+            <br />
+            <button type="submit" class="btn btn-primary">Sửa</button>
+            <a asp-controller="LoaiSP" asp-action="Index" class="btn btn-primary">Trở về</a>
+        </div>
+    </form>
+</div>
+

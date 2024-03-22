@@ -10,6 +10,17 @@
                 generateUrl = (int? p) => Url.Page("", new { p = p, Key = @ViewBag.Search })
             };
 }
+<style>
+    .btn-red {
+        border: solid 1px red;
+        color: red;
+    }
+
+        .btn-red:hover {
+            background-color: red;
+            color: white;
+        }
+</style>
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
      aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -90,7 +101,7 @@
                             <td>@item.LoaiSPId</td>
                             <td class="">
 
-                                <a asp-action="Edit" asp-route-id=@item.Id class="btn btn-primary" style=""><i class="bi bi-pencil-square"></i></a>
+                                <a class="btn btn-outline-primary" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>
                             </td>
                             <td>
                                 <button type="button" class="btn btn-red" data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-id="@item.Id" onclick="setId(this)">
@@ -98,7 +109,7 @@
                                 </button>
                             </td>
                             <td>
-                                <a asp-route-id=@item.Id asp-action="Index" asp-controller="ChiTietSP" class="btn btn-primary" style=""><i class="bi bi-pencil-square"></i></a>
+                                <a class="btn btn-outline-primary" asp-route-id="@item.Id" asp-action="Edit" asp-controller="ChiTietSP"><i class="bi bi-pencil-square"></i></a>
                             </td>
                             <td>
                                 <a data-bs-toggle="collapse" href="#@item.Id" role="button" aria-expanded="false"

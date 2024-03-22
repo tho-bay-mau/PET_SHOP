@@ -85,6 +85,10 @@ namespace ThoBayMau_ASM.Controllers
                                          Text = x.Ten
                                      })
                                      .ToList();
+            if (_context.SanPham.Any(x => x.Ten == sp.Ten))
+            {
+                ModelState.AddModelError("Ten", "Tên sản phẩm đã tồn tại");
+            }
             ViewBag.LoaiSPid = new SelectList(loaiSPList, "Value", "Text");
             List<string> listTrangThai = new List<string> { "Đang bán", "Ngừng bán", "Mới" };
             ViewBag.TrangThai = new SelectList(listTrangThai);

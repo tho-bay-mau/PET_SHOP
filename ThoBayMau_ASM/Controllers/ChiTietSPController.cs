@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using ThoBayMau_ASM.Data;
 using ThoBayMau_ASM.Models;
 
@@ -27,17 +28,33 @@ namespace ThoBayMau_ASM.Controllers
         [HttpPost]
         public IActionResult Create(ChiTiet_SP ct) 
         {
+            var SPList = _context.SanPham.OrderBy(x => x.Id)
+                                    .Select(x => new SelectListItem
+                                    {
+                                        Value = x.Id.ToString(),
+                                        Text = x.Ten
+                                    })
+                                    .ToList();
+            ViewBag.LoaiSPid = new SelectList(SPList, "Value", "Text");
             if (ModelState.IsValid)
             {
                 _context.Add(ct);
                 _context.SaveChanges();
                 TempData["Sucess"] = "Thêm chi tiết sản phẩm thành công!!";
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "QLSanPham");
             }
             return View(ct);
         }
         public IActionResult Edit(int? id)
         {
+            var SPList = _context.SanPham.OrderBy(x => x.Id)
+                                    .Select(x => new SelectListItem
+                                    {
+                                        Value = x.Id.ToString(),
+                                        Text = x.Ten
+                                    })
+                                    .ToList();
+            ViewBag.LoaiSPid = new SelectList(SPList, "Value", "Text");
             if (id == null || id == 0)
             {
                 return NotFound();
@@ -52,12 +69,20 @@ namespace ThoBayMau_ASM.Controllers
         [HttpPost]
         public IActionResult Edit(ChiTiet_SP ct)
         {
+            var SPList = _context.SanPham.OrderBy(x => x.Id)
+                                    .Select(x => new SelectListItem
+                                    {
+                                        Value = x.Id.ToString(),
+                                        Text = x.Ten
+                                    })
+                                    .ToList();
+            ViewBag.LoaiSPid = new SelectList(SPList, "Value", "Text");
             if (ModelState.IsValid)
             {
                 _context.Update(ct);
                 _context.SaveChanges();
                 TempData["Sucess"] = "Sửa Chi tiết sản phẩm thành công!!";
-                return RedirectToAction("Index");
+                return RedirectToAction("Index","QLSanPham");
             }
             return View(ct);
         }
@@ -77,7 +102,7 @@ namespace ThoBayMau_ASM.Controllers
                 obj.TrangThai = false;
                 _context.SaveChanges();
                 TempData["Sucess"] = "Xóa chi tiết sản phẩm thành công";
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "QLSanPham");
             }
         }
 
