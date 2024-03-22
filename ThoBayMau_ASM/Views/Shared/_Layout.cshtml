@@ -74,14 +74,14 @@
 
                                 <li class="message-body" style="text-align: center;">
 
-                                    <a href="DangNhapDangKi/Logout" class="btn btn-outline-primary mx-3 mt-2 d-block" aria-expanded="false">Đăng xuất</a>
+                                    <a asp-action="Logout" asp-controller="DangNhapDangKi" class="btn btn-outline-primary mx-3 mt-2 d-block" aria-expanded="false">Đăng xuất</a>
                                 </li>
                             </ul>
                         </li>
                     }
                     else
                     {
-                        <li class="nav-item cta cta-colored"><a href="DangNhapDangKi/Login" class="nav-link"><span class="bi bi-person-circle"></span></a></li>
+                        <li class="nav-item cta cta-colored"><a asp-action="Login" asp-controller="DangNhapDangKi" class="nav-link"><span class="bi bi-person-circle"></span></a></li>
                     }
                 </ul>
             </div>

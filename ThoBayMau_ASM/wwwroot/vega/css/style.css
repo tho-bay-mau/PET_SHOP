@@ -8155,7 +8155,8 @@ h1, h2, h3, h4, h5,
     -webkit-box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1); }
     .ftco-navbar-light.scrolled .nav-item.active > a {
-      color: #82ae46 !important; }
+        color: #2d2d2d !important;
+    }
     .ftco-navbar-light.scrolled .nav-item.cta > a {
         color: #fff !important;
         background: #17a2b8;
@@ -8946,9 +8947,10 @@ h1, h2, h3, h4, h5,
       bordeR: 1px solid rgba(0, 0, 0, 0.1);
       padding: 4px 10px;
       color: #000000; }
-      .table tbody tr td.product-remove a:hover {
-        border: 1px solid #82ae46;
-        background: #82ae46; }
+        .table tbody tr td.product-remove a:hover {
+            border: 1px solid #f50637;
+            background: #f50637;
+        }
         .table tbody tr td.product-remove a:hover span {
           color: #fff; }
     .table tbody tr td.quantity {
