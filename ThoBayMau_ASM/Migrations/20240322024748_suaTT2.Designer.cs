@@ -12,8 +12,8 @@ using ThoBayMau_ASM.Data;
 namespace ThoBayMau_ASM.Migrations
 {
     [DbContext(typeof(ThoBayMau_ASMContext))]
-    [Migration("20240321152113_suatrangthai")]
-    partial class suatrangthai
+    [Migration("20240322024748_suaTT2")]
+    partial class suaTT2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -177,9 +177,8 @@ namespace ThoBayMau_ASM.Migrations
                         .IsRequired()
                         .HasColumnType("NVARCHAR(50)");
 
-                    b.Property<string>("TrangThai")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool>("TrangThai")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -202,7 +201,7 @@ namespace ThoBayMau_ASM.Migrations
 
                     b.Property<string>("Ten")
                         .IsRequired()
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TrangThai")
                         .IsRequired()

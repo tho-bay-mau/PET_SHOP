@@ -148,70 +148,79 @@ namespace ThoBayMau_ASM.Controllers
             TempData["DiaChi"] = ViewBag.DiaChi;
             ViewBag.GhiChu = GhiChu;
             TempData["GhiChu"] = ViewBag.GhiChu;
-            if (string.IsNullOrEmpty(HoTen))
-            {
-				ViewBag.errHoTen = "Họ tên không được bỏ trống";
-                TempData["errHoTen"] = ViewBag.errHoTen;
-            }
-			else
+			var User = HttpContext.Session.GetJson<TaiKhoan>("User");
+            string returnUrl = Url.Action("Index", "GioHang");
+            if (User == null)
 			{
-                if (HoTen.Any(char.IsDigit))
-                {
-                    ViewBag.errHoTen = "Họ tên không có kí tự số";
-                    TempData["errHoTen"] = ViewBag.errHoTen;
-                }
-                if (Regex.IsMatch(HoTen, @"[^A-Za-z\sđĐ]"))
-                {
-                    ViewBag.errHoTen = "Họ tên không được có kí tự đặc biệt";
-                    TempData["errHoTen"] = ViewBag.errHoTen;
-                }
-            }
-            if (string.IsNullOrEmpty(SDT))
-            {
-                ViewBag.errSDT = "SDT không được bỏ trống";
-                TempData["errSDT"] = ViewBag.errSDT;
-            }
-			else
+				return RedirectToAction("Login", "DangNhapDangKi", new { returnUrl = returnUrl });
+			} else
 			{
-                if (Regex.IsMatch(SDT, @"^0\d{9,10}$"))
-                {
-                    ViewBag.errSDT = "SDT không hợp lệ";
-                    TempData["errSDT"] = ViewBag.errSDT;
-                }
-            }
-            if (string.IsNullOrEmpty(DiaChi))
-            {
-                ViewBag.errDiaChi = "Địa chỉ không được bỏ trống";
-                TempData["errDiaChi"] = ViewBag.errDiaChi;
-            }
-			if (ViewBag.errHoTen != null || ViewBag.errSDT != null || ViewBag.errDiaChi != null)
-            {
-                return RedirectToAction("Index", "GioHang");
-            }
-            GioHang = HttpContext.Session.GetJson<GioHang>("giohang") ?? new GioHang();
-			var donHang = new DonHang();
-			donHang.TaiKhoanId = 4;
-			_context.Add(donHang);
-			_context.SaveChanges();
-			GioHang = HttpContext.Session.GetJson<GioHang>("giohang");
-			foreach (var item in GioHang.Lines)
-			{
-				var donHang_chiTiet = new DonHang_ChiTiet();
-				donHang_chiTiet.ChiTiet_SPId = item.ChiTiet_SP.Id;
-				donHang_chiTiet.DonHangId = donHang.Id;
-				donHang_chiTiet.SoLuong = item.SoLuong;
-				_context.Add(donHang_chiTiet);
+				if (string.IsNullOrEmpty(HoTen))
+				{
+					ViewBag.errHoTen = "Họ tên không được bỏ trống";
+					TempData["errHoTen"] = ViewBag.errHoTen;
+				}
+				else
+				{
+					if (HoTen.Any(char.IsDigit))
+					{
+						ViewBag.errHoTen = "Họ tên không có kí tự số";
+						TempData["errHoTen"] = ViewBag.errHoTen;
+					}
+					if (Regex.IsMatch(HoTen, @"[^A-Za-z\sđĐ]"))
+					{
+						ViewBag.errHoTen = "Họ tên không được có kí tự đặc biệt";
+						TempData["errHoTen"] = ViewBag.errHoTen;
+					}
+				}
+				if (string.IsNullOrEmpty(SDT))
+				{
+					ViewBag.errSDT = "SDT không được bỏ trống";
+					TempData["errSDT"] = ViewBag.errSDT;
+				}
+				else
+				{
+					if (Regex.IsMatch(SDT, @"^0\d{9,10}$"))
+					{
+						ViewBag.errSDT = "SDT không hợp lệ";
+						TempData["errSDT"] = ViewBag.errSDT;
+					}
+				}
+				if (string.IsNullOrEmpty(DiaChi))
+				{
+					ViewBag.errDiaChi = "Địa chỉ không được bỏ trống";
+					TempData["errDiaChi"] = ViewBag.errDiaChi;
+				}
+				if (ViewBag.errHoTen != null || ViewBag.errSDT != null || ViewBag.errDiaChi != null)
+				{
+					return RedirectToAction("Index", "GioHang");
+				}
+				GioHang = HttpContext.Session.GetJson<GioHang>("giohang") ?? new GioHang();
+				var donHang = new DonHang();
+				donHang.TaiKhoanId = User.Id;
+				_context.Add(donHang);
+				_context.SaveChanges();
+				GioHang = HttpContext.Session.GetJson<GioHang>("giohang");
+				foreach (var item in GioHang.Lines)
+				{
+					var donHang_chiTiet = new DonHang_ChiTiet();
+					donHang_chiTiet.ChiTiet_SPId = item.ChiTiet_SP.Id;
+					donHang_chiTiet.DonHangId = donHang.Id;
+					donHang_chiTiet.SoLuong = item.SoLuong;
+					_context.Add(donHang_chiTiet);
+				}
+				var TT_NH = new ThongTin_NhanHang();
+				TT_NH.DonhangId = donHang.Id;
+				TT_NH.HoTen = HoTen;
+				TT_NH.SDT = SDT;
+				TT_NH.DiaChi = DiaChi;
+				TT_NH.GhiChu = GhiChu;
+				_context.Add(TT_NH);
+				_context.SaveChanges();
+				HttpContext.Session.Remove("giohang");
+				return RedirectToAction("Index", "GioHang");
 			}
-			var TT_NH = new ThongTin_NhanHang();
-			TT_NH.DonhangId = donHang.Id;
-			TT_NH.HoTen = HoTen;
-			TT_NH.SDT = SDT;
-			TT_NH.DiaChi = DiaChi;
-			TT_NH.GhiChu = GhiChu;
-			_context.Add(TT_NH);
-			_context.SaveChanges();
-			HttpContext.Session.Remove("giohang");
-			return RedirectToAction("Index", "GioHang");
+            
         }
     }
 }

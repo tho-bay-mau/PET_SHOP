@@ -5,22 +5,10 @@
 namespace ThoBayMau_ASM.Migrations
 {
     /// <inheritdoc />
-    public partial class suatrangthai : Migration
+    public partial class suaTT2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.AlterColumn<string>(
-                name: "TrangThai",
-                table: "LOAI_SP",
-                type: "nvarchar(max)",
-                nullable: false,
-                oldClrType: typeof(bool),
-                oldType: "bit");
-        }
-
-        /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<bool>(
                 name: "TrangThai",
@@ -29,6 +17,18 @@ namespace ThoBayMau_ASM.Migrations
                 nullable: false,
                 oldClrType: typeof(string),
                 oldType: "nvarchar(max)");
+        }
+
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.AlterColumn<string>(
+                name: "TrangThai",
+                table: "LOAI_SP",
+                type: "nvarchar(max)",
+                nullable: false,
+                oldClrType: typeof(bool),
+                oldType: "bit");
         }
     }
 }
