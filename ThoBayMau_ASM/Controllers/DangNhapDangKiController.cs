@@ -16,14 +16,6 @@ namespace ThoBayMau_ASM.Controllers
             _db = db;
         }
 
-        public IActionResult Index()
-        {
-           
-
-            return View();
-            
-        }
-
         [HttpGet]
         public IActionResult Login()
         {
