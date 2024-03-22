@@ -119,13 +119,13 @@ namespace ThoBayMau_ASM.Controllers
                     };
                     _db.TaiKhoan.Add(db);
                     _db.SaveChanges();
-                    TempData["successMessage"] = "Bạn đã đăng ký thành công!";
+                    TempData["Sucess"] = "Đăng kí thành công!";
                     return RedirectToAction("Login");
                 }
             }
             else
             {
-                TempData["errorMessage"] = "Không thể đăng ký, vui lòng kiểm tra lại thông tin!";
+                TempData["Error"] = "Đăng ký thất bại!";
                 return View();
             }
         }
