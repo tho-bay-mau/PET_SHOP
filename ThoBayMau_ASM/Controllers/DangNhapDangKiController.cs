@@ -17,8 +17,12 @@ namespace ThoBayMau_ASM.Controllers
         }
 
         [HttpGet]
-        public IActionResult Login()
+        public IActionResult Login(string? returnUrl)
         {
+            if(returnUrl != null)
+            {
+                ViewBag.returnUrl = returnUrl;
+            }
             if (HttpContext.Session.GetString("UserName") == null)
             {
                 return View();
