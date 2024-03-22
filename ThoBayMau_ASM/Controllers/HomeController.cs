@@ -76,7 +76,16 @@ namespace ThoBayMau_ASM.Controllers
         }
         public IActionResult Shop_list()
         {
-            return View();
+            ViewBag.LoaiSP = _db.LoaiSP.OrderBy(x => x.Id).ToList();
+            var result = _db.SanPham.Include(x => x.ChiTietSPs).Include(x => x.Anhs).ToList();
+            return View(result);
+        }
+        public IActionResult List_Type(int id)
+        {
+            ViewBag.SPID = id;
+            ViewBag.LoaiSP = _db.LoaiSP.OrderBy(x => x.Id).ToList();
+            var result = _db.SanPham.Where(x => x.LoaiSPId == id).Include(x => x.ChiTietSPs).Include(x => x.Anhs).ToList();
+            return View(result);
         }
         public IActionResult About()
         {
