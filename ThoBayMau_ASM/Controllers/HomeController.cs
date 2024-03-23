@@ -71,10 +71,11 @@ namespace ThoBayMau_ASM.Controllers
             var result = _db.SanPham
                     .Include(x => x.ChiTietSPs)
                     .Include(x => x.Anhs)
-                    .Where(x => x.Id == id_sp)
-                    .ToList();
-            return View(result);
+                    .FirstOrDefault(x => x.Id == id_sp);
+			ViewData["RelateProduct"] = _db.SanPham.Where(x => x.LoaiSPId == result.LoaiSPId).Include(x => x.ChiTietSPs).Include(x => x.Anhs).ToList();
+			return View(result);
         }
+
         public IActionResult Cart()
         {
             return View();
