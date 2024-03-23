@@ -16,7 +16,12 @@ namespace ThoBayMau_ASM.Controllers
         {
             _db = db;
         }
+        public const int ITEM_PER_PAGE = 12;
 
+        [BindProperty(SupportsGet = true, Name = "p")]
+        public int currentpage { get; set; }
+
+        public int countpages { get; set; }
         public IActionResult Index()
         {
             if (HttpContext.Session.GetString("UserName") != null)
@@ -77,15 +82,57 @@ namespace ThoBayMau_ASM.Controllers
         public IActionResult Shop_list()
         {
             ViewBag.LoaiSP = _db.LoaiSP.OrderBy(x => x.Id).ToList();
-            var result = _db.SanPham.Include(x => x.ChiTietSPs).Include(x => x.Anhs).ToList();
-            return View(result);
+            int total = _db.SanPham.Where(x => x.TrangThai == "Đang bán").Count();
+            countpages = (int)Math.Ceiling((double)total / ITEM_PER_PAGE);
+
+            if (currentpage < 1)
+            {
+                currentpage = 1;
+            }
+            if (currentpage > countpages)
+            {
+                currentpage = countpages;
+            }
+
+            ViewBag.CurrentPage = currentpage;
+            ViewBag.CountPages = countpages;
+            if (total > 0)
+            {
+                var result = _db.SanPham.Where(x => x.TrangThai == "Đang bán").Include(x => x.ChiTietSPs).Include(x => x.Anhs).Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
+                return View(result);
+            }
+            else
+            {
+                return View(null);
+            }
         }
         public IActionResult List_Type(int id)
         {
             ViewBag.SPID = id;
             ViewBag.LoaiSP = _db.LoaiSP.OrderBy(x => x.Id).ToList();
-            var result = _db.SanPham.Where(x => x.LoaiSPId == id).Include(x => x.ChiTietSPs).Include(x => x.Anhs).ToList();
-            return View(result);
+            int total = _db.SanPham.Where(x => x.TrangThai == "Đang bán" && x.LoaiSPId == id).Count();
+            countpages = (int)Math.Ceiling((double)total / ITEM_PER_PAGE);
+
+            if (currentpage < 1)
+            {
+                currentpage = 1;
+            }
+            if (currentpage > countpages)
+            {
+                currentpage = countpages;
+            }
+
+            ViewBag.CurrentPage = currentpage;
+            ViewBag.CountPages = countpages;
+            if (total > 0)
+            {
+                var result = _db.SanPham.Where(x => x.TrangThai == "Đang bán" && x.LoaiSPId == id).Include(x => x.ChiTietSPs).Include(x => x.Anhs).Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
+                return View(result);
+            }
+            else
+            {
+                return View(null);
+            }
         }
         public IActionResult About()
         {

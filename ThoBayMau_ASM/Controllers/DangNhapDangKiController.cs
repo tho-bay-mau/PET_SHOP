@@ -42,8 +42,9 @@ namespace ThoBayMau_ASM.Controllers
             if (user != null)
             {
                 HttpContext.Session.SetString("UserName", user.TenTK.ToString());
-                HttpContext.Session.SetJson("User", tk);
-                if(returnUrl != null)
+                HttpContext.Session.SetJson("User", user);
+                var User = HttpContext.Session.GetJson<TaiKhoan>("User");
+                if (returnUrl != null)
                 {
                     return Redirect(returnUrl);
                 }
@@ -56,9 +57,6 @@ namespace ThoBayMau_ASM.Controllers
                     return RedirectToAction("Index", "Home");
                 }
             }
-
-
-
             return View();
         }
 

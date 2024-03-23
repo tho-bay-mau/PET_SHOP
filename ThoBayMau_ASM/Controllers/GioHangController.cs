@@ -152,7 +152,8 @@ namespace ThoBayMau_ASM.Controllers
             string returnUrl = Url.Action("Index", "GioHang");
             if (User == null)
 			{
-				return RedirectToAction("Login", "DangNhapDangKi", new { returnUrl = returnUrl });
+                TempData["Warning"] = "Đăng nhập để sử dụng chức năng";
+                return RedirectToAction("Login", "DangNhapDangKi", new { returnUrl = returnUrl });
 			} else
 			{
 				if (string.IsNullOrEmpty(HoTen))
@@ -167,7 +168,7 @@ namespace ThoBayMau_ASM.Controllers
 						ViewBag.errHoTen = "Họ tên không có kí tự số";
 						TempData["errHoTen"] = ViewBag.errHoTen;
 					}
-					if (Regex.IsMatch(HoTen, @"[^A-Za-z\sđĐ]"))
+					if (Regex.IsMatch(HoTen, @"[^A-Za-z\sđĐ]+$"))
 					{
 						ViewBag.errHoTen = "Họ tên không được có kí tự đặc biệt";
 						TempData["errHoTen"] = ViewBag.errHoTen;

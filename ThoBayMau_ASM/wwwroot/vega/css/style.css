@@ -8046,7 +8046,7 @@ h1, h2, h3, h4, h5,
   padding: 0; }
   @media (max-width: 991.98px) {
     .ftco-navbar-light {
-      background: #000000 !important;
+      /*background: #000000 !important;*/
       position: relative;
       top: 0;
       padding: 10px 15px; } }
@@ -8129,7 +8129,7 @@ h1, h2, h3, h4, h5,
     @media (max-width: 991.98px) {
       .ftco-navbar-light .navbar-nav > .nav-item.cta > a {
         color: #fff;
-        background: #82ae46; } }
+        /*background: #82ae46; */} }
   .ftco-navbar-light .navbar-nav > .nav-item.active > a {
     color: #000000; }
     @media (max-width: 991.98px) {
@@ -8155,16 +8155,17 @@ h1, h2, h3, h4, h5,
     -webkit-box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1); }
     .ftco-navbar-light.scrolled .nav-item.active > a {
-        color: #2d2d2d !important;
+        /*color: #2d2d2d !important;*/
+        color: #17a2b8 !important;
     }
     .ftco-navbar-light.scrolled .nav-item.cta > a {
-        color: #fff !important;
-        background: #17a2b8;
+        /*color: black*/ /*#fff*/ /*!important*/;
+        /*background: #17a2b8;*/
         border: none !important;
     }
       .ftco-navbar-light.scrolled .nav-item.cta > a span {
         display: inline-block;
-        color: #fff !important; }
+        /*color: #fff !important; */}
     .ftco-navbar-light.scrolled .nav-item.cta.cta-colored span {
       border-color: #82ae46; }
     @media (max-width: 991.98px) {
@@ -8190,7 +8191,7 @@ h1, h2, h3, h4, h5,
     .ftco-navbar-light.scrolled .nav-link {
       padding-top: 0.9rem !important;
       padding-bottom: 0.9rem !important;
-      color: #000000 !important; }
+      /*color: #000000 !important;*/ }
       .ftco-navbar-light.scrolled .nav-link.active {
         color: #82ae46 !important; }
     .ftco-navbar-light.scrolled.awake {
@@ -8753,7 +8754,7 @@ h1, h2, h3, h4, h5,
         text-decoration: line-through;
         color: #b3b3b3; }
       .product .text p.price span.price-sale {
-        color: #82ae46; }
+        color: red; }
     .product .text .pricing {
       width: 100%;
       -moz-transition: all 0.3s ease;
@@ -9160,7 +9161,7 @@ h1, h2, h3, h4, h5,
         display: none; } }
 
 .form-control {
-  height: 52px !important;
+  height: 45px !important;
   background: #fff !important;
   color: #000000 !important;
   font-size: 18px;

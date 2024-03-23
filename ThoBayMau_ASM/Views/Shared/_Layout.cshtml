@@ -24,7 +24,6 @@
     <link rel="stylesheet" href="/vega/css/bootstrap-datepicker.css">
     <link rel="stylesheet" href="/vega/css/jquery.timepicker.css">
 
-
     <link rel="stylesheet" href="/vega/css/flaticon.css">
     <link rel="stylesheet" href="/vega/css/icomoon.css">
     <link rel="stylesheet" href="/vega/css/style.css">
@@ -45,45 +44,51 @@
     #txt-frm-email-submit:hover {
         background-color: #34919f;
     }
+
+    #ftco-nav .navbar-nav .nav-item a, #ftco-nav .scrolled .nav-item a {
+        font-weight:bold;
+        font-size:15px;
+        color:black;
+    }
+
+    #ftco-nav .navbar-nav .nav-item a:hover, #ftco-nav.scrolled .nav-item a:hover {
+        color: #17a2b8;
+    }
+
 </style>
 <body class="goto-here">
     <partial name="_notification" />
-    <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
-        <div class="container">
-            <a class="navbar-brand" asp-action="Index" asp-controller="Home">Pethouses</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="oi oi-menu"></span> Menu
+    <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light px-5" id="ftco-navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand me-5" asp-action="Index" asp-controller="Home"><img src="~/img/logo/pethouses_logo_1.png" width="150px" /></a>
+            <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Nhập tên sản phẩm" aria-label="Search">
+            </form>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon" style="color:black;">Menu</span>
             </button>
-
             <div class="collapse navbar-collapse" id="ftco-nav">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item active"><a asp-action="Index" asp-controller="Home" class="nav-link">Trang chủ</a></li>
-                    <li class="nav-item active"><a asp-action="Shop_list" asp-controller="Home" class="nav-link">Sản phẩm</a></li>
-                    
+                    <li class="nav-item"><a asp-action="Shop_list" asp-controller="Home" class="nav-link">Sản phẩm</a></li>
                     <li class="nav-item"><a asp-controller="Home" asp-action="About" class="nav-link">Về chúng tôi</a></li>
-                    
                     <li class="nav-item"><a asp-controller="Home" asp-action="Contact" class="nav-link">Liên hệ</a></li>
                     <li class="nav-item cta cta-colored"><a asp-action="Index" asp-controller="GioHang" class="nav-link"><span class="icon-shopping_cart"></span>[0]</a></li>
-                    @* <li class="nav-item cta cta-colored"><a href="cart.html" class="nav-link"><span class="bi bi-person-circle"></span></a></li> *@
                     @if (!string.IsNullOrEmpty(ViewBag.UserName))
                     {
-                        <li class="nav-item dropdown" style="margin-top: 18px" ;>
-                            @* <a class="nav-link dropdown-toggle" href="#" id="drop2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <span class="bi bi-person-circle"></span>
-                        </a> *@
-                            <span class="text-muted">Chào <b>@ViewBag.UserName</b></span>
-                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
-
-                                <li class="message-body" style="text-align: center;">
-
-                                    <a asp-action="Logout" asp-controller="DangNhapDangKi" class="btn btn-outline-primary mx-3 mt-2 d-block" aria-expanded="false">Đăng xuất</a>
-                                </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <b>Chào @ViewBag.UserName</b>
+                            </a>
+                            <ul class="dropdown-menu mt-0">
+                                <li><a class="dropdown-item" href="#">Thông tin đơn hàng</a></li>
+                                <li><a class="dropdown-item" asp-action="Logout" asp-controller="DangNhapDangKi">Đăng xuất</a></li>
                             </ul>
                         </li>
                     }
                     else
                     {
-                        <li class="nav-item cta cta-colored"><a asp-action="Login" asp-controller="DangNhapDangKi" class="nav-link"><span class="bi bi-person-circle"></span></a></li>
+                        <li class="nav-item cta cta-colored"><a asp-action="Login" asp-controller="DangNhapDangKi" class="nav-link">Đăng nhập</a></li>
                     }
                 </ul>
             </div>
