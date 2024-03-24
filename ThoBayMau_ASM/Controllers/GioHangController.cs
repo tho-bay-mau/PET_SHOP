@@ -21,6 +21,11 @@ namespace ThoBayMau_ASM.Controllers
 
 		public IActionResult Index()
         {
+            var user = HttpContext.Session.GetJson<TaiKhoan>("User");
+            if (user != null)
+            {
+                ViewBag.User = user;
+            }
             ViewBag.HoTen =TempData["HoTen"];
             ViewBag.SDT = TempData["SDT"];
             ViewBag.DiaChi = TempData["DiaChi"];
@@ -220,8 +225,21 @@ namespace ThoBayMau_ASM.Controllers
 				_context.SaveChanges();
 				HttpContext.Session.Remove("giohang");
 				return RedirectToAction("Index", "GioHang");
-			}
-            
+			} 
         }
+		public IActionResult TTDH()
+		{
+            var user = HttpContext.Session.GetJson<TaiKhoan>("User");
+            if (user != null)
+            {
+                ViewBag.User = user;
+                var result = _context.DonHang.Where(x => x.TaiKhoanId == user.Id).ToList();
+                return View(result);
+            }
+			else
+			{
+                return View(null);
+            }
+		}
     }
 }

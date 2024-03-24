@@ -1,0 +1,82 @@
+﻿@model IEnumerable<DonHang>
+
+@{
+    ViewData["Title"] = "TTDH";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .qty-btn {
+        width: 25px;
+        height: 25px;
+        font-size: 14px;
+        font-weight: 500;
+        outline: none;
+        cursor: pointer;
+        background: #fff;
+        color: #999999;
+        -webkit-appearance: none;
+    }
+
+    .item-quantity {
+        width: 35px;
+        height: 25px;
+        font-size: 14px;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+    }
+
+    #order, #send {
+        background-color: #17a2b8;
+        border: none;
+        color: white;
+    }
+
+        #send:hover, #order:hover {
+            background-color: #B84517;
+        }
+</style>
+
+<div>
+    <img style="width:100%;" src="http://www.perfectcompanion.com.vn/vnt_upload/weblink/3.Brid.jpg" alt="" />
+</div>
+<section class="ftco-section">
+    <div class="container">
+        <div class="heading-page-cart text-center pt-3 pb-4">
+            <h4 class="m-0">Đơn hàng của bạn</h4>
+        </div>
+        <div class="row">
+            <div class="col-md-12 ftco-animate">
+                <div class="cart-list">
+                    <table class="table">
+                        <thead class="thead-primary" style="background: #17a2b8;">
+                            <tr class="text-center">
+                                <th>ID</th>
+                                <th>Trạng thái thanh toán</th>
+                                <th>Trạng thái đơn hàng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr class="text-center">
+                                    <td class="product-name">
+                                        <h3>
+                                            @item.Id
+                                        </h3>
+                                    </td>
+                                    <td>
+                                        @item.TrangThaiThanhToan
+                                    </td>
+                                    <td>
+                                        @item.TrangThaiDonHang
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

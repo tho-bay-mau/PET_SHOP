@@ -5,6 +5,7 @@ using System.Diagnostics;
 using ThoBayMau_ASM.Data;
 using ThoBayMau_ASM.Models;
 using Microsoft.AspNetCore;
+using Aram.Infrastructure;
 
 namespace ThoBayMau_ASM.Controllers
 {
@@ -22,17 +23,14 @@ namespace ThoBayMau_ASM.Controllers
         public int currentpage { get; set; }
 
         public int countpages { get; set; }
+
         public IActionResult Index()
         {
-            if (HttpContext.Session.GetString("UserName") != null)
+            var user = HttpContext.Session.GetJson<TaiKhoan>("User");
+            if (user != null)
             {
-                // Nếu có dữ liệu người dùng trong Session, lấy nó ra
-                string userName = HttpContext.Session.GetString("UserName");
-                // Truyền userName vào ViewBag để sử dụng trong View
-                ViewBag.UserName = userName;
+                ViewBag.User = user;
             }
-
-
             var result = _db.SanPham.Include(x => x.ChiTietSPs).Include(x => x.Anhs).ToList();
             return View(result);
         }
@@ -68,6 +66,11 @@ namespace ThoBayMau_ASM.Controllers
         }
         public IActionResult product_detail(int id_sp)
         {
+            var user = HttpContext.Session.GetJson<TaiKhoan>("User");
+            if (user != null)
+            {
+                ViewBag.User = user;
+            }
             var result = _db.SanPham
                     .Include(x => x.ChiTietSPs)
                     .Include(x => x.Anhs)
@@ -75,13 +78,13 @@ namespace ThoBayMau_ASM.Controllers
 			ViewData["RelateProduct"] = _db.SanPham.Where(x => x.LoaiSPId == result.LoaiSPId).Include(x => x.ChiTietSPs).Include(x => x.Anhs).ToList();
 			return View(result);
         }
-
-        public IActionResult Cart()
-        {
-            return View();
-        }
         public IActionResult Shop_list()
         {
+            var user = HttpContext.Session.GetJson<TaiKhoan>("User");
+            if (user != null)
+            {
+                ViewBag.User = user;
+            }
             ViewBag.LoaiSP = _db.LoaiSP.OrderBy(x => x.Id).ToList();
             int total = _db.SanPham.Where(x => x.TrangThai == "Đang bán").Count();
             countpages = (int)Math.Ceiling((double)total / ITEM_PER_PAGE);
@@ -109,6 +112,11 @@ namespace ThoBayMau_ASM.Controllers
         }
         public IActionResult List_Type(int id)
         {
+            var user = HttpContext.Session.GetJson<TaiKhoan>("User");
+            if (user != null)
+            {
+                ViewBag.User = user;
+            }
             ViewBag.SPID = id;
             ViewBag.LoaiSP = _db.LoaiSP.OrderBy(x => x.Id).ToList();
             int total = _db.SanPham.Where(x => x.TrangThai == "Đang bán" && x.LoaiSPId == id).Count();
@@ -137,10 +145,20 @@ namespace ThoBayMau_ASM.Controllers
         }
         public IActionResult About()
         {
+            var user = HttpContext.Session.GetJson<TaiKhoan>("User");
+            if (user != null)
+            {
+                ViewBag.User = user;
+            }
             return View();
         }
         public IActionResult Contact()
         {
+            var user = HttpContext.Session.GetJson<TaiKhoan>("User");
+            if (user != null)
+            {
+                ViewBag.User = user;
+            }
             return View();
         }
     }

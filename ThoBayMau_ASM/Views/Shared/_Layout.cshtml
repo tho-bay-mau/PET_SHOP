@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var Account = (TaiKhoan)ViewBag.User;
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>Cửa hàng thức ăn cho thú cưng</title>
@@ -74,14 +78,14 @@
                     <li class="nav-item"><a asp-controller="Home" asp-action="About" class="nav-link">Về chúng tôi</a></li>
                     <li class="nav-item"><a asp-controller="Home" asp-action="Contact" class="nav-link">Liên hệ</a></li>
                     <li class="nav-item cta cta-colored"><a asp-action="Index" asp-controller="GioHang" class="nav-link"><span class="icon-shopping_cart"></span>[0]</a></li>
-                    @if (!string.IsNullOrEmpty(ViewBag.UserName))
+                    @if (Account != null)
                     {
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <b>Chào @ViewBag.UserName</b>
+                                <b>Chào @Account.TenTK</b>
                             </a>
                             <ul class="dropdown-menu mt-0">
-                                <li><a class="dropdown-item" href="#">Thông tin đơn hàng</a></li>
+                                <li><a class="dropdown-item" asp-action="TTDH" asp-controller="GioHang">Thông tin đơn hàng</a></li>
                                 <li><a class="dropdown-item" asp-action="Logout" asp-controller="DangNhapDangKi">Đăng xuất</a></li>
                             </ul>
                         </li>
