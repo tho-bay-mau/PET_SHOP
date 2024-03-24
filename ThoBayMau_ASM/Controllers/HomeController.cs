@@ -32,6 +32,7 @@ namespace ThoBayMau_ASM.Controllers
                 ViewBag.User = user;
             }
             var result = _db.SanPham.Include(x => x.ChiTietSPs).Include(x => x.Anhs).ToList();
+            ViewBag.Index = true;
             return View(result);
         }
         public IActionResult GetImage(int? id_sp, int? id_hinh)
@@ -76,7 +77,7 @@ namespace ThoBayMau_ASM.Controllers
                     .Include(x => x.Anhs)
                     .FirstOrDefault(x => x.Id == id_sp);
 			ViewData["RelateProduct"] = _db.SanPham.Where(x => x.LoaiSPId == result.LoaiSPId).Include(x => x.ChiTietSPs).Include(x => x.Anhs).ToList();
-			return View(result);
+            return View(result);
         }
         public IActionResult Shop_list()
         {
@@ -103,10 +104,12 @@ namespace ThoBayMau_ASM.Controllers
             if (total > 0)
             {
                 var result = _db.SanPham.Where(x => x.TrangThai == "Đang bán").Include(x => x.ChiTietSPs).Include(x => x.Anhs).Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
+                ViewBag.ProductList = true;
                 return View(result);
             }
             else
             {
+                ViewBag.ProductList = true;
                 return View(null);
             }
         }
@@ -136,10 +139,12 @@ namespace ThoBayMau_ASM.Controllers
             if (total > 0)
             {
                 var result = _db.SanPham.Where(x => x.TrangThai == "Đang bán" && x.LoaiSPId == id).Include(x => x.ChiTietSPs).Include(x => x.Anhs).Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
+                ViewBag.ProductList = true;
                 return View(result);
             }
             else
             {
+                ViewBag.ProductList = true;
                 return View(null);
             }
         }
@@ -150,6 +155,7 @@ namespace ThoBayMau_ASM.Controllers
             {
                 ViewBag.User = user;
             }
+            ViewBag.About = true;
             return View();
         }
         public IActionResult Contact()
@@ -159,6 +165,7 @@ namespace ThoBayMau_ASM.Controllers
             {
                 ViewBag.User = user;
             }
+            ViewBag.Contact = true;
             return View();
         }
     }
