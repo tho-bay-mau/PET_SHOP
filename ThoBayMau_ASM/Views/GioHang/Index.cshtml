@@ -141,7 +141,8 @@
                             <span id="TongTien">@(Model.TongTien().ToString("#,0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")))đ</span>
                         </p>
                     </div>
-                    <p class="text-center"><button type="submit" class="btn btn-primary py-3 px-5" id="order">Đặt hàng</button></p>
+                    <button class="text-center"><input type="submit" class="btn btn-primary py-3 px-5" id="order">Đặt hàng</button>
+                    <p class="text-center"><input type="submit" name="payment" class="btn btn-primary py-3 px-5" id="order" value="Thanh toán VNPay"></p>
                 </div>
             </div>
         </form>
