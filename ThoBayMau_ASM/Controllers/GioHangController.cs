@@ -1,20 +1,25 @@
 ﻿using Aram.Infrastructure;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Policy;
 using System.Text.RegularExpressions;
 using ThoBayMau_ASM.Data;
 using ThoBayMau_ASM.Models;
+using ThoBayMau_ASM.Services;
+using ThoBayMau_ASM.ViewModel;
 
 namespace ThoBayMau_ASM.Controllers
 {
     public class GioHangController : Controller
     {
 		private readonly ThoBayMau_ASMContext _context;
+        private readonly IVnPayService _vnPayService;
 
-		public GioHangController(ThoBayMau_ASMContext context)
+        public GioHangController(ThoBayMau_ASMContext context, IVnPayService vnPayService)
 		{
 			_context = context;
+			_vnPayService = vnPayService;
 		}
 
 		public GioHang? GioHang { get; set; }
@@ -138,7 +143,7 @@ namespace ThoBayMau_ASM.Controllers
 			}
 			return RedirectToAction(nameof(Index), GioHang);
 		}
-		public IActionResult AddToDonHang(string HoTen, string SDT, string DiaChi, string GhiChu)
+		public IActionResult AddToDonHang(string HoTen, string SDT, string DiaChi, string GhiChu, TaiKhoan tk,string payment = "COD")
 		{
 			ViewBag.HoTen = HoTen;
             TempData["HoTen"] = ViewBag.HoTen;
@@ -218,10 +223,69 @@ namespace ThoBayMau_ASM.Controllers
 				TT_NH.GhiChu = GhiChu;
 				_context.Add(TT_NH);
 				_context.SaveChanges();
+				
 				HttpContext.Session.Remove("giohang");
+				if(payment == "Thanh toán VNPay")
+				{
+					var vnPayModel = new VnPaymentRequestModel
+					{
+						Amount = tinhTong(donHang.Id),
+						CreatedDate = DateTime.Now,
+						Description = $"{tk.DiaChi}{tk.SDT}",
+						HoTen = tk.TenTK,
+						OrderId = new Random().Next(1000, 10000)
+					};
+					return Redirect(_vnPayService.CreatePaymentUrl(HttpContext, vnPayModel));
+				}
 				return RedirectToAction("Index", "GioHang");
 			}
             
         }
+        public int tinhTong(int? Id)
+        {
+            int tong = 0;
+
+            int phiship = 20000;
+            var sp = _context.DonHang.Include(x => x.DonHang_ChiTiets)
+                .ThenInclude(y => y.ChiTiet_SP)
+                .FirstOrDefault(x => x.Id == Id);
+            if (sp != null)
+            {
+                foreach (var x in sp.DonHang_ChiTiets)
+                {
+                    int tamtinh = 0;
+                    tamtinh = x.SoLuong * x.ChiTiet_SP.Gia;
+                    tong += tamtinh;
+                }
+                tong = tong + phiship;
+            }
+            return (tong);
+
+        }
+		[Authorize]
+		public IActionResult PaymentFail()
+		{
+			return View("Fail");
+		}
+        [Authorize]
+        public IActionResult PaymentSucess()
+        {
+            return View("Sucess");
+        }
+        [Authorize]
+        public IActionResult PaymentCallBack()
+        {
+			var response = _vnPayService.PaymentExecute(Request.Query);
+			if (response == null || response.VnPayResponseCode != "00")
+			{
+				TempData["Message"] = $"Lỗi thanh toán VN Pay: {response.VnPayResponseCode}";
+				return RedirectToAction("PaymentFail");
+			}
+			// Lưu đơn hàng vào database
+            TempData["Message"] = $"Lỗi thanh toán VN Pay thành công";
+            return RedirectToAction("PaymentSucess");
+            
+        }
+	
     }
 }
