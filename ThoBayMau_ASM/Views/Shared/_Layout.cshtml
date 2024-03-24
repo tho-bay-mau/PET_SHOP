@@ -32,32 +32,34 @@
     <link rel="stylesheet" href="/vega/css/icomoon.css">
     <link rel="stylesheet" href="/vega/css/style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <link href="~/vega/css/search.css" rel="stylesheet" />
 </head>
 <style>
-    #txt-frm-email{
-        width:400px;
+    #txt-frm-email {
+        width: 400px;
     }
 
     #txt-frm-email-submit {
-        width:100px;
-        border:none;
-        color:white;
+        width: 100px;
+        border: none;
+        color: white;
         background-color: #17a2b8;
     }
 
-    #txt-frm-email-submit:hover {
-        background-color: #34919f;
-    }
+        #txt-frm-email-submit:hover {
+            background-color: #34919f;
+        }
 
     #ftco-nav .navbar-nav .nav-item a, #ftco-nav .scrolled .nav-item a {
-        text-transform:initial;
-        font-size:15px;
-        color:black;
+        text-transform: initial;
+        font-size: 15px;
+        color: black;
     }
 
         #ftco-nav .navbar-nav .nav-item a:hover, #ftco-nav.scrolled .nav-item a:hover, #ftco-nav .navbar-nav .active a {
-        color: #17a2b8;
-    }
+            color: #17a2b8;
+        }
 
 </style>
 <body class="goto-here">
@@ -65,9 +67,14 @@
     <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light px-5" id="ftco-navbar">
         <div class="container-fluid">
             <a class="navbar-brand me-5" asp-action="Index" asp-controller="Home"><img src="~/img/logo/pethouses_logo_1.png" width="150px" /></a>
-            <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Nhập tên sản phẩm" aria-label="Search">
-            </form>
+            <div class="section">
+                <div id="the-basics">
+                    <input class="typeahead form-control" type="text" id="keyword" placeholder="Nhập tên sản phẩm" autocomplete="off">
+                    <div class="tt-menu tt-open" style="position: absolute; top: 100%; left: 0px; z-index: 100; display: block;">
+                        
+                    </div>
+                </div>
+            </div>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon" style="color:black;">Menu</span>
             </button>
@@ -182,7 +189,6 @@
             </div>
             <div class="row">
                 <div class="col-md-12 text-center">
-
                 </div>
             </div>
         </div>
@@ -210,5 +216,7 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
     <script src="/vega/js/google-map.js"></script>
     <script src="/vega/js/main.js"></script>
+
+    <script src="~/vega/js/searchscript.js"></script>
 </body>
 </html>
