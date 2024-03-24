@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var Account = (TaiKhoan)ViewBag.User;
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>Cửa hàng thức ăn cho thú cưng</title>
@@ -51,7 +55,7 @@
         color:black;
     }
 
-    #ftco-nav .navbar-nav .nav-item a:hover, #ftco-nav.scrolled .nav-item a:hover {
+        #ftco-nav .navbar-nav .nav-item a:hover, #ftco-nav.scrolled .nav-item a:hover, #ftco-nav .navbar-nav .active a {
         color: #17a2b8;
     }
 
@@ -69,19 +73,19 @@
             </button>
             <div class="collapse navbar-collapse" id="ftco-nav">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active"><a asp-action="Index" asp-controller="Home" class="nav-link">Trang chủ</a></li>
-                    <li class="nav-item"><a asp-action="Shop_list" asp-controller="Home" class="nav-link">Sản phẩm</a></li>
-                    <li class="nav-item"><a asp-controller="Home" asp-action="About" class="nav-link">Về chúng tôi</a></li>
-                    <li class="nav-item"><a asp-controller="Home" asp-action="Contact" class="nav-link">Liên hệ</a></li>
+                    <li class="nav-item @(ViewBag.Index == true ? "active" : "")"><a asp-action="Index" asp-controller="Home" class="nav-link">Trang chủ</a></li>
+                    <li class="nav-item @(ViewBag.ProductList == true ? "active" : "")"><a asp-action="Shop_list" asp-controller="Home" class="nav-link">Sản phẩm</a></li>
+                    <li class="nav-item @(ViewBag.About == true ? "active" : "")"><a asp-controller="Home" asp-action="About" class="nav-link">Về chúng tôi</a></li>
+                    <li class="nav-item @(ViewBag.Contact == true ? "active" : "")"><a asp-controller="Home" asp-action="Contact" class="nav-link">Liên hệ</a></li>
                     <li class="nav-item cta cta-colored"><a asp-action="Index" asp-controller="GioHang" class="nav-link"><span class="icon-shopping_cart"></span>[0]</a></li>
-                    @if (!string.IsNullOrEmpty(ViewBag.UserName))
+                    @if (Account != null)
                     {
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <b>Chào @ViewBag.UserName</b>
+                                <b>Chào @Account.TenTK</b>
                             </a>
                             <ul class="dropdown-menu mt-0">
-                                <li><a class="dropdown-item" href="#">Thông tin đơn hàng</a></li>
+                                <li><a class="dropdown-item" asp-action="TTDH" asp-controller="GioHang">Thông tin đơn hàng</a></li>
                                 <li><a class="dropdown-item" asp-action="Logout" asp-controller="DangNhapDangKi">Đăng xuất</a></li>
                             </ul>
                         </li>

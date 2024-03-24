@@ -43,7 +43,6 @@ namespace ThoBayMau_ASM.Controllers
             {
                 HttpContext.Session.SetString("UserName", user.TenTK.ToString());
                 HttpContext.Session.SetJson("User", user);
-                var User = HttpContext.Session.GetJson<TaiKhoan>("User");
                 if (returnUrl != null)
                 {
                     return Redirect(returnUrl);
