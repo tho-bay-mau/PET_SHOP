@@ -1,6 +1,7 @@
 ﻿using Aram.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Policy;
 using System.Text.RegularExpressions;
@@ -238,8 +239,8 @@ namespace ThoBayMau_ASM.Controllers
                         Amount = tinhTong(donHang.Id),
                         CreatedDate = DateTime.Now,
                         Description = $"{tk.DiaChi}{tk.SDT}",
-                        HoTen = tk.TenTK,
-                        OrderId = new Random().Next(1000, 10000)
+                        OrderId = new Random().Next(1000, 10000),
+                        ProductId = donHang.Id
                     };
                     return Redirect(_vnPayService.CreatePaymentUrl(HttpContext, vnPayModel));
                 }
