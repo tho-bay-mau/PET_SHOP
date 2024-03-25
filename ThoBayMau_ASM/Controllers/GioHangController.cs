@@ -286,7 +286,7 @@ namespace ThoBayMau_ASM.Controllers
                 return RedirectToAction("PaymentFail");
             }
             // Lưu đơn hàng vào database
-            TempData["Message"] = $"Lỗi thanh toán VN Pay thành công";
+            TempData["Message"] = $"Thanh toán VN Pay thành công";
             return RedirectToAction("PaymentSucess");
 
         }

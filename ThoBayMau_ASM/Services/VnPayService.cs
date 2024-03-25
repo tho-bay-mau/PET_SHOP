@@ -38,7 +38,7 @@ namespace ThoBayMau_ASM.Services
             {
                 if(!string.IsNullOrEmpty(key) && key.StartsWith("vnp_"))
                 {
-                    vnpay.AddRequestData(key, value.ToString());
+                    vnpay.AddResponseData(key, value.ToString());
                 }
             }
             var vnp_orderId = Convert.ToInt64(vnpay.GetResponseData("vnp_TxnRef"));
