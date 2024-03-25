@@ -6,6 +6,7 @@ using ThoBayMau_ASM.Data;
 using ThoBayMau_ASM.Models;
 using Microsoft.AspNetCore;
 using Aram.Infrastructure;
+using Newtonsoft.Json;
 
 namespace ThoBayMau_ASM.Controllers
 {
@@ -76,7 +77,7 @@ namespace ThoBayMau_ASM.Controllers
                     .Include(x => x.ChiTietSPs)
                     .Include(x => x.Anhs)
                     .FirstOrDefault(x => x.Id == id_sp);
-			ViewData["RelateProduct"] = _db.SanPham.Where(x => x.LoaiSPId == result.LoaiSPId).Include(x => x.ChiTietSPs).Include(x => x.Anhs).ToList();
+            ViewData["RelateProduct"] = _db.SanPham.Where(x => x.LoaiSPId == result.LoaiSPId).Include(x => x.ChiTietSPs).Include(x => x.Anhs).ToList();
             return View(result);
         }
         public IActionResult Shop_list()
@@ -167,6 +168,21 @@ namespace ThoBayMau_ASM.Controllers
             }
             ViewBag.Contact = true;
             return View();
+        }
+        public JsonResult Search()
+        {
+            var result = _db.SanPham
+                        .Where(x => x.TrangThai == "Đang bán")
+                        .Include(x => x.Anhs)
+                        .GroupBy(x => x.Id)
+                        .Select(group => group.First())
+                        .ToList();
+            string value = string.Empty;
+            value = JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+            return Json(value);
         }
     }
 }
