@@ -278,7 +278,10 @@ namespace ThoBayMau_ASM.Controllers
                 TempData["Error"] = $"Lỗi thanh toán VN Pay: {response.VnPayResponseCode}";
                 return RedirectToAction("Index","GioHang");
             }
-            // Lưu đơn hàng vào database
+            var ID = int.Parse(response.OrderId);
+            var sp = _context.DonHang.FirstOrDefault(x => x.Id == ID);
+            sp.TrangThaiThanhToan = true;
+            _context.SaveChanges();
             TempData["Sucess"] = $"Thanh toán VN Pay thành công";
             return RedirectToAction("Index", "GioHang");
 
