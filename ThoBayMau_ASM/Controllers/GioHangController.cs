@@ -268,26 +268,18 @@ namespace ThoBayMau_ASM.Controllers
             return (tong);
 
         }
-        public IActionResult PaymentFail()
-        {
-            return View("Fail");
-        }
-        public IActionResult PaymentSucess()
-        {
-            return View("Sucess");
-        }
         
         public IActionResult PaymentCallBack()
         {
             var response = _vnPayService.PaymentExecute(Request.Query);
             if (response == null || response.VnPayResponseCode != "00")
             {
-                TempData["Message"] = $"Lỗi thanh toán VN Pay: {response.VnPayResponseCode}";
-                return RedirectToAction("PaymentFail");
+                TempData["Error"] = $"Lỗi thanh toán VN Pay: {response.VnPayResponseCode}";
+                return RedirectToAction("Index","GioHang");
             }
             // Lưu đơn hàng vào database
-            TempData["Message"] = $"Thanh toán VN Pay thành công";
-            return RedirectToAction("PaymentSucess");
+            TempData["Sucess"] = $"Thanh toán VN Pay thành công";
+            return RedirectToAction("Index", "GioHang");
 
         }
         public IActionResult TTDH()
