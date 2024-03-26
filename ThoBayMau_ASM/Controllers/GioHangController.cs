@@ -180,7 +180,7 @@ namespace ThoBayMau_ASM.Controllers
                         ViewBag.errHoTen = "Họ tên không có kí tự số";
                         TempData["errHoTen"] = ViewBag.errHoTen;
                     }
-                    if (Regex.IsMatch(HoTen, @"[^A-Za-z\sđĐ]+$"))
+                    if (Regex.IsMatch(HoTen, @"[\p{P}\p{S}]"))
                     {
                         ViewBag.errHoTen = "Họ tên không được có kí tự đặc biệt";
                         TempData["errHoTen"] = ViewBag.errHoTen;
@@ -221,6 +221,7 @@ namespace ThoBayMau_ASM.Controllers
                     donHang_chiTiet.DonHangId = donHang.Id;
                     donHang_chiTiet.SoLuong = item.SoLuong;
                     _context.Add(donHang_chiTiet);
+                    _context.SaveChanges();
                 }
                 var TT_NH = new ThongTin_NhanHang();
                 TT_NH.DonhangId = donHang.Id;
