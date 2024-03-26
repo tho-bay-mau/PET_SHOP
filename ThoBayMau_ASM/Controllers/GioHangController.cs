@@ -295,9 +295,17 @@ namespace ThoBayMau_ASM.Controllers
             var user = HttpContext.Session.GetJson<TaiKhoan>("User");
             if (user != null)
             {
+                var donhang = _context.DonHang
+                    .Include(x => x.TaiKhoan)
+                    .Include(x => x.ThongTin_NhanHang)
+                    .Include(x => x.DonHang_ChiTiets)
+                    .ThenInclude(x => x.ChiTiet_SP)
+                    .ThenInclude(x => x.SanPham)
+                    .ThenInclude(x => x.LoaiSP)
+                    .Where(x => x.TaiKhoanId == user.Id)
+                    .ToList();
                 ViewBag.User = user;
-                var result = _context.DonHang.Where(x => x.TaiKhoanId == user.Id).ToList();
-                return View(result);
+                return View(donhang);
             }
             else
             {

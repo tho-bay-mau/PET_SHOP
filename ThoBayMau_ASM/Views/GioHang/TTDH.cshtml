@@ -35,6 +35,10 @@
         #send:hover, #order:hover {
             background-color: #B84517;
         }
+
+    .table tbody tr td{
+        padding: 10px 10px;
+    }
 </style>
 
 <div>
@@ -52,26 +56,187 @@
                         <thead class="thead-primary" style="background: #17a2b8;">
                             <tr class="text-center">
                                 <th>ID</th>
-                                <th>Trạng thái thanh toán</th>
-                                <th>Trạng thái đơn hàng</th>
+                                <th>Tổng số lượng</th>
+                                <th>Tổng giá</th>
+                                <th>TT thanh toán</th>
+                                <th>TT đơn hàng</th>
+                                <th>Thanh toán</th>
+                                <th>Chi tiết</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var item in Model)
                             {
-                                <tr class="text-center">
-                                    <td class="product-name">
-                                        <h3>
-                                            @item.Id
-                                        </h3>
-                                    </td>
-                                    <td>
-                                        @item.TrangThaiThanhToan
-                                    </td>
-                                    <td>
-                                        @item.TrangThaiDonHang
-                                    </td>
-                                </tr>
+                                if (item.TrangThaiDonHang == "cho duyet")
+                                {
+                                    <tr>
+                                        @{
+                                            int tongGia = 0;
+                                            int phiShip = 20000;
+                                            int tongTien = 0;
+                                            int tongSoLuong = 0;
+                                        }
+                                        @foreach (var dh_ct in item.DonHang_ChiTiets)
+                                        {
+                                            tongTien += dh_ct.SoLuong * dh_ct.ChiTiet_SP.Gia;
+                                            tongGia = tongTien + phiShip;
+                                            tongSoLuong += dh_ct.SoLuong;
+                                        }
+                                        <td>@item.Id</td>
+                                        <td>
+                                            @tongSoLuong
+                                        </td>
+                                        <td>
+                                            @tongGia
+                                        </td>
+                                        <td>
+                                            @item.TrangThaiThanhToan
+                                        </td>
+                                        <td>
+                                            @item.TrangThaiDonHang
+                                        </td>
+                                        <td>
+                                            @if(item.TrangThaiThanhToan == false)
+                                            {
+                                                <a class="btn btn-danger">Thanh toán</a>
+                                            }
+                                        </td>
+                                        <td>
+
+                                            <a data-bs-toggle="collapse" href="#@item.Id" role="button" aria-expanded="false"
+                                               aria-controls="@item.Id">Chi tiết</a>
+                                        </td>
+
+
+                                    </tr>
+                                    <tr class="collapse" id="@item.Id">
+
+                                        <td colspan="8">
+                                            <span class="text-start">Thời gian tạo đơn : @item.ThoiGianTao</span>
+                                            <p><strong>Sản phẩm trong đơn hàng</strong></p>
+                                            <table class="table table-sm table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">STT</th>
+                                                        <th scope="col">Tên sản phẩm</th>
+                                                        <th scope="col">Loại</th>
+                                                        <th scope="col">Kích thước</th>
+                                                        <th scope="col">Số lượng</th>
+                                                        <th scope="col">Giá</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="table-group-divider">
+                                                    @{
+
+
+                                                        int stt = 0;
+                                                    }
+                                                    @foreach (var dh_ct in item.DonHang_ChiTiets)
+                                                    {
+                                                        stt += 1;
+
+                                                        <tr>
+                                                            <th scope="row">@stt</th>
+                                                            <td>@dh_ct.ChiTiet_SP.SanPham.Ten</td>
+                                                            <td>@dh_ct.ChiTiet_SP.SanPham.LoaiSP.Ten</td>
+                                                            <td>@dh_ct.ChiTiet_SP.KichThuoc</td>
+                                                            <td>@dh_ct.SoLuong</td>
+                                                            <td>@dh_ct.ChiTiet_SP.Gia</td>
+                                                        </tr>
+
+                                                    }
+                                                    <tr>
+                                                        <th scope="row" colspan="4">
+                                                            Tổng:
+                                                        </th>
+                                                        <th>
+                                                            @tongSoLuong
+                                                        </th>
+                                                        <th>
+                                                            @tongTien
+                                                        </th>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <div class="row">
+                                                <div class="col-8">
+                                                    @* //tên nguoi nhan hang *@
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            Tên người nhận hàng :
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <strong>
+                                                                @item.ThongTin_NhanHang?.HoTen
+                                                            </strong>
+                                                        </div>
+                                                    </div>
+                                                    @* //so dien thoai *@
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            Số điện thoại :
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <strong>
+                                                                @item.ThongTin_NhanHang?.SDT
+                                                            </strong>
+
+                                                        </div>
+                                                    </div>
+                                                    @* //dia chi *@
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            Địa chỉ :
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <strong>
+                                                                @item.ThongTin_NhanHang?.DiaChi
+                                                            </strong>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            Ghi chú :
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <strong>
+                                                                @item.ThongTin_NhanHang?.GhiChu
+                                                            </strong>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="row">
+                                                        <div class="col-6 text-end">
+                                                            phí ship :
+                                                        </div>
+                                                        <div class="col-6 text-end pe-4">
+                                                            <strong>@phiShip</strong>
+                                                        </div>
+                                                        <div class="col-6 text-end">
+                                                            Tổng tiền :
+                                                        </div>
+                                                        <div class="col-6 text-end pe-4">
+
+                                                            <strong>@tongGia</strong>
+                                                        </div>
+                                                        <div class="col mt-3">
+                                                            @if(item.TrangThaiDonHang == "cho duyet"){
+                                                                <a href="#" class="btn btn-danger">Tiến hành thanh toán</a>
+                                                            }
+                                                               
+                                                        </div>
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </td>
+                                    </tr>
+
+                                }
                             }
                         </tbody>
                     </table>
