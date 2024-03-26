@@ -1,25 +1,58 @@
 ﻿@using ThoBayMau_ASM.Models;
 @model TaiKhoan
 @{
-    ViewData["Title"] = "GuiMail";
+    ViewData["Title"] = "Gửi mail";
+    // ViewData["Title"] = "Sign Up";
     Layout = null;
 }
 
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <!-- Phần head của bạn -->
-</head>
-<body>
-    <div class="container">
-        <h2>Quên Mật Khẩu</h2>
-        <form id="quenMatKhauForm" method="post">
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-            <input type="submit" id="submitBtn" value="Gửi Yêu Cầu">
-        </form>
-    </div>
 
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Đăng nhập</title>
+
+    <link rel="stylesheet" href="~/cssdndk/css/styles.min.css" />
+    <link rel="stylesheet" href="~//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+</head>
+
+</script>
+
+<body>
+    <partial name="_notification" />
+    <!--  Body Wrapper -->
+    <div style="background-image: url('https://i0.wp.com/thatnhucuocsong.com.vn/wp-content/uploads/2022/02/background-banner-blue-do-hoa.jpg?ssl=1')" class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+         data-sidebar-position="fixed" data-header-position="fixed">
+        <div class="position-relative overflow-hidden radial-gradient min-vh-100 d-flex align-items-center justify-content-center">
+            <div class="d-flex align-items-center justify-content-center w-100">
+                <div class="row justify-content-center w-100">
+                    <div class="col-md-8 col-lg-6 col-xxl-3">
+                        <div class="card mb-0">
+                            <div class="card-body">
+                                <a href="#" class="text-nowrap logo-img text-center d-block py-3 w-100">
+                                    <img src="~/img/logo/pethouses_logo_1.png" width="180" alt="" />
+                                </a>
+                                <form method="post" id="quenMatKhauForm">
+                                    <div class="mb-3">
+                                        <label class="form-label">Email</label>
+                                        <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp"/>
+                                    </div>
+                                    <input type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2" id="submitBtn" value="Gửi yêu cầu"/>
+                                    <div class="d-flex align-items-center justify-content-center">
+                                        <p class="fs-4 mb-0 fw-bold">Chưa có tài khoản ?</p>
+                                        <a class="text-primary fw-bold ms-2" href="~/DangNhapDangKi/Signup">Đăng ký</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <script>
         $(document).ready(function () {
             $('#quenMatKhauForm').submit(function (e) {
@@ -32,14 +65,14 @@
                     success: function (response) {
                         if (response.success) {
                             var confirmationCode = response.confirmationCode;
-                            alert('Một mã xác nhận đã được gửi đến email của bạn. Vui lòng kiểm tra email và nhập mã xác nhận để đặt lại mật khẩu.');
+                            @TempData["warning"] = "Một mã xác nhận đã được gửi đến email của bạn. Vui lòng kiểm tra email và nhập mã xác nhận để đặt lại mật khẩu.";
                             // Redirect to password reset page with confirmation code
                         } else {
-                            alert(response.responseText);
+                            @TempData["error"] = response.responseText
                         }
                     },
                     error: function () {
-                        alert('Đã xảy ra lỗi. Vui lòng thử lại sau.');
+                            @TempData["error"] = "Chưa gửi được mã xác nhận!!"
                     }
                 });
             });
@@ -47,4 +80,3 @@
     </script>
 </body>
 </html>
-

@@ -1,24 +1,60 @@
-﻿@model TaiKhoan
-
+﻿@using ThoBayMau_ASM.Models;
+@model TaiKhoan
 @{
-    ViewData["Title"] = "QuenMatKhau";
+    ViewData["Title"] = "Login";
+    // ViewData["Title"] = "Sign Up";
     Layout = null;
 }
 
-@{
-    ViewData["Title"] = "Nhập Mã Xác Nhận và Mật Khẩu Mới";
-}
 
-<h2>Nhập Mã Xác Nhận và Mật Khẩu Mới</h2>
+<!doctype html>
+<html lang="en">
 
-<form method="post" action="@Url.Action("QuenMatKhau", "DangNhapDangKi")">
-    <div class="form-group">
-        <label for="maXacNhan">Mã Xác Nhận:</label>
-        <input type="text" class="form-control" id="maXacNhan" name="maXacNhan" required>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Quên mật khẩu</title>
+
+    <link rel="stylesheet" href="~/cssdndk/css/styles.min.css" />
+    <link rel="stylesheet" href="~//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+</head>
+
+
+<body>
+    <partial name="_notification" />
+    <!--  Body Wrapper -->
+    <div style="background-image: url('https://i0.wp.com/thatnhucuocsong.com.vn/wp-content/uploads/2022/02/background-banner-blue-do-hoa.jpg?ssl=1')" class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+         data-sidebar-position="fixed" data-header-position="fixed">
+        <div class="position-relative overflow-hidden radial-gradient min-vh-100 d-flex align-items-center justify-content-center">
+            <div class="d-flex align-items-center justify-content-center w-100">
+                <div class="row justify-content-center w-100">
+                    <div class="col-md-8 col-lg-6 col-xxl-3">
+                        <div class="card mb-0">
+                            <div class="card-body">
+                                <a href="#" class="text-nowrap logo-img text-center d-block py-3 w-100">
+                                    <img src="~/img/logo/pethouses_logo_1.png" width="180" alt="" />
+                                </a>
+                                <form asp-controller="DangNhapDangKi" asp-action="QuenMatKhau" method="post" class="form" >
+                                    <div class="mb-3">
+                                        <label for="maXacNhan" class="form-label">Mã Xác Nhận</label>
+                                        <input type="text" class="form-control" id="maXacNhan" name="maXacNhan" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="newPassword" class="form-label">Mật khẩu mới</label>
+                                        <input type="password" class="form-control" id="newPassword" name="newPassword" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">Đổi mật khẩu</button>
+                                    <div class="d-flex align-items-center justify-content-center">
+                                        <p class="fs-4 mb-0 fw-bold">Đã có tài khoản ?</p>
+                                        <a class="text-primary fw-bold ms-2" href="~/DangNhapDangKi/Login">Đăng nhập</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="form-group">
-        <label for="newPassword">Mật khẩu mới:</label>
-        <input type="password" class="form-control" id="newPassword" name="newPassword" required>
-    </div>
-    <button type="submit" class="btn btn-primary">Thay đổi mật khẩu</button>
-</form>
+</body>
+</html>
