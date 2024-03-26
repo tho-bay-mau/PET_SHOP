@@ -18,6 +18,21 @@
     <link rel="stylesheet" href="~/cssdndk/css/styles.min.css" />
     <link rel="stylesheet" href="~//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
 </head>
+@if (TempData["successMessage"] != null)
+{
+    <div id="successMessage" class="alert alert-danger mt-3">
+        @TempData["successMessage"]
+    </div>
+}
+
+<script>
+    setTimeout(function() {
+        var successMessageElement = document.getElementById('successMessage');
+        if (successMessageElement) {
+            successMessageElement.style.display = 'none';
+        }
+    }, 2500); 
+</script>
 
 <body>
     <partial name="_notification" />

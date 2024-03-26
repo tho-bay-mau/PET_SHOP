@@ -3,6 +3,8 @@ using ThoBayMau_ASM.Data;
 using ThoBayMau_ASM.Models;
 using System;
 using Aram.Infrastructure;
+using System.Net.Mail;
+using System.Net;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication;
@@ -186,6 +188,99 @@ namespace ThoBayMau_ASM.Controllers
                 return View();
             }
         }
+        //QMK
+        public ActionResult GuiMail()
+        {
+            return View();
+        }
 
+        [HttpPost]
+        public async Task<IActionResult> GuiMail(string email)
+        {
+            var user = _db.TaiKhoan.FirstOrDefault(s => s.Email == email);
+
+            if (user != null)
+            {
+                string maXacNhan;
+                Random rnd = new Random();
+                maXacNhan = rnd.Next().ToString();
+
+              
+                HttpContext.Session.SetString("MaXacNhan", maXacNhan);
+                HttpContext.Session.SetString("ResetEmail", email);
+
+                SmtpClient smtp = new SmtpClient("smtp.gmail.com");
+                smtp.EnableSsl = true;
+                smtp.Port = 587;
+                smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                smtp.Credentials = new NetworkCredential("petshop20002003@gmail.com", "jddd xqev vqyl mgbg");
+
+                MailMessage mail = new MailMessage();
+                mail.To.Add(email);
+                mail.From = new MailAddress("petshop20002003@gmail.com");
+                mail.Subject = "Thông Báo Quan Trọng Từ PEt_shop";
+
+                mail.Body = "Kính gửi,<br>" +
+                            "Chúng tôi xác nhận bạn đã sử dụng quên mật khẩu của chúng tôi<br>" +
+                            "<strong><h2>Đây là mã xác nhận của bạn: " + maXacNhan + "</h2></strong><br>" +
+                            "Xin vui lòng không cung cấp cho người khác<br>" +
+                            "Trân trọng.<br>" +
+                            "Hỗ trợ Khách Hàng Pet-Shop" + "<br><br>";
+
+                mail.IsBodyHtml = true;
+                await smtp.SendMailAsync(mail);
+
+                return RedirectToAction("QuenMatKhau");
+            }
+            return Json(new { success = false, responseText = "Email không tồn tại trong hệ thống!" });
+        }
+
+        public ActionResult QuenMatKhau()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult QuenMatKhau(string maXacNhan, string email, string newPassword)
+        {
+            var sessionMaXacNhan = HttpContext.Session.GetString("MaXacNhan");
+            var resetEmail = HttpContext.Session.GetString("ResetEmail");
+
+            // So sánh mã xác nhận từ session với mã xác nhận từ người dùng nhập vào
+            if (maXacNhan == sessionMaXacNhan)
+            {
+                var user = _db.TaiKhoan.FirstOrDefault(s => s.Email == resetEmail);
+
+                if (user != null)
+                {
+                    // Đặt lại mật khẩu cho người dùng
+                    user.MatKhau = newPassword;
+                    _db.Update(user);
+                    _db.SaveChanges();
+
+                    ViewData["Result"] = "success";
+                    return View();
+                }
+            }
+            // Trường hợp mã xác nhận không khớp hoặc email không tồn tại
+            ViewData["Result"] = "error";
+            return View();
+        }
+
+
+        [HttpGet]
+        public JsonResult CheckEmail(string email)
+        {
+            bool exists = EmailExistsInNhanVien(email) ;
+            return Json(new { exists = exists });
+        }
+
+        private bool EmailExistsInNhanVien(string email)
+        {
+            return _db.TaiKhoan.Any(nv => nv.Email == email);
+        }
+
+       
     }
 }
+
+
