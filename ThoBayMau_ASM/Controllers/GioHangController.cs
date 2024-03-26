@@ -280,8 +280,11 @@ namespace ThoBayMau_ASM.Controllers
             }
             var ID = int.Parse(response.OrderId);
             var sp = _context.DonHang.FirstOrDefault(x => x.Id == ID);
-            sp.TrangThaiThanhToan = true;
-            _context.SaveChanges();
+            if (sp != null)
+            {
+                sp.TrangThaiThanhToan = true;
+                _context.SaveChanges();
+            }
             TempData["Sucess"] = $"Thanh toán VN Pay thành công";
             return RedirectToAction("Index", "GioHang");
 

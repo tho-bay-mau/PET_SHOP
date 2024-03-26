@@ -12,7 +12,6 @@
     <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="~//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
 
     <link rel="stylesheet" href="/vega/css/open-iconic-bootstrap.min.css">
     <link rel="stylesheet" href="/vega/css/animate.css">
@@ -34,34 +33,38 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <link href="~/vega/css/search.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="~//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+
+    <style>
+        #txt-frm-email {
+            width: 400px;
+        }
+
+        #txt-frm-email-submit {
+            width: 100px;
+            border: none;
+            color: white;
+            background-color: #17a2b8;
+        }
+
+            #txt-frm-email-submit:hover {
+                background-color: #34919f;
+            }
+
+        #ftco-nav .navbar-nav .nav-item a, #ftco-nav .scrolled .nav-item a {
+            text-transform: initial;
+            font-size: 15px;
+            color: black;
+        }
+
+            #ftco-nav .navbar-nav .nav-item a:hover, #ftco-nav.scrolled .nav-item a:hover, #ftco-nav .navbar-nav .active a {
+                color: #17a2b8;
+            }
+
+    </style>
 </head>
-<style>
-    #txt-frm-email {
-        width: 400px;
-    }
 
-    #txt-frm-email-submit {
-        width: 100px;
-        border: none;
-        color: white;
-        background-color: #17a2b8;
-    }
-
-        #txt-frm-email-submit:hover {
-            background-color: #34919f;
-        }
-
-    #ftco-nav .navbar-nav .nav-item a, #ftco-nav .scrolled .nav-item a {
-        text-transform: initial;
-        font-size: 15px;
-        color: black;
-    }
-
-        #ftco-nav .navbar-nav .nav-item a:hover, #ftco-nav.scrolled .nav-item a:hover, #ftco-nav .navbar-nav .active a {
-            color: #17a2b8;
-        }
-
-</style>
 <body class="goto-here">
     <partial name="_notification" />
     <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light px-5" id="ftco-navbar">
@@ -71,7 +74,6 @@
                 <div id="the-basics">
                     <input class="typeahead form-control" type="text" id="keyword" placeholder="Nhập tên sản phẩm" autocomplete="off">
                     <div class="tt-menu tt-open" style="position: absolute; top: 100%; left: 0px; z-index: 100; display: block;">
-                        
                     </div>
                 </div>
             </div>
