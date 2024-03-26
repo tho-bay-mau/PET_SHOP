@@ -218,14 +218,14 @@ namespace ThoBayMau_ASM.Controllers
                 MailMessage mail = new MailMessage();
                 mail.To.Add(email);
                 mail.From = new MailAddress("petshop20002003@gmail.com");
-                mail.Subject = "Thông Báo Quan Trọng Từ PEt_shop";
+                mail.Subject = "Thông Báo Quan Trọng Từ Pet_Shop";
 
                 mail.Body = "Kính gửi,<br>" +
                             "Chúng tôi xác nhận bạn đã sử dụng quên mật khẩu của chúng tôi<br>" +
                             "<strong><h2>Đây là mã xác nhận của bạn: " + maXacNhan + "</h2></strong><br>" +
                             "Xin vui lòng không cung cấp cho người khác<br>" +
                             "Trân trọng.<br>" +
-                            "Hỗ trợ Khách Hàng Pet-Shop" + "<br><br>";
+                            "Hỗ trợ Khách Hàng Pet_Shop" + "<br><br>";
 
                 mail.IsBodyHtml = true;
                 await smtp.SendMailAsync(mail);
