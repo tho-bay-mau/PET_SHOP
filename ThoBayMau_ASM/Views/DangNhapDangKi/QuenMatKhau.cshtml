@@ -1,8 +1,5 @@
-﻿@using ThoBayMau_ASM.Models;
-@model TaiKhoan
-@{
+﻿@{
     ViewData["Title"] = "Login";
-    // ViewData["Title"] = "Sign Up";
     Layout = null;
 }
 
@@ -38,6 +35,7 @@
                                     <div class="mb-3">
                                         <label for="maXacNhan" class="form-label">Mã Xác Nhận</label>
                                         <input type="text" class="form-control" id="maXacNhan" name="maXacNhan" required>
+                                        <span class="text-danger">@ViewBag.errCode</span>
                                     </div>
                                     <div class="mb-3">
                                         <label for="newPassword" class="form-label">Mật khẩu mới</label>

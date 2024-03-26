@@ -1,8 +1,5 @@
-﻿@using ThoBayMau_ASM.Models;
-@model TaiKhoan
-@{
+﻿@{
     ViewData["Title"] = "Gửi mail";
-    // ViewData["Title"] = "Sign Up";
     Layout = null;
 }
 
@@ -38,7 +35,8 @@
                                 <form method="post" id="quenMatKhauForm">
                                     <div class="mb-3">
                                         <label class="form-label">Email</label>
-                                        <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp"/>
+                                        <input type="email" name="email" value="@ViewBag.Email" class="form-control" id="email" aria-describedby="emailHelp"/>
+                                        <span class="text-danger">@ViewBag.errEmail</span>
                                     </div>
                                     <input type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2" id="submitBtn" value="Gửi yêu cầu"/>
                                     <div class="d-flex align-items-center justify-content-center">
@@ -53,30 +51,5 @@
             </div>
         </div>
     </div>
-    <script>
-        $(document).ready(function () {
-            $('#quenMatKhauForm').submit(function (e) {
-                e.preventDefault();
-                var email = $('#email').val();
-                $.ajax({
-                    url: '@Url.Action("GuiMail", "DangNhapDangKi")',
-                    type: 'POST',
-                    data: { email: email },
-                    success: function (response) {
-                        if (response.success) {
-                            var confirmationCode = response.confirmationCode;
-                            @TempData["warning"] = "Một mã xác nhận đã được gửi đến email của bạn. Vui lòng kiểm tra email và nhập mã xác nhận để đặt lại mật khẩu.";
-                            // Redirect to password reset page with confirmation code
-                        } else {
-                            @TempData["error"] = response.responseText
-                        }
-                    },
-                    error: function () {
-                            @TempData["error"] = "Chưa gửi được mã xác nhận!!"
-                    }
-                });
-            });
-        });
-    </script>
 </body>
 </html>

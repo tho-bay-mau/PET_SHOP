@@ -8,6 +8,8 @@ using System.Net;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication;
+using System.Text.RegularExpressions;
+using System.Text;
 
 namespace ThoBayMau_ASM.Controllers
 {
@@ -63,6 +65,35 @@ namespace ThoBayMau_ASM.Controllers
             }
             return View();
         }
+        //chuyển tên tài khoản google thành không dấu cho phù hợp với varchar
+        static string RemoveDiacritics(string input)
+        {
+            string regex = @"\p{IsCombiningDiacriticalMarks}+";
+
+            string normalizedString = input.Normalize(NormalizationForm.FormD);
+            string withoutDiacritics = Regex.Replace(normalizedString, regex, string.Empty).Normalize(NormalizationForm.FormC);
+
+            withoutDiacritics = withoutDiacritics.Replace("đ", "d").Replace("Đ", "d");
+
+            withoutDiacritics = Regex.Replace(withoutDiacritics, @"\s+", "");
+
+            return withoutDiacritics;
+        }
+        //tạo mật khẩu tự động tăng bảo mật
+        static string RandomPassword(int quantity)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;:,.<>?";
+            StringBuilder password = new StringBuilder();
+            Random random = new Random();
+
+            for (int i = 0; i < quantity; i++)
+            {
+                int index = random.Next(chars.Length);
+                password.Append(chars[index]);
+            }
+
+            return password.ToString();
+        }
 
         public async Task LoginByGoogle()
         {
@@ -97,7 +128,6 @@ namespace ThoBayMau_ASM.Controllers
                 DangNhapByGoogle(email);
                 return RedirectToAction("Index", "Home");
             }
-            return Json(name + "_" + email);
         }
         public async Task LogoutByGoogle()
         {
@@ -108,10 +138,11 @@ namespace ThoBayMau_ASM.Controllers
         {
             TaiKhoan tk = new TaiKhoan();
             tk.Email = email;
-            tk.SDT = "999999999";
-            tk.DiaChi = "đ";
-            tk.TenTK = name;
-            tk.MatKhau = name + "123";
+            tk.SDT = "00000000000";
+            tk.TenTK = RemoveDiacritics(name);
+            tk.MatKhau = RandomPassword(12);
+            tk.NgayDangKy = DateTime.Now;
+            tk.TrangThai = true;
             _db.TaiKhoan.Add(tk);
             _db.SaveChanges();
         }
@@ -197,42 +228,58 @@ namespace ThoBayMau_ASM.Controllers
         [HttpPost]
         public async Task<IActionResult> GuiMail(string email)
         {
-            var user = _db.TaiKhoan.FirstOrDefault(s => s.Email == email);
-
-            if (user != null)
+            if (!string.IsNullOrEmpty(email))
             {
-                string maXacNhan;
-                Random rnd = new Random();
-                maXacNhan = rnd.Next().ToString();
+                if (Regex.IsMatch(email, @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"))
+                {
+                    var user = _db.TaiKhoan.FirstOrDefault(s => s.Email == email);
 
-              
-                HttpContext.Session.SetString("MaXacNhan", maXacNhan);
-                HttpContext.Session.SetString("ResetEmail", email);
+                    if (user != null)
+                    {
+                        string maXacNhan;
+                        int time = 1;
+                        Random rnd = new Random();
+                        maXacNhan = rnd.Next().ToString();
+                        DateTime expireTime = DateTime.Now.AddMinutes(time);
 
-                SmtpClient smtp = new SmtpClient("smtp.gmail.com");
-                smtp.EnableSsl = true;
-                smtp.Port = 587;
-                smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
-                smtp.Credentials = new NetworkCredential("petshop20002003@gmail.com", "jddd xqev vqyl mgbg");
+                        HttpContext.Session.SetString("MaXacNhan", maXacNhan);
+                        HttpContext.Session.SetString("ResetEmail", email);
+                        HttpContext.Session.SetString("ExpireTime", expireTime.ToString("yyyy-MM-dd HH:mm:ss"));
 
-                MailMessage mail = new MailMessage();
-                mail.To.Add(email);
-                mail.From = new MailAddress("petshop20002003@gmail.com");
-                mail.Subject = "Thông Báo Quan Trọng Từ Pet_Shop";
+                        SmtpClient smtp = new SmtpClient("smtp.gmail.com");
+                        smtp.EnableSsl = true;
+                        smtp.Port = 587;
+                        smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                        smtp.Credentials = new NetworkCredential("petshop20002003@gmail.com", "jddd xqev vqyl mgbg");
 
-                mail.Body = "Kính gửi,<br>" +
-                            "Chúng tôi xác nhận bạn đã sử dụng quên mật khẩu của chúng tôi<br>" +
-                            "<strong><h2>Đây là mã xác nhận của bạn: " + maXacNhan + "</h2></strong><br>" +
-                            "Xin vui lòng không cung cấp cho người khác<br>" +
-                            "Trân trọng.<br>" +
-                            "Hỗ trợ Khách Hàng Pet_Shop" + "<br><br>";
+                        MailMessage mail = new MailMessage();
+                        mail.To.Add(email);
+                        mail.From = new MailAddress("petshop20002003@gmail.com");
+                        mail.Subject = "Thông Báo Quan Trọng Từ Pet_Shop";
 
-                mail.IsBodyHtml = true;
-                await smtp.SendMailAsync(mail);
+                        mail.Body = "Kính gửi,<br>" +
+                                    "Chúng tôi xác nhận bạn đã sử dụng quên mật khẩu của chúng tôi<br>" +
+                                    "<strong><h2>Đây là mã xác nhận của bạn: " + maXacNhan + "</h2></strong><br>" +
+                                    "Mã này sẽ hết hạn sau " + time + " phút <br>" +
+                                    "Xin vui lòng không cung cấp cho người khác<br>" +
+                                    "Trân trọng.<br>" +
+                                    "Hỗ trợ Khách Hàng Pet_Shop" + "<br><br>";
 
-                return RedirectToAction("QuenMatKhau");
+                        mail.IsBodyHtml = true;
+                        await smtp.SendMailAsync(mail);
+                        TempData["Sucess"] = "Một mã xác nhận đã được gửi đến email của bạn. Vui lòng kiểm tra email và nhập mã xác nhận để đặt lại mật khẩu.";
+                        return RedirectToAction("QuenMatKhau");
+                    }
+                    ViewBag.Email = email;
+                    ViewBag.errEmail = "Email chưa được đăng ký trong hệ thống";
+                    return View("GuiMail", email);
+                }
+                ViewBag.errEmail = "Email không hợp lệ";
+                return View("GuiMail", email);
             }
-            return Json(new { success = false, responseText = "Email không tồn tại trong hệ thống!" });
+            ViewBag.Email = email;
+            ViewBag.errEmail = "Email không được bỏ trống";
+            return View("GuiMail", email);
         }
 
         public ActionResult QuenMatKhau()
@@ -240,46 +287,35 @@ namespace ThoBayMau_ASM.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult QuenMatKhau(string maXacNhan, string email, string newPassword)
+        public IActionResult QuenMatKhau(string maXacNhan, string newPassword)
         {
             var sessionMaXacNhan = HttpContext.Session.GetString("MaXacNhan");
             var resetEmail = HttpContext.Session.GetString("ResetEmail");
+            var sessionExpireTime = HttpContext.Session.GetString("ExpireTime");
 
-            // So sánh mã xác nhận từ session với mã xác nhận từ người dùng nhập vào
-            if (maXacNhan == sessionMaXacNhan)
+            DateTime expireTime;
+            if (DateTime.TryParse(sessionExpireTime, out expireTime) && DateTime.Now <= expireTime)
             {
-                var user = _db.TaiKhoan.FirstOrDefault(s => s.Email == resetEmail);
-
-                if (user != null)
+                // So sánh mã xác nhận từ session với mã xác nhận từ người dùng nhập vào
+                if (maXacNhan == sessionMaXacNhan)
                 {
-                    // Đặt lại mật khẩu cho người dùng
-                    user.MatKhau = newPassword;
-                    _db.Update(user);
-                    _db.SaveChanges();
+                    var user = _db.TaiKhoan.FirstOrDefault(s => s.Email == resetEmail);
 
-                    ViewData["Result"] = "success";
-                    return View();
+                    if (user != null)
+                    {
+                        // Đặt lại mật khẩu cho người dùng
+                        user.MatKhau = newPassword;
+                        _db.Update(user);
+                        _db.SaveChanges();
+
+                        TempData["Sucess"] = $"Reset mật khẩu thành công";
+                        return View("Login");
+                    }
                 }
             }
-            // Trường hợp mã xác nhận không khớp hoặc email không tồn tại
-            ViewData["Result"] = "error";
+            ViewBag.errCode = "Mã xác nhận không chính xác";
             return View();
-        }
-
-
-        [HttpGet]
-        public JsonResult CheckEmail(string email)
-        {
-            bool exists = EmailExistsInNhanVien(email) ;
-            return Json(new { exists = exists });
-        }
-
-        private bool EmailExistsInNhanVien(string email)
-        {
-            return _db.TaiKhoan.Any(nv => nv.Email == email);
-        }
-
-       
+        } 
     }
 }
 
