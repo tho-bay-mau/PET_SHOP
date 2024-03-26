@@ -5,6 +5,9 @@ using System;
 using Aram.Infrastructure;
 using System.Net.Mail;
 using System.Net;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication;
 
 namespace ThoBayMau_ASM.Controllers
 {
@@ -44,8 +47,8 @@ namespace ThoBayMau_ASM.Controllers
             if (user != null)
             {
                 HttpContext.Session.SetString("UserName", user.TenTK.ToString());
-                HttpContext.Session.SetJson("User", tk);
-                if(returnUrl != null)
+                HttpContext.Session.SetJson("User", user);
+                if (returnUrl != null)
                 {
                     return Redirect(returnUrl);
                 }
@@ -58,15 +61,69 @@ namespace ThoBayMau_ASM.Controllers
                     return RedirectToAction("Index", "Home");
                 }
             }
-
-
-
             return View();
         }
 
-        public IActionResult Logout()
+        public async Task LoginByGoogle()
         {
-
+            await HttpContext.ChallengeAsync(GoogleDefaults.AuthenticationScheme,
+                new AuthenticationProperties
+                {
+                    RedirectUri = Url.Action("GoogleResponse")
+                });
+        }
+        public async Task<IActionResult> GoogleResponse()
+        {
+            var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            var claims = result.Principal.Identities.FirstOrDefault().Claims.Select(x => new
+            {
+                x.Issuer,
+                x.OriginalIssuer,
+                x.Type,
+                x.Value
+            });
+            var emailClaim = User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.Email);
+            var email = emailClaim?.Value;
+            var name = User.Identity.Name;
+            var timEmail = _db.TaiKhoan.FirstOrDefault(x => x.Email == email);
+            if (timEmail == null)
+            {
+                CreateByGoogle(email, name);
+                DangNhapByGoogle(email);
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                DangNhapByGoogle(email);
+                return RedirectToAction("Index", "Home");
+            }
+            return Json(name + "_" + email);
+        }
+        public async Task LogoutByGoogle()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            await HttpContext.SignOutAsync(GoogleDefaults.AuthenticationScheme);
+        }
+        public void CreateByGoogle(string email, string name)
+        {
+            TaiKhoan tk = new TaiKhoan();
+            tk.Email = email;
+            tk.SDT = "999999999";
+            tk.DiaChi = "đ";
+            tk.TenTK = name;
+            tk.MatKhau = name + "123";
+            _db.TaiKhoan.Add(tk);
+            _db.SaveChanges();
+        }
+        public void DangNhapByGoogle(string email)
+        {
+            var user = _db.TaiKhoan.FirstOrDefault(x => x.Email == email);
+            HttpContext.Session.SetString("UserName", user.TenTK.ToString());
+            HttpContext.Session.SetJson("User", user);
+        }
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync();
             HttpContext.Session.Clear();
             HttpContext.Session.Remove("UserName");
             HttpContext.Session.Remove("User");
@@ -121,13 +178,13 @@ namespace ThoBayMau_ASM.Controllers
                     };
                     _db.TaiKhoan.Add(db);
                     _db.SaveChanges();
-                    TempData["successMessage"] = "Bạn đã đăng ký thành công!";
+                    TempData["Sucess"] = "Đăng kí thành công!";
                     return RedirectToAction("Login");
                 }
             }
             else
             {
-                TempData["errorMessage"] = "Không thể đăng ký, vui lòng kiểm tra lại thông tin!";
+                TempData["Error"] = "Đăng ký thất bại!";
                 return View();
             }
         }

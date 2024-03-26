@@ -37,6 +37,9 @@
         }
 </style>
 
+<div>
+    <img style="width:100%;" src="http://www.perfectcompanion.com.vn/vnt_upload/weblink/3.Brid.jpg" alt="" />
+</div>
 <section class="ftco-section">
     <div class="container">
         <div class="heading-page-cart text-center pt-3 pb-4">
@@ -78,14 +81,15 @@
 
                                     <td class="total">
                                         <div class="line-item_quantity product-quantity qty-click d-inline-block">
-                                            <button @* onclick="qtyminus(@item.ChiTiet_SP.Id,@item.ChiTiet_SP.Gia)" *@ type="button" id="tang_@item.ChiTiet_SP.Id" class="qtyminus qty-btn border float-left giam" data-id="@item.ChiTiet_SP.Id">-</button>
-                                            <input @* onchange="total(@item.ChiTiet_SP.Id, @item.ChiTiet_SP.Gia, this.value" *@ type="text" size="4" name="updates[]" min="1" id="sl_@item.ChiTiet_SP.Id" value="@(item.SoLuong)" class="item-quantity float-left text-center border border-right-0 border-left-0" data-id="@item.ChiTiet_SP.Id">
-                                            <button @* onclick="qtyplus(@item.ChiTiet_SP.Id,@item.ChiTiet_SP.Gia)" type="button" *@ id="giam_@item.ChiTiet_SP.Id" class="qtyplus qty-btn border float-left tang" data-id="@item.ChiTiet_SP.Id">+</button>
+                                            <button type="button" id="tang_@item.ChiTiet_SP.Id" class="qtyminus qty-btn border float-left giam" data-id="@item.ChiTiet_SP.Id">-</button>
+                                            <input type="text" size="4" name="updates[]" min="1" id="sl_@item.ChiTiet_SP.Id" value="@(item.SoLuong)" class="item-quantity float-left text-center border border-right-0 border-left-0" data-id="@item.ChiTiet_SP.Id">
+                                            <button id="giam_@item.ChiTiet_SP.Id" class="qtyplus qty-btn border float-left tang" data-id="@item.ChiTiet_SP.Id">+</button>
                                         </div>
                                     </td>
                                     <td class="total" id="t @item.ChiTiet_SP.Id">@((item.ChiTiet_SP.Gia * item.SoLuong).ToString("#,0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")))đ</td>
                                 </tr>
                             }
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -137,7 +141,8 @@
                             <span id="TongTien">@(Model.TongTien().ToString("#,0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")))đ</span>
                         </p>
                     </div>
-                    <p class="text-center"><button type="submit" class="btn btn-primary py-3 px-5" id="order">Đặt hàng</button></p>
+                    <button class="text-center"><input type="submit" class="btn btn-primary py-3 px-5" id="order">Đặt hàng</button>
+                    <p class="text-center"><input type="submit" name="payment" class="btn btn-primary py-3 px-5" id="order" value="Thanh toán VNPay"></p>
                 </div>
             </div>
         </form>

@@ -16,6 +16,7 @@
     <title>Đăng nhập</title>
 
     <link rel="stylesheet" href="~/cssdndk/css/styles.min.css" />
+    <link rel="stylesheet" href="~//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
 </head>
 @if (TempData["successMessage"] != null)
 {
@@ -34,6 +35,7 @@
 </script>
 
 <body>
+    <partial name="_notification" />
     <!--  Body Wrapper -->
     <div style="background-image: url('https://i0.wp.com/thatnhucuocsong.com.vn/wp-content/uploads/2022/02/background-banner-blue-do-hoa.jpg?ssl=1')" class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
          data-sidebar-position="fixed" data-header-position="fixed">
@@ -44,7 +46,7 @@
                         <div class="card mb-0">
                             <div class="card-body">
                                 <a href="#" class="text-nowrap logo-img text-center d-block py-3 w-100">
-                                    <img src="~/img/logo/9218e4dd8166e4c2e96ceac558b6a6a6.jpg" width="180" alt="" />
+                                    <img src="~/img/logo/pethouses_logo_1.png" width="180" alt="" />
                                 </a>
                                 <form asp-action="Login" asp-controller="DangNhapDangKi" asp-route-returnUrl="@ViewBag.ReturnUrl" method="post" class="form">
                                     <div class="mb-3">
@@ -58,7 +60,10 @@
                                     <div class="row">
                                     <div class="d-flex align-items-center justify-content-between mb-4">
                                         <a class="text-primary fw-bold" href="@Url.Action("Index","Home")">Trang chủ</a>
-                                            <a class="text-primary fw-bold" href="~/DangNhapDangKi/GuiMail">Quên mật khẩu ?</a>
+                                            <a  class="text-primary fw-bold" href="#">Quên mật khẩu ?</a>
+                                        <div>
+                                            <a asp-action="LoginByGoogle" asp-controller="DangNhapDangKi" class="btn btn-primary">Google</a>
+                                        </div>
                                     </div>
                                         
                                     </div>

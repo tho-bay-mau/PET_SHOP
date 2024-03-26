@@ -1,7 +1,22 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using ThoBayMau_ASM.Data;
+using ThoBayMau_ASM.Services;
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddAuthentication(option =>
+{
+    option.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    option.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+})
+    .AddCookie()
+    .AddGoogle(option =>
+    {
+        option.ClientId = builder.Configuration.GetSection("Authentication:Google:ClientId").Value;
+        option.ClientSecret = builder.Configuration.GetSection("Authentication:Google:ClientSecret").Value;
+    });
+
 builder.Services.AddDbContext<ThoBayMau_ASMContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ThoBayMau_ASMContext") ?? throw new InvalidOperationException("Connection string 'ThoBayMau_ASMContext' not found.")));
 
@@ -13,6 +28,7 @@ builder.Services.AddSession(options =>
 	options.Cookie.HttpOnly = true;
 	options.Cookie.IsEssential = true;
 });
+builder.Services.AddSingleton<IVnPayService, VnPayService>();
 
 var app = builder.Build();
 

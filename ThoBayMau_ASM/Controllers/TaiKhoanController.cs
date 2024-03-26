@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ThoBayMau_ASM.Data;
 using ThoBayMau_ASM.Helpers;
 using ThoBayMau_ASM.Models;
@@ -122,6 +123,7 @@ namespace ThoBayMau_ASM.Controllers
             }
             if (ModelState.IsValid)
             {
+                _db.Entry(tkNow).State = EntityState.Detached;
                 _db.TaiKhoan.Update(obj);
                 _db.SaveChanges();
                 TempData["Sucess"] = "Chỉnh sửa tài khoản thành công";
