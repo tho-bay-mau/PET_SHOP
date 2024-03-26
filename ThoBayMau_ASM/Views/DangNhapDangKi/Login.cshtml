@@ -17,6 +17,21 @@
 
     <link rel="stylesheet" href="~/cssdndk/css/styles.min.css" />
 </head>
+@if (TempData["successMessage"] != null)
+{
+    <div id="successMessage" class="alert alert-danger mt-3">
+        @TempData["successMessage"]
+    </div>
+}
+
+<script>
+    setTimeout(function() {
+        var successMessageElement = document.getElementById('successMessage');
+        if (successMessageElement) {
+            successMessageElement.style.display = 'none';
+        }
+    }, 2500); 
+</script>
 
 <body>
     <!--  Body Wrapper -->
@@ -43,7 +58,7 @@
                                     <div class="row">
                                     <div class="d-flex align-items-center justify-content-between mb-4">
                                         <a class="text-primary fw-bold" href="@Url.Action("Index","Home")">Trang chủ</a>
-                                            <a  class="text-primary fw-bold" href="#">Quên mật khẩu ?</a>
+                                            <a class="text-primary fw-bold" href="~/DangNhapDangKi/GuiMail">Quên mật khẩu ?</a>
                                     </div>
                                         
                                     </div>
