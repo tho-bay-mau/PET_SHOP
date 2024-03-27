@@ -303,6 +303,7 @@ namespace ThoBayMau_ASM.Controllers
                     .ThenInclude(x => x.SanPham)
                     .ThenInclude(x => x.LoaiSP)
                     .Where(x => x.TaiKhoanId == user.Id)
+                    .OrderByDescending(x => x.ThoiGianTao)
                     .ToList();
                 ViewBag.User = user;
                 return View(donhang);

@@ -58,9 +58,9 @@
                                 <th>ID</th>
                                 <th>Tổng số lượng</th>
                                 <th>Tổng giá</th>
-                                <th>TT thanh toán</th>
                                 <th>TT đơn hàng</th>
-                                <th>Thanh toán</th>
+                                <th>TT thanh toán</th>
+                                <th>Thao tác</th>
                                 <th>Chi tiết</th>
                             </tr>
                         </thead>
@@ -90,15 +90,38 @@
                                             @tongGia
                                         </td>
                                         <td>
-                                            @item.TrangThaiThanhToan
+                                            @if(item.TrangThaiDonHang == "cho duyet")
+                                            {
+                                                <span >Chờ duyệt</span>
+                                            } else if(item.TrangThaiDonHang == "dang giao")
+                                            {
+                                                <span >Đang giao</span>
+                                            } else if(item.TrangThaiDonHang == "da giao")
+                                            {
+                                                <span >Đã giao</span>
+                                            } else
+                                            {
+                                                <span style="color: red">Đã huỷ</span>
+                                            }
                                         </td>
                                         <td>
-                                            @item.TrangThaiDonHang
+                                            @if(item.TrangThaiThanhToan == true)
+                                            {
+                                                <span style="color: green">Đã thanh toán</span>
+                                            } else
+                                            {
+                                                <span style="color: red">Chưa thanh toán</span>
+                                            }
                                         </td>
+                                        
                                         <td>
                                             @if(item.TrangThaiThanhToan == false)
                                             {
                                                 <a class="btn btn-danger">Thanh toán</a>
+                                                if (item.TrangThaiDonHang == "cho duyet")
+                                                {
+                                                    <a class="btn btn-primary" asp-action="HuyDon" asp-controller="DonHang" asp-route-id="@item.Id" asp-route-returnUrl="@Url.Action("TTDH", "GioHang")">Huỷ Đơn</a>
+                                                }
                                             }
                                         </td>
                                         <td>
@@ -111,7 +134,7 @@
                                     </tr>
                                     <tr class="collapse" id="@item.Id">
 
-                                        <td colspan="8">
+                                        <td colspan="8" style="background-color: white">
                                             <span class="text-start">Thời gian tạo đơn : @item.ThoiGianTao</span>
                                             <p><strong>Sản phẩm trong đơn hàng</strong></p>
                                             <table class="table table-sm table-hover">

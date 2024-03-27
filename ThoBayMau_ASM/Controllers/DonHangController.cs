@@ -63,8 +63,9 @@ namespace ThoBayMau_ASM.Controllers
                 return RedirectToAction("Index", "DonHang");
             }
         }
-        public IActionResult HuyDon(int id)
+        public IActionResult HuyDon(int id, string? returnUrl)
         {
+            
             if (id == null)
             {
                 return NotFound();
@@ -75,7 +76,15 @@ namespace ThoBayMau_ASM.Controllers
                 DonHang.TrangThaiDonHang = "da huy";
                 _context.Update(DonHang);
                 _context.SaveChanges();
-                return RedirectToAction("Index", "DonHang");
+
+                if (returnUrl != null)
+                {
+                    return Redirect(returnUrl);
+                } else
+                {
+                    return RedirectToAction("Index", "DonHang");
+                }
+                
             }
         }
        
