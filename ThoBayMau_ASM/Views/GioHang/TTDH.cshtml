@@ -117,7 +117,7 @@
                                         <td>
                                             @if(item.TrangThaiThanhToan == false)
                                             {
-                                                <a class="btn btn-danger">Thanh toán</a>
+                                                <a asp-action="PaymentUser" asp-route-Id="@item.Id" class="btn btn-danger">Thanh toán</a>
                                                 if (item.TrangThaiDonHang == "cho duyet")
                                                 {
                                                     <a class="btn btn-primary" asp-action="HuyDon" asp-controller="DonHang" asp-route-id="@item.Id" asp-route-returnUrl="@Url.Action("TTDH", "GioHang")">Huỷ Đơn</a>
@@ -247,7 +247,7 @@
                                                         </div>
                                                         <div class="col mt-3">
                                                             @if(item.TrangThaiDonHang == "cho duyet"){
-                                                                <a href="#" class="btn btn-danger">Tiến hành thanh toán</a>
+                                                                <a asp-action="PaymentUser" asp-route-Id="@item.Id" class="btn btn-danger">Tiến hành thanh toán</a>
                                                             }
                                                                
                                                         </div>
