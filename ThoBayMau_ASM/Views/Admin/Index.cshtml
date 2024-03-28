@@ -3,17 +3,72 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<div class="container p-3">
-    <div class="row pt-4">
-        <div class="col-6">
-            <h2>Home</h2>
+<h2>THỐNG KÊ DOANH THU</h2>
+<div class="row">
+        <div class="col-md-7">
+            <canvas id="chartUser"></canvas>
         </div>
-        <div class="col-6 text-end">
-            <a asp-controller="Category" asp-action="Create" class="btn btn-primary"><i class="bi bi-plus"></i>Create new category</a>
+        <div class="col-md-5">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Năm</th>
+                        <th>Tháng</th>
+                        <th>Doanh Thu</th>
+                    </tr>
+                </thead>
+                <tbody id="load_data"></tbody>
+            </table>
         </div>
-    </div>
-    <br /><br />
-    
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="~/Scripts/chart.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    $.ajax({
+        type: "GET",
+        url: "@Url.Action("ThongKeDoanhThuTheoThang", "Admin")",
+        dataType: "json",
+        success: function (data) {
+            console.log(data);
+            var ctx = document.getElementById('chartUser');
+
+            var labels = data.map(function (item) {
+                return "Tháng " + item.thang + "/" +item.nam; // Display month/year as labels
+            });
+            var userCounts = data.map(function (item) {
+                return item.doanhThu; // Get the user counts
+            });
+            var barChartData = {
+                labels: labels,
+                datasets: [{
+                    label: 'vnđ',
+                    data: userCounts,
+                    borderColor: '#FFFFFF',
+                    backgroundColor: '#29BFDA',
+                    tension: 0.1,
+                    barThickness: 120
+                }]
+            };
+            var myBarChart = new Chart(ctx, {
+                type: 'bar',
+                data: barChartData,
+            });
+            load_data(data);
+        }
+    });
+    function load_data(data) {
+        var strHtml = "";
+        data.forEach(function (item, index) {
+            strHtml += "<tr>";
+            strHtml += "<td>" + item.nam + "</td>";
+            strHtml += "<td>" + item.thang + "</td>";
+            strHtml += "<td>" + item.doanhThu + "vnđ" + "</td>";
+            strHtml += "</tr>";
+        });
+        $("#load_data").html(strHtml);
+    }
+</script>
+
 
 

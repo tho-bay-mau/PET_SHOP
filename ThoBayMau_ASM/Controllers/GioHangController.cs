@@ -249,6 +249,23 @@ namespace ThoBayMau_ASM.Controllers
             }
 
         }
+
+        public IActionResult PaymentUser(int Id)
+        {
+            var User = HttpContext.Session.GetJson<TaiKhoan>("User");
+            
+            
+                var vnPayModel = new VnPaymentRequestModel
+                {
+                    Amount = tinhTong(Id),
+                    CreatedDate = DateTime.Now,
+                    Description = $"{User.DiaChi}{User.SDT}",
+                    OrderId = new Random().Next(1000, 10000),
+                    ProductId = Id
+                };
+                return Redirect(_vnPayService.CreatePaymentUrl(HttpContext, vnPayModel));
+        }
+
         public int tinhTong(int? Id)
         {
             int tong = 0;
