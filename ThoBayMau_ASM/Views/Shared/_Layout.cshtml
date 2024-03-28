@@ -86,7 +86,7 @@
                     <li class="nav-item @(ViewBag.ProductList == true ? "active" : "")"><a asp-action="Shop_list" asp-controller="Home" class="nav-link">Sản phẩm</a></li>
                     <li class="nav-item @(ViewBag.About == true ? "active" : "")"><a asp-controller="Home" asp-action="About" class="nav-link">Về chúng tôi</a></li>
                     <li class="nav-item @(ViewBag.Contact == true ? "active" : "")"><a asp-controller="Home" asp-action="Contact" class="nav-link">Liên hệ</a></li>
-                    <li class="nav-item cta cta-colored"><a asp-action="Index" asp-controller="GioHang" class="nav-link"><span class="icon-shopping_cart"></span>[0]</a></li>
+                    @await Component.InvokeAsync("GiohangWidget")
                     @if (Account != null)
                     {
                         <li class="nav-item dropdown">
