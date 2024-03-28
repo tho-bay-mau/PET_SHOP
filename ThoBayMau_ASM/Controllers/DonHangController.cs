@@ -20,7 +20,7 @@ namespace ThoBayMau_ASM.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string? trangThai)
         {
             var donhang = _context.DonHang
                 .Include(x => x.TaiKhoan)
@@ -30,7 +30,13 @@ namespace ThoBayMau_ASM.Controllers
                 .ThenInclude(x => x.SanPham)
                 .ThenInclude(x => x.LoaiSP)
                 .ToList();
-            return View(donhang);
+            if(trangThai == null)
+            {
+                trangThai = "cho duyet";
+                ViewBag.TrangThai = trangThai;
+            }
+            var dh = donhang.Where(x => x.TrangThaiDonHang == trangThai).ToList();
+            return View(dh);
         }
         // duyệt đơn
         public IActionResult DuyetDon(int id)
@@ -87,8 +93,6 @@ namespace ThoBayMau_ASM.Controllers
                 
             }
         }
-       
-        
         public IActionResult ThanhToan(string payment = "COD")
         {
 

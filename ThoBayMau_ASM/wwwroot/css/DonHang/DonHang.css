@@ -1,0 +1,12 @@
+.active-trangThai{
+    background-color: #5D87FF;
+    color: white;
+}
+
+.thanh-trang-thai .btn{
+    width: 200px;
+}
+.thanh-trang-thai .btn:hover{
+    background-color: rgba(93, 135, 255, 0.1);
+    color: #5D87FF;
+}
