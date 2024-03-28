@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using ThoBayMau_ASM.Data;
 using ThoBayMau_ASM.Models;
 
@@ -38,6 +39,8 @@ namespace ThoBayMau_ASM.Controllers
             {
                 ViewBag.TrangThai = trangThai;
             }
+            int count = donhang.Where(x => x.TrangThaiDonHang == "cho duyet").Count();
+            ViewBag.Count = count;
             var dh = donhang.Where(x => x.TrangThaiDonHang == trangThai).ToList();
             return View(dh);
         }

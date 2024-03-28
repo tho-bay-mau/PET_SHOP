@@ -22,16 +22,18 @@
     }
     <div class="d-flex flex-row thanh-trang-thai" style="width: 600px">
 
-        <a class="btn active-trangThai" asp-action="Index">Chờ duyệt</a>
+        <a class="btn @(ViewBag.TrangThai == "cho duyet" || ViewBag.TrangThai == null ? "active-trangThai" : "")" asp-action="Index">Chờ duyệt
+            <span class="badge text-bg-warning">@ViewBag.Count</span>
+        </a>
         
 
-        <a class="btn" asp-action="Index" asp-route-trangThai="@dg">Đang giao</a>
+        <a class="btn @(ViewBag.TrangThai == "dang giao" ? "active-trangThai" : "")" asp-action="Index" asp-route-trangThai="@dg">Đang giao</a>
 
 
-        <a class="btn" asp-action="Index" asp-route-trangThai="@dag">Đã giao</a>
+        <a class="btn @(ViewBag.TrangThai == "da giao" ? "active-trangThai" : "")" asp-action="Index" asp-route-trangThai="@dag">Đã giao</a>
 
 
-        <a class="btn" asp-action="Index" asp-route-trangThai="@dhuy">Đã huỷ</a>
+        <a class="btn @(ViewBag.TrangThai == "da huy" ? "active-trangThai" : "")" asp-action="Index" asp-route-trangThai="@dhuy">Đã huỷ</a>
 
 
     </div>
