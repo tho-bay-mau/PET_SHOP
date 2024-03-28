@@ -34,6 +34,9 @@ namespace ThoBayMau_ASM.Controllers
             {
                 trangThai = "cho duyet";
                 ViewBag.TrangThai = trangThai;
+            } else
+            {
+                ViewBag.TrangThai = trangThai;
             }
             var dh = donhang.Where(x => x.TrangThaiDonHang == trangThai).ToList();
             return View(dh);
