@@ -22,16 +22,18 @@
     }
     <div class="d-flex flex-row thanh-trang-thai" style="width: 600px">
 
-        <a class="btn active-trangThai" asp-action="Index">Chờ duyệt</a>
+        <a class="btn @(ViewBag.TrangThai == "cho duyet" || ViewBag.TrangThai == null ? "active-trangThai" : "")" asp-action="Index">Chờ duyệt
+            <span class="badge text-bg-warning">@ViewBag.Count</span>
+        </a>
         
 
-        <a class="btn" asp-action="Index" asp-route-trangThai="@dg">Đang giao</a>
+        <a class="btn @(ViewBag.TrangThai == "dang giao" ? "active-trangThai" : "")" asp-action="Index" asp-route-trangThai="@dg">Đang giao</a>
 
 
-        <a class="btn" asp-action="Index" asp-route-trangThai="@dag">Đã giao</a>
+        <a class="btn @(ViewBag.TrangThai == "da giao" ? "active-trangThai" : "")" asp-action="Index" asp-route-trangThai="@dag">Đã giao</a>
 
 
-        <a class="btn" asp-action="Index" asp-route-trangThai="@dhuy">Đã huỷ</a>
+        <a class="btn @(ViewBag.TrangThai == "da huy" ? "active-trangThai" : "")" asp-action="Index" asp-route-trangThai="@dhuy">Đã huỷ</a>
 
 
     </div>
@@ -43,7 +45,11 @@
         <th>Tổng số lượng</th>
         <th>Tổng tiền</th>
         <th>Trang thái thanh toán</th>
-        <th>Thao tác</th>
+            @if (ViewBag.TrangThai == "cho duyet" || ViewBag.TrangThai == "dang giao")
+            {
+            <th>Thao tác</th>
+            }
+        
         <th>Chi tiết</th>
         </thead>
         <tbody class="align-middle">
@@ -81,13 +87,21 @@
                             <span style="color: red">Chờ thanh toán</span>
                         }
                     </td>
-                    <td>
+                    @if (item.TrangThaiDonHang == "cho duyet" || item.TrangThaiDonHang == "dang giao")
+                    {
+                        <td>
                         <a asp-action="DuyetDon" asp-controller="DonHang" asp-route-id="@item.Id">
                             <i class="fa-solid fa-check"></i>
-                        </a> |
-                        <a asp-action="HuyDon" asp-controller="DonHang" asp-route-id="@item.Id"
-                           style="color: red"><i class="fa-solid fa-trash"></i></a>
-                    </td>
+                        </a>
+
+                        @if (item.TrangThaiDonHang == "cho duyet")
+                        {
+                            <span>|</span>
+                            <a asp-action="HuyDon" asp-controller="DonHang" asp-route-id="@item.Id"
+                               style="color: red"><i class="fa-solid fa-trash"></i></a>
+                        }
+                        </td>
+                    }
                     <td>
 
                         <a data-bs-toggle="collapse" href="#@item.Id" role="button" aria-expanded="false"
@@ -210,12 +224,26 @@
                                         <strong>@tongGia</strong>
                                     </div>
                                     <div class="col mt-3">
-                                        <a asp-action="DuyetDon" asp-controller="DonHang" asp-route-id="@item.Id"
-                                           class="btn btn-primary">Duyệt đơn</a>
+                                        @if(item.TrangThaiDonHang == "cho duyet")
+                                        {
+                                            <a asp-action="DuyetDon" asp-controller="DonHang" asp-route-id="@item.Id"
+                                            class="btn btn-primary">Duyệt đơn</a>
+                                        } 
+
                                     </div>
                                     <div class="col mt-3">
-                                        <a asp-action="HuyDon" asp-controller="DonHang" asp-route-id="@item.Id"
-                                           class="btn btn-danger" style="--bs-btn-bg: #ff3500;">Huỷ đơn</a>
+                                        @if (item.TrangThaiDonHang == "cho duyet" && item.TrangThaiThanhToan == false)
+                                        {
+                                            <a asp-action="HuyDon" asp-controller="DonHang" asp-route-id="@item.Id"
+                                               class="btn btn-danger" style="--bs-btn-bg: #ff3500;">Huỷ đơn</a>
+                                        }
+                                        else if (item.TrangThaiDonHang == "dang giao")
+                                        {
+                                            <a asp-action="GiaoHangThanhCong" asp-controller="DonHang" asp-route-id="@item.Id"
+                                               class="btn btn-primary">Đã giao</a>
+                                        }
+                                        
+                                        
                                     </div>
                                 </div>
                             </div>
