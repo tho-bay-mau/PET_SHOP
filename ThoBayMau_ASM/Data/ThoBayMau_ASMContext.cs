@@ -20,9 +20,11 @@ namespace ThoBayMau_ASM.Data
         public DbSet<ThoBayMau_ASM.Models.ChiTiet_SP> ChiTiet_SP { get; set; } = default!;
         public DbSet<ThoBayMau_ASM.Models.Anh> Anh { get; set; } = default!;
         public DbSet<ThongKeDoanhThu> ThongKeDoanhThu { get; set; }
+        public DbSet<SPTop5> SPTop5 { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ThongKeDoanhThu>().HasNoKey();
+            modelBuilder.Entity<SPTop5>().HasNoKey();
         }
     }
     public class ThongKeDoanhThu
@@ -30,5 +32,10 @@ namespace ThoBayMau_ASM.Data
         public int Thang { get; set; }
         public int Nam { get; set; }
         public int DoanhThu { get; set; }
+    }
+    public class SPTop5
+    {
+        public int Id { get; set; }
+        public int SoLuong { get; set; }
     }
 }

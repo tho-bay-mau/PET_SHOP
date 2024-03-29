@@ -5,16 +5,17 @@
 }
 
 <style>
-    .product{
-        height:370px;
+    .product {
+        height: 370px;
     }
-    .product-name{
+
+    .product-name {
         white-space: initial;
         overflow: hidden;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         display: -webkit-box;
-        height:40px;
+        height: 40px;
     }
 </style>
 
@@ -47,74 +48,86 @@
 
 </section>
 
-    <section class="ftco-section">
-        <div class="container">
-            <div class="row justify-content-center mb-3 pb-3">
-                <div class="col-md-12 heading-section text-center ftco-animate">
-                    <h2 class="mb-4">Sản phẩm nổi bật</h2>
-                </div>
+<section class="ftco-section">
+    <div class="container">
+        <div class="row justify-content-center mb-3 pb-3">
+            <div class="col-md-12 heading-section text-center ftco-animate">
+                <h2 class="mb-4">Sản phẩm nổi bật</h2>
             </div>
         </div>
-        <div class="container">
-            <div class="row">
-                @foreach (var item in Model)
-                {
-                    <div class="col-md-6 col-lg-3 ftco-animate">
-                        <div class="product">
-                            <a href="#" class="img-prod">
+    </div>
+    <div class="container">
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-6 col-lg-3 ftco-animate">
+                    <div class="product">
+                        <a href="#" class="img-prod">
                             <img class="img-fluid" src="@Url.Action("GetImage", "Home", new { id_sp = @item.Id})" alt="Colorlib Template">
-                                @* <span class="status">30%</span> *@
-                                <div class="overlay"></div>
-                            </a>
-                            <div class="text py-3 pb-4 px-3 text-center">
-                                <h3 class="product-name"><a href="#">@item.Ten</a></h3>
-                                <div class="d-flex">
-                                    <div class="pricing">
+                            @foreach (var TopID in ViewBag.SPTop5)
+                            {
+                                if (TopID.Id == item.Id)
+                                {
+                                    <span class="status">HOT</span>
+                                    break;
+                                }
+                                if (item.TrangThai == "Mới")
+                                {
+                                    <span class="status">MỚI</span>
+                                    break;
+                                }
+                            }
+                            <div class="overlay"></div>
+                        </a>
+                        <div class="text py-3 pb-4 px-3 text-center">
+                            <h3 class="product-name"><a href="#">@item.Ten</a></h3>
+                            <div class="d-flex">
+                                <div class="pricing">
                                     <p class="price"><span class="mr-2 price-dc">@((item.ChiTietSPs.Min(ct => ct.Gia) + 50000).ToString("#,0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")))đ</span><span class="price-sale">@(item.ChiTietSPs.Min(ct => ct.Gia).ToString("#,0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")))đ</span></p>
-                                    </div>
                                 </div>
-                                <div class="bottom-area d-flex px-3">
-                                    <div class="m-auto d-flex">
-                                        <a asp-action="product_detail" asp-controller="Home" asp-route-id_sp="@item.Id" class="add-to-cart d-flex justify-content-center align-items-center text-center">
-                                            <span><i class="ion-ios-menu"></i></span>
-                                        </a>
+                            </div>
+                            <div class="bottom-area d-flex px-3">
+                                <div class="m-auto d-flex">
+                                    <a asp-action="product_detail" asp-controller="Home" asp-route-id_sp="@item.Id" class="add-to-cart d-flex justify-content-center align-items-center text-center">
+                                        <span><i class="ion-ios-menu"></i></span>
+                                    </a>
                                     <a asp-action="AddToGioHang" asp-controller="GioHang" asp-route-sanPhamId="@item.Id" asp-route-kichThuoc="@item.ChiTietSPs.Min(ct => ct.KichThuoc)" asp-route-returnUrl="@Url.Action("Index", "Home")" action="" class="buy-now d-flex justify-content-center align-items-center mx-1">
-                                            <span><i class="ion-ios-cart"></i></span>
-                                        </a>
-                                    </div>
+                                        <span><i class="ion-ios-cart"></i></span>
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                }
-            </div>
+                </div>
+            }
         </div>
-    </section>
+    </div>
+</section>
 
 <div>
     <img style="width:100%;" src="http://www.perfectcompanion.com.vn/vnt_upload/weblink/2.cat-sp.jpg" alt="" />
 </div>
 
-    <section class="ftco-section ftco-partner">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm ftco-animate">
+<section class="ftco-section ftco-partner">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm ftco-animate">
                 <a href="#" class="partner"><img src="img/Brands/img_brand_1.jpg" class="img-fluid" alt="Colorlib Template"></a>
-                </div>
-                <div class="col-sm ftco-animate">
+            </div>
+            <div class="col-sm ftco-animate">
                 <a href="#" class="partner"><img src="img/Brands/img_brand_2.jpg" class="img-fluid" alt="Colorlib Template"></a>
-                </div>
-                <div class="col-sm ftco-animate">
+            </div>
+            <div class="col-sm ftco-animate">
                 <a href="#" class="partner"><img src="img/Brands/img_brand_3.jpg" class="img-fluid" alt="Colorlib Template"></a>
-                </div>
-                <div class="col-sm ftco-animate">
+            </div>
+            <div class="col-sm ftco-animate">
                 <a href="#" class="partner"><img src="img/Brands/img_brand_4.jpg" class="img-fluid" alt="Colorlib Template"></a>
-                </div>
-                <div class="col-sm ftco-animate">
+            </div>
+            <div class="col-sm ftco-animate">
                 <a href="#" class="partner"><img src="img/Brands/img_brand_5.jpg" class="img-fluid" alt="Colorlib Template"></a>
-                </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    
+

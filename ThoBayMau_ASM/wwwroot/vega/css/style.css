@@ -8688,10 +8688,10 @@ h1, h2, h3, h4, h5,
       position: absolute;
       top: 0;
       left: 0;
-      padding: 2px 10px;
+      padding: 5px 20px;
       color: #fff;
       font-weight: 300;
-      background: #82ae46;
+      background: red;
       font-size: 12px; }
     .product .img-prod img {
       -webkit-transform: scale(1);

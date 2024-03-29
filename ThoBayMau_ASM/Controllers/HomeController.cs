@@ -32,8 +32,10 @@ namespace ThoBayMau_ASM.Controllers
             {
                 ViewBag.User = user;
             }
+            var topProducts = _db.SPTop5.FromSqlRaw("EXEC SPTop5").ToList();
             var result = _db.SanPham.Include(x => x.ChiTietSPs).Include(x => x.Anhs).ToList();
             ViewBag.Index = true;
+            ViewBag.SPTop5 = topProducts;
             return View(result);
         }
         public IActionResult GetImage(int? id_sp, int? id_hinh)
