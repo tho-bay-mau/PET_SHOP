@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Aram.Infrastructure;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ThoBayMau_ASM.Data;
 using ThoBayMau_ASM.Models;
@@ -12,6 +13,11 @@ namespace ThoBayMau_ASM.Controllers
         public AdminController(ThoBayMau_ASMContext context)
         {
             _context = context;
+        }
+        public IActionResult adminname()
+        {
+            var user = HttpContext.Session.GetJson<TaiKhoan>("User");
+            return Json(user);
         }
         public IActionResult Index()
 		{

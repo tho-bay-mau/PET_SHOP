@@ -148,6 +148,21 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
+
+    <script>
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("adminName", "Admin")",
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                var ctx = document.getElementById('drop2');
+                var nameSpan = document.createElement('span');
+                nameSpan.textContent = data.tenTK;
+                ctx.appendChild(nameSpan);
+            }
+        });
+    </script>
 </body>
 
 </html>
