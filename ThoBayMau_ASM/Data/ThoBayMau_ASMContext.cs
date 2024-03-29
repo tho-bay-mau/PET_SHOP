@@ -35,6 +35,7 @@ namespace ThoBayMau_ASM.Data
     }
     public class SPTop5
     {
+        public string Ten { get; set; }
         public int Id { get; set; }
         public int SoLuong { get; set; }
     }

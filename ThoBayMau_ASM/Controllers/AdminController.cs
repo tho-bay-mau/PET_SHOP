@@ -15,8 +15,12 @@ namespace ThoBayMau_ASM.Controllers
         }
         public IActionResult Index()
 		{
-			return View();
+            var topProducts = _context.SPTop5.FromSqlRaw("EXEC SPTop5").ToList();
+            ViewBag.SPTop5 = topProducts;
+            
+            return View();
 		}
+        
         [HttpGet]
         public IActionResult ThongKeDoanhThuTheoThang()
         {

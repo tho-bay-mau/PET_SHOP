@@ -2,33 +2,62 @@
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+<style>
+    .product-name {
+        white-space: initial;
+        overflow: hidden;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        display: -webkit-box;
+        height: 40px;
+    }
+</style>
 
 <h2>THỐNG KÊ DOANH THU</h2>
 <div class="cotainer">
-<div>
-       
+    <div>
+
         <div class="col-md-12">
             <canvas id="chartUser"></canvas>
         </div>
         <br />
         <div class="row">
-        <div class="col-md-5">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Năm</th>
-                        <th>Tháng</th>
-                        <th>Doanh Thu</th>
-                    </tr>
-                </thead>
-                <tbody id="load_data"></tbody>
-            </table>
+            <div class="col-md-5">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Năm</th>
+                            <th>Tháng</th>
+                            <th>Doanh Thu</th>
+                        </tr>
+                    </thead>
+                    <tbody id="load_data"></tbody>
+                </table>
+            </div>
+            <div class="col-md-7">
+                <h4 class="text-center">Top 5 sản phẩm bán chạy</h4>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th >Tên</th>
+                            <th>Số lượng</th>
+                        </tr>
+                    </thead>
+                    @foreach (var item in ViewBag.SPTop5)
+                    {
+                        <tbody>
+                            <tr>
+                                <th class="product-name">@item.Ten</th>
+                                <th>@item.SoLuong</th>
+                            </tr>
+                        </tbody>
+
+                    }
+                </table>
+            </div>
         </div>
-        <div col-md-7>
-                <canvas id="chartUser"></canvas>
-        </div>
-        </div>
-</div> 
+    </div>
+</div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="~/Scripts/chart.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -42,20 +71,20 @@
             var ctx = document.getElementById('chartUser');
 
             var labels = data.map(function (item) {
-                return "Tháng " + item.thang + "/" +item.nam; // Display month/year as labels
+                return "Tháng " + item.thang + "/" + item.nam; // Display month/year as labels
             });
             var userCounts = data.map(function (item) {
                 return item.doanhThu; // Get the user counts
             });
-                // Mảng các màu cho các thanh cột
-                var barColors = ['#29BFDA', '#FF5733', '#9A33FF', '#33FF57', '#FF33C7', '#33A3FF'];
+            // Mảng các màu cho các thanh cột
+            var barColors = ['#29BFDA', '#FF5733', '#9A33FF', '#33FF57', '#FF33C7', '#33A3FF'];
             var barChartData = {
                 labels: labels,
                 datasets: [{
                     label: 'vnđ',
                     data: userCounts,
                     borderColor: '#FFFFFF',
-                        backgroundColor: barColors,
+                    backgroundColor: barColors,
                     tension: 0.1,
                     barThickness: 160
 
