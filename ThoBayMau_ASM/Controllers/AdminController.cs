@@ -20,7 +20,7 @@ namespace ThoBayMau_ASM.Controllers
         [HttpGet]
         public IActionResult ThongKeDoanhThuTheoThang()
         {
-            var data = _context.Set<ThongKeDoanhThu>().FromSqlRaw("EXEC ThongKeDoanhThu").ToList();
+            var data = _context.Set<ThongKeDoanhThu>().FromSqlInterpolated($"EXEC ThongKeDoanhThu").ToList();
             return Json(data);
         }
         

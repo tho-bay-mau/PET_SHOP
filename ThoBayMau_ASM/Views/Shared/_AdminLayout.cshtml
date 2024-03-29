@@ -35,26 +35,35 @@
                     <ul id="sidebarnav">
                         <li class="nav-small-cap">
                             <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                            <span class="hide-menu">Home</span>
+                            <span class="hide-menu">The PetHouses</span>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link" asp-controller="Donhang" asp-action="Index" aria-expanded="false">
+                            <a class="sidebar-link" asp-action="Index" asp-controller="Admin" aria-expanded="false">
                                 <span>
-                                    <i class="ti ti-layout-dashboard">
-
-                                    </i>
+                                    <i class="ti ti-chart-infographic"></i>
                                 </span>
-                                    <span class="hide-menu">Đơn hàng</span>
+                                <span class="hide-menu">Thống kê</span>
                             </a>
                         </li>
+                       
                         <li class="nav-small-cap">
                             <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                             <span class="hide-menu">QUẢN LÝ</span>
                         </li>
                         <li class="sidebar-item">
+                            <a class="sidebar-link" asp-controller="Donhang" asp-action="Index" aria-expanded="false">
+                                <span>
+                                    <i class="ti ti-truck-delivery"></i>
+
+                                    </i>
+                                </span>
+                                <span class="hide-menu">Đơn hàng</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
                             <a class="sidebar-link" asp-action="Index" asp-controller="TaiKhoan" aria-expanded="false">
                                 <span>
-                                    <i class="ti ti-article"></i>
+                                    <i class="ti ti-user-check"></i>
                                 </span>
                                 <span class="hide-menu">Quản lý tài khoản</span>
                             </a>
@@ -62,7 +71,7 @@
                         <li class="sidebar-item">
                             <a class="sidebar-link" asp-action="Index" asp-controller="QLSanPham" aria-expanded="false">
                                 <span>
-                                    <i class="ti ti-alert-circle"></i>
+                                    <i class="ti ti-paw"></i>
                                 </span>
                                 <span class="hide-menu">Quản lý sản phẩm</span>
                             </a>
@@ -76,14 +85,7 @@
                             </a>
                         </li>
                         
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="./ui-buttons.html" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-typography"></i>
-                                </span>
-                                <span class="hide-menu">Thống kê</span>
-                            </a>
-                        </li>
+                        
                     </ul>
                 </nav>
                 <!-- End Sidebar navigation -->

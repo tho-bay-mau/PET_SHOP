@@ -4,10 +4,14 @@
 }
 
 <h2>THỐNG KÊ DOANH THU</h2>
-<div class="row">
-        <div class="col-md-7">
+<div class="cotainer">
+<div>
+       
+        <div class="col-md-12">
             <canvas id="chartUser"></canvas>
         </div>
+        <br />
+        <div class="row">
         <div class="col-md-5">
             <table class="table table-bordered">
                 <thead>
@@ -20,7 +24,11 @@
                 <tbody id="load_data"></tbody>
             </table>
         </div>
-</div>
+        <div col-md-7>
+                <canvas id="chartUser"></canvas>
+        </div>
+        </div>
+</div> 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="~/Scripts/chart.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -39,15 +47,18 @@
             var userCounts = data.map(function (item) {
                 return item.doanhThu; // Get the user counts
             });
+                // Mảng các màu cho các thanh cột
+                var barColors = ['#29BFDA', '#FF5733', '#9A33FF', '#33FF57', '#FF33C7', '#33A3FF'];
             var barChartData = {
                 labels: labels,
                 datasets: [{
                     label: 'vnđ',
                     data: userCounts,
                     borderColor: '#FFFFFF',
-                    backgroundColor: '#29BFDA',
+                        backgroundColor: barColors,
                     tension: 0.1,
-                    barThickness: 120
+                    barThickness: 160
+
                 }]
             };
             var myBarChart = new Chart(ctx, {
