@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Modernize Free</title>
+    <title>Quản trị</title>
     <link rel="shortcut icon" type="image/png" href="~/" />
     <link rel="stylesheet" href="~/assets/css/styles.min.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -45,23 +45,21 @@
                                 <span class="hide-menu">Thống kê</span>
                             </a>
                         </li>
-                       
+
                         <li class="nav-small-cap">
                             <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                             <span class="hide-menu">QUẢN LÝ</span>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link" asp-controller="Donhang" asp-action="Index" aria-expanded="false">
+                            <a class="sidebar-link @(ViewBag.DonHang == true ? "active" : "")" asp-controller="Donhang" asp-action="Index" aria-expanded="false">
                                 <span>
                                     <i class="ti ti-truck-delivery"></i>
-
-                                    </i>
                                 </span>
                                 <span class="hide-menu">Đơn hàng</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link" asp-action="Index" asp-controller="TaiKhoan" aria-expanded="false">
+                            <a class="sidebar-link @(ViewBag.TaiKhoan == true ? "active" : "")" asp-action="Index" asp-controller="TaiKhoan" aria-expanded="false">
                                 <span>
                                     <i class="ti ti-user-check"></i>
                                 </span>
@@ -69,7 +67,7 @@
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link" asp-action="Index" asp-controller="QLSanPham" aria-expanded="false">
+                            <a class="sidebar-link @(ViewBag.QLSanPham == true ? "active" : "")" asp-action="Index" asp-controller="QLSanPham" aria-expanded="false">
                                 <span>
                                     <i class="ti ti-paw"></i>
                                 </span>
@@ -77,15 +75,13 @@
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link" asp-action="Index" asp-controller="LoaiSP" aria-expanded="false">
+                            <a class="sidebar-link @(ViewBag.LoaiSP == true ? "active" : "")" asp-action="Index" asp-controller="LoaiSP" aria-expanded="false">
                                 <span>
                                     <i class="ti ti-cards"></i>
                                 </span>
                                 <span class="hide-menu">Quản lí loại sản phẩm</span>
                             </a>
                         </li>
-                        
-                        
                     </ul>
                 </nav>
                 <!-- End Sidebar navigation -->
@@ -104,16 +100,16 @@
                                 <i class="ti ti-menu-2"></i>
                             </a>
                         </li>
-                        
+
                     </ul>
                     <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
                         <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
-                            
+
                             <li class="nav-item dropdown">
                                 @* class="nav-link nav-icon-hover" *@
                                 <a class="nav-link" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
                                    aria-expanded="false">
-                                    
+
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
                                     <div class="message-body">
@@ -127,7 +123,6 @@
             </header>
             <!--  Header End -->
             <div class="container-fluid">
-                
                 @RenderBody()
             </div>
         </div>
@@ -152,14 +147,12 @@
     <script>
         $.ajax({
             type: "GET",
-            url: "@Url.Action("adminName", "Admin")",
+            url: "@Url.Action("AccountName", "Admin")",
             dataType: "json",
             success: function (data) {
                 console.log(data);
-                var ctx = document.getElementById('drop2');
-                var nameSpan = document.createElement('span');
-                nameSpan.textContent = data.tenTK;
-                ctx.appendChild(nameSpan);
+                var nameText = data.tenTK;
+                $('#drop2').text(nameText);
             }
         });
     </script>

@@ -22,6 +22,7 @@ builder.Services.AddDbContext<ThoBayMau_ASMContext>(options =>
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
 builder.Services.AddSession(options =>
 {
 	options.IdleTimeout = TimeSpan.FromHours(24);

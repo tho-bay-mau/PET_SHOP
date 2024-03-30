@@ -18,11 +18,13 @@ namespace ThoBayMau_ASM.Controllers
         }
         public IActionResult Index(int? Id)
         {
+            ViewBag.QLSanPham = true;
             var detail = _context.ChiTiet_SP.Where(x => x.SanPhamId == Id).ToList();
             return View(detail);
         }
         public IActionResult Create()
         {
+            ViewBag.QLSanPham = true;
             return View();
         }
         [HttpPost]
@@ -47,6 +49,7 @@ namespace ThoBayMau_ASM.Controllers
         }
         public IActionResult Edit(int? id)
         {
+            ViewBag.QLSanPham = true;
             var SPList = _context.SanPham.OrderBy(x => x.Id)
                                     .Select(x => new SelectListItem
                                     {

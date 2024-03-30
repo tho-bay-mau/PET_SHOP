@@ -1,8 +1,4 @@
-﻿@{
-    var Account = (TaiKhoan)ViewBag.User;
-}
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>Cửa hàng thức ăn cho thú cưng</title>
@@ -36,6 +32,7 @@
 
     <link rel="stylesheet" href="~//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
 
+    <link href="~/vega/css/hotandnew.css" rel="stylesheet" />
     <style>
         #txt-frm-email {
             width: 400px;
@@ -71,11 +68,13 @@
         <div class="container-fluid">
             <a class="navbar-brand me-5" asp-action="Index" asp-controller="Home"><img src="~/img/logo/pethouses_logo_1.png" width="150px" /></a>
             <div class="section">
-                <div id="the-basics">
-                    <input class="typeahead form-control" type="text" id="keyword" placeholder="Nhập tên sản phẩm" autocomplete="off">
-                    <div class="tt-menu tt-open" style="position: absolute; top: 100%; left: 0px; z-index: 100; display: block;">
+                <form asp-action="SearchProducts" asp-controller="Home">
+                    <div id="the-basics">
+                        <input class="typeahead form-control" type="text" name="key" id="keyword" placeholder="Nhập tên sản phẩm" autocomplete="off">
+                        <div class="tt-menu tt-open" style="position: absolute; top: 100%; left: 0px; z-index: 100; display: block;">
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon" style="color:black;">Menu</span>
@@ -87,22 +86,18 @@
                     <li class="nav-item @(ViewBag.About == true ? "active" : "")"><a asp-controller="Home" asp-action="About" class="nav-link">Về chúng tôi</a></li>
                     <li class="nav-item @(ViewBag.Contact == true ? "active" : "")"><a asp-controller="Home" asp-action="Contact" class="nav-link">Liên hệ</a></li>
                     @await Component.InvokeAsync("GiohangWidget")
-                    @if (Account != null)
-                    {
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <b>Chào @Account.TenTK</b>
-                            </a>
-                            <ul class="dropdown-menu mt-0">
-                                <li><a class="dropdown-item" asp-action="TTDH" asp-controller="GioHang">Thông tin đơn hàng</a></li>
-                                <li><a class="dropdown-item" asp-action="Logout" asp-controller="DangNhapDangKi">Đăng xuất</a></li>
-                            </ul>
-                        </li>
-                    }
-                    else
-                    {
-                        <li class="nav-item cta cta-colored"><a asp-action="Login" asp-controller="DangNhapDangKi" class="nav-link">Đăng nhập</a></li>
-                    }
+                    <li id="accountDropdown" class="nav-item dropdown" style="display:none">
+                        <a id="dropdownToggle" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <b></b>
+                        </a>
+                        <ul class="dropdown-menu mt-0">
+                            <li><a class="dropdown-item" asp-action="TTDH" asp-controller="GioHang">Thông tin đơn hàng</a></li>
+                            <li><a class="dropdown-item" asp-action="Logout" asp-controller="DangNhapDangKi">Đăng xuất</a></li>
+                        </ul>
+                    </li>
+                    <li id="loginLink" class="nav-item cta cta-colored" style="display:none">
+                        <a asp-action="Login" asp-controller="DangNhapDangKi" class="nav-link">Đăng nhập</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -220,5 +215,22 @@
     <script src="/vega/js/main.js"></script>
 
     <script src="~/vega/js/searchscript.js"></script>
+
+    <script>
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("AccountName", "Admin")",
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                if (data != null) {
+                    $('#dropdownToggle b').text('Chào ' + data.tenTK);
+                    $('#accountDropdown').show();
+                } else {
+                    $('#loginLink').show();
+                }
+            }
+        });
+    </script>
 </body>
 </html>

@@ -1,0 +1,108 @@
+﻿@-webkit-keyframes my {
+    0% {
+        color: transparent;
+    }
+
+    50% {
+        color: yellow;
+        background-color:red;
+    }
+}
+
+@-moz-keyframes my {
+    0% {
+        color: transparent;
+    }
+
+    50% {
+        color: yellow;
+        background-color: red;
+    }
+}
+
+@-o-keyframes my {
+    0% {
+        color: transparent;
+    }
+
+    50% {
+        color: yellow;
+        background-color: red;
+    }
+}
+
+@keyframes my {
+    0% {
+        color: transparent;
+    }
+
+    50% {
+        color: yellow;
+        background-color: red;
+    }
+}
+
+.hot, .new {
+    position:absolute;
+    left:0;
+    top:0;
+    padding: 0 10px;
+    color:transparent;
+    font-size: 13px;
+    font-weight: bold;
+    -webkit-animation: my 700ms infinite;
+    -moz-animation: my 700ms infinite;
+    -o-animation: my 700ms infinite;
+    animation: my 700ms infinite;
+}
+
+@-webkit-keyframes mi {
+    0% {
+        color: transparent;
+    }
+
+    50% {
+        color: red;
+        background-color: yellow;
+    }
+}
+
+@-moz-keyframes mi {
+    0% {
+        color: transparent;
+    }
+
+    50% {
+        color: red;
+        background-color: yellow;
+    }
+}
+
+@-o-keyframes mi {
+    0% {
+        color: transparent;
+    }
+
+    50% {
+        color: red;
+        background-color: yellow;
+    }
+}
+
+@keyframes mi {
+    0% {
+        color: transparent;
+    }
+
+    50% {
+        color: red;
+        background-color: yellow;
+    }
+}
+
+.new {
+    -webkit-animation: mi 700ms infinite;
+    -moz-animation: mi 700ms infinite;
+    -o-animation: mi 700ms infinite;
+    animation: mi 700ms infinite;
+}

@@ -14,7 +14,7 @@ namespace ThoBayMau_ASM.Controllers
         {
             _context = context;
         }
-        public IActionResult adminname()
+        public IActionResult AccountName()
         {
             var user = HttpContext.Session.GetJson<TaiKhoan>("User");
             return Json(user);

@@ -20,29 +20,60 @@ namespace ThoBayMau_ASM.Controllers
         {
             _context = context;
         }
+        public const int ITEM_PER_PAGE = 5;
 
+        [BindProperty(SupportsGet = true, Name = "p")]
+        public int currentpage { get; set; }
+
+        public int countpages { get; set; }
         public IActionResult Index(string? trangThai)
         {
-            var donhang = _context.DonHang
+            ViewBag.DonHang = true;
+            if (trangThai == null)
+            {
+                trangThai = "cho duyet";
+                ViewBag.TrangThai = trangThai;
+            }
+            else
+            {
+                ViewBag.TrangThai = trangThai;
+            }
+
+            int total = _context.DonHang
+                .Where(x => x.TrangThaiDonHang == trangThai)
+                .Count();
+            countpages = (int)Math.Ceiling((double)total / ITEM_PER_PAGE);
+
+            if (currentpage < 1)
+            {
+                currentpage = 1;
+            }
+            if (currentpage > countpages)
+            {
+                currentpage = countpages;
+            }
+
+            ViewBag.CurrentPage = currentpage;
+            ViewBag.CountPages = countpages;
+            if (total > 0)
+            {
+                var result = _context.DonHang
+                .Where(x => x.TrangThaiDonHang == trangThai)
                 .Include(x => x.TaiKhoan)
                 .Include(x => x.ThongTin_NhanHang)
                 .Include(x => x.DonHang_ChiTiets)
                 .ThenInclude(x => x.ChiTiet_SP)
                 .ThenInclude(x => x.SanPham)
                 .ThenInclude(x => x.LoaiSP)
-                .ToList();
-            if(trangThai == null)
-            {
-                trangThai = "cho duyet";
-                ViewBag.TrangThai = trangThai;
-            } else
-            {
-                ViewBag.TrangThai = trangThai;
+                .Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
+                int count = _context.DonHang.Where(x => x.TrangThaiDonHang == "cho duyet").Count();
+                ViewBag.Count = count;
+                return View(result);
             }
-            int count = donhang.Where(x => x.TrangThaiDonHang == "cho duyet").Count();
-            ViewBag.Count = count;
-            var dh = donhang.Where(x => x.TrangThaiDonHang == trangThai).ToList();
-            return View(dh);
+            else
+            {
+                return View(null);
+            }
         }
         // duyệt đơn
         public IActionResult DuyetDon(int id)

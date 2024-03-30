@@ -24,7 +24,8 @@ namespace ThoBayMau_ASM.Controllers
 
         public IActionResult Index()
         {
-            int total = _db.TaiKhoan.Count();
+            ViewBag.TaiKhoan = true;
+            int total = _db.TaiKhoan.Where(x => x.TrangThai == true).Count();
             countpages = (int)Math.Ceiling((double)total / ITEM_PER_PAGE);
 
             if (currentpage < 1)
@@ -40,7 +41,7 @@ namespace ThoBayMau_ASM.Controllers
             ViewBag.CountPages = countpages;
             if(total > 0)
             {
-                var result = _db.TaiKhoan.Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
+                var result = _db.TaiKhoan.Where(x => x.TrangThai == true).Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
                 return View(result);
             } else
             {
@@ -50,6 +51,7 @@ namespace ThoBayMau_ASM.Controllers
 
         public IActionResult Create()
         {
+            ViewBag.TaiKhoan = true;
             return View();
         }
 
@@ -83,6 +85,7 @@ namespace ThoBayMau_ASM.Controllers
 
         public IActionResult Edit(int? id)
         {
+            ViewBag.TaiKhoan = true;
             if (id == null || id == 0)
             {
                 return NotFound();
@@ -156,9 +159,10 @@ namespace ThoBayMau_ASM.Controllers
 
         public IActionResult Search(string Key)
         {
+            ViewBag.TaiKhoan = true;
             if (string.IsNullOrEmpty(Key))
             {
-                int total = _db.TaiKhoan.Count();
+                int total = _db.TaiKhoan.Where(x => x.TenTK.ToLower().Contains(Key.ToLower()) && x.TrangThai == true).Count();
                 countpages = (int)Math.Ceiling((double)total / ITEM_PER_PAGE);
 
                 if (currentpage < 1)
@@ -175,7 +179,7 @@ namespace ThoBayMau_ASM.Controllers
                 ViewBag.Search = Key;
                 if (total > 0)
                 {
-                    var result = _db.TaiKhoan.Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
+                    var result = _db.TaiKhoan.Where(x => x.TenTK.ToLower().Contains(Key.ToLower()) && x.TrangThai == true).Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
                     return View("Index", result);
                 }
                 else
@@ -185,7 +189,7 @@ namespace ThoBayMau_ASM.Controllers
             }
             else
             {
-                int total = _db.TaiKhoan.Where(x => x.DiaChi == Key).Count();
+                int total = _db.TaiKhoan.Where(x => x.TenTK.ToLower().Contains(Key.ToLower()) && x.TrangThai == true).Count();
                 countpages = (int)Math.Ceiling((double)total / ITEM_PER_PAGE);
 
                 if (currentpage < 1)
@@ -202,7 +206,7 @@ namespace ThoBayMau_ASM.Controllers
                 ViewBag.Search = Key;
                 if (total > 0)
                 {
-                    var result = _db.TaiKhoan.Where(x => x.DiaChi == Key).Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
+                    var result = _db.TaiKhoan.Where(x => x.TenTK.ToLower().Contains(Key.ToLower()) && x.TrangThai == true).Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
                     return View("Index", result);
                 }
                 else

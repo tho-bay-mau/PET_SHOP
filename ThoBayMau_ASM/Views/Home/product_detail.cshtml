@@ -1,269 +1,281 @@
 ﻿@model SanPham
 
 @{
-	ViewData["Title"] = "Details";
-	Layout = "~/Views/Shared/_Layout.cshtml";
-	bool isFirstItem = true;
-	bool isFirstItemSmall = true;
-	int STT = 0;
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    bool isFirstItem = true;
+    bool isFirstItemSmall = true;
+    int STT = 0;
 }
 
 <style>
-	.carousel-control-prev, .carousel-control-next {
-		background-color: transparent;
-		color: black;
-		border: none;
-		padding: 0;
-		font-size: 20px;
-	}
+    .carousel-control-prev, .carousel-control-next {
+        background-color: transparent;
+        color: black;
+        border: none;
+        padding: 0;
+        font-size: 20px;
+    }
 
-	.carousel-control-prev:hover, .carousel-control-next:hover {
-		color: black;
-	}
+        .carousel-control-prev:hover, .carousel-control-next:hover {
+            color: black;
+        }
 
-	#small-img {
-		position: initial
-	}
+    #small-img {
+        position: initial
+    }
 
-	#small-img a {
-		border: 0.5px solid gray;
-		padding: 0;
-	}
+        #small-img a {
+            border: 0.5px solid gray;
+            padding: 0;
+        }
 
-	#small-img a:hover {
-		border: 1px solid red;
-	}
+            #small-img a:hover {
+                border: 1px solid red;
+            }
 
-	.form-check-label {
-		color: black;
-	}
+    .form-check-label {
+        color: black;
+    }
 
-	.ftco-section{
-		padding-bottom:0;
-	}
+    .ftco-section {
+        padding-bottom: 0;
+    }
 
-	.list-group-item {
-		border: 0px;
-	}
+    .list-group-item {
+        border: 0px;
+    }
 
-	#btn-add-cart{
-		background-color: #17a2b8;
-		border:none;
-	}
+    #btn-add-cart {
+        background-color: #17a2b8;
+        border: none;
+    }
 
-	#btn-add-cart:hover {
-		background-color :#B84517;
-	}
+        #btn-add-cart:hover {
+            background-color: #B84517;
+        }
 
-	#btn-add-cart {
-		background-color: #17a2b8;
-		border: none;
-		color: white;
-	}
+    #btn-add-cart {
+        background-color: #17a2b8;
+        border: none;
+        color: white;
+    }
 
-	#btn-add-cart:hover {
-		background-color: #B84517;
-	}
+        #btn-add-cart:hover {
+            background-color: #B84517;
+        }
 
-	.product {
-		height: 370px;
-	}
+    .product {
+        height: 370px;
+    }
 
-	.product-name {
-		white-space: initial;
-		overflow: hidden;
-		-webkit-line-clamp: 2;
-		-webkit-box-orient: vertical;
-		display: -webkit-box;
-		height: 40px;
-	}
+    .product-name {
+        white-space: initial;
+        overflow: hidden;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        display: -webkit-box;
+        height: 40px;
+    }
 </style>
 <section class="ftco-section">
-	<div class="container">
-		<div class="row">
-			<div class="col-lg-6 mb-5 ftco-animate">
-				<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
-					<div class="carousel-inner">
-						@foreach (var img in Model?.Anhs)
-						{
-							<div class="carousel-item @(isFirstItem ? "active" : "")">
-								<img src="~/img/products/@img.TenAnh" class="d-block w-100" alt="...">
-							</div>
-							isFirstItem = false;
-						}
-					</div>
-					<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-						<i class="bi bi-caret-left-fill"></i>
-					</button>
-					<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-						<i class="bi bi-caret-right-fill"></i>
-					</button>
-					<div class="carousel-indicators justify-content-sm-around m-0" id="small-img">
-						@foreach (var img in Model?.Anhs)
-						{
-							<a data-bs-target="#carouselExampleIndicators" data-bs-slide-to="@STT" class="@(isFirstItemSmall ? "active" : "")" aria-current="@(isFirstItemSmall ? "true" : "")" aria-label="Slide @STT"><img src="~/img/products/@img.TenAnh" style="width:100px;" alt="..."></a>
-							isFirstItemSmall = false;
-							STT += 1;
-						}
-					</div>
-				</div>
-			</div>
-			<div class="col-lg-6 product-details pl-md-5 ftco-animate">
-				<form method="post" asp-action="AddToGioHang" asp-controller="GioHang" asp-route-sanPhamId="@Model.Id">
-					<h3>@Model.Ten</h3>
-					@foreach (var ct_sp in Model?.ChiTietSPs)
-					{
-						<div class="form-check form-check-inline">
-							<input class="form-check-input" type="radio" id="kichThuoc" name="kichThuoc" value="@ct_sp.KichThuoc" onchange="showPrice('@ct_sp.KichThuoc')">
-							<label class="form-check-label fw-bold">@(ct_sp.KichThuoc)KG</label>
-						</div>
-					}
-					<br />
-					@foreach (var ct_sp in Model.ChiTietSPs)
-					{
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 mb-5 ftco-animate">
+                <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
+                    <div class="carousel-inner">
+                        @foreach (var img in Model?.Anhs)
+                        {
+                            <div class="carousel-item @(isFirstItem ? "active" : "")">
+                                <img src="~/img/products/@img.TenAnh" class="d-block w-100" alt="...">
+                            </div>
+                            isFirstItem = false;
+                        }
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                        <i class="bi bi-caret-left-fill"></i>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                        <i class="bi bi-caret-right-fill"></i>
+                    </button>
+                    <div class="carousel-indicators justify-content-sm-around m-0" id="small-img">
+                        @foreach (var img in Model?.Anhs)
+                        {
+                            <a data-bs-target="#carouselExampleIndicators" data-bs-slide-to="@STT" class="@(isFirstItemSmall ? "active" : "")" aria-current="@(isFirstItemSmall ? "true" : "")" aria-label="Slide @STT"><img src="~/img/products/@img.TenAnh" style="width:100px;" alt="..."></a>
+                            isFirstItemSmall = false;
+                            STT += 1;
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 product-details pl-md-5 ftco-animate">
+                <form method="post" asp-action="AddToGioHang" asp-controller="GioHang" asp-route-sanPhamId="@Model.Id">
+                    <h3>@Model.Ten</h3>
+                    @foreach (var ct_sp in Model?.ChiTietSPs)
+                    {
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="kichThuoc" name="kichThuoc" value="@ct_sp.KichThuoc" onchange="showPrice('@ct_sp.KichThuoc')">
+                            <label class="form-check-label fw-bold">@(ct_sp.KichThuoc)KG</label>
+                        </div>
+                    }
+                    <br />
+                    @foreach (var ct_sp in Model.ChiTietSPs)
+                    {
 
-						<p id="@ct_sp.KichThuoc" class="price m-0" style="display: none"><span>@(ct_sp.Gia.ToString("#,0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")))đ</span></p>
-					}
-					<div class="row align-items-center">
-						<div class="input-group col-md-6 d-flex">
-							<span class="input-group-btn mr-2">
-								<button type="button" class="quantity-left-minus btn" data-type="minus" data-field="">
-									<i class="ion-ios-remove"></i>
-								</button>
-							</span>
-							<input style="max-width:80px;" type="text" id="quantity" name="quantity" class="form-control input-number" value="1" min="1" max="100">
-							<span class="input-group-btn ml-2">
-								<button type="button" class="quantity-right-plus btn" data-type="plus" data-field="">
-									<i class="ion-ios-add"></i>
-								</button>
-							</span>
-						</div>
-						<div class="col-md-6">
-							<input id="btn-add-cart" type="submit" class="btn btn-black py-3 px-5" value="Thêm vào giỏ hàng">
-						</div>
-					</div>
-				</form>
-					
-				<div class="mt-4">
-					@Model.Mota
-				</div>
-				<div class="product-service mt-3">
-					<ul class="infoList-service list-group" style="font-size: 13px;">
-						<li class="list-group-item">
-							<span>
-								<img src="//theme.hstatic.net/1000356051/1001056962/14/product_deliverly_1_icons.png?v=355" alt="Cam kết 100% chính hãng">
-							</span>
-							Cam kết 100% chính hãng
-						</li>
-						<li class="list-group-item">
-							<span>
-								<img src="//theme.hstatic.net/1000356051/1001056962/14/product_deliverly_2_icons.png?v=355" alt="Miễn phí vận chuyển
-									Trong 60 phút tại TP Buôn Ma Thuột với đơn hàng>599k
+                        <p id="@ct_sp.KichThuoc" class="price m-0" style="display: none"><span>@(ct_sp.Gia.ToString("#,0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")))đ</span></p>
+                    }
+                    <div class="row align-items-center">
+                        <div class="input-group col-md-6 d-flex">
+                            <span class="input-group-btn mr-2">
+                                <button type="button" class="quantity-left-minus btn" data-type="minus" data-field="">
+                                    <i class="ion-ios-remove"></i>
+                                </button>
+                            </span>
+                            <input style="max-width:80px;" type="text" id="quantity" name="quantity" class="form-control input-number" value="1" min="1" max="100">
+                            <span class="input-group-btn ml-2">
+                                <button type="button" class="quantity-right-plus btn" data-type="plus" data-field="">
+                                    <i class="ion-ios-add"></i>
+                                </button>
+                            </span>
+                        </div>
+                        <div class="col-md-6">
+                            <input id="btn-add-cart" type="submit" class="btn btn-black py-3 px-5" value="Thêm vào giỏ hàng">
+                        </div>
+                    </div>
+                </form>
 
-							Giao hàng toàn quốc từ 1-2 ngày">
-							</span>
-							Miễn phí vận chuyển
-							<br>
-							Trong 60 phút tại TP Buôn Ma Thuột với đơn hàng &gt;599k
+                <div class="mt-4">
+                    @Model.Mota
+                </div>
+                <div class="product-service mt-3">
+                    <ul class="infoList-service list-group" style="font-size: 13px;">
+                        <li class="list-group-item">
+                            <span>
+                                <img src="//theme.hstatic.net/1000356051/1001056962/14/product_deliverly_1_icons.png?v=355" alt="Cam kết 100% chính hãng">
+                            </span>
+                            Cam kết 100% chính hãng
+                        </li>
+                        <li class="list-group-item">
+                            <span>
+                                <img src="//theme.hstatic.net/1000356051/1001056962/14/product_deliverly_2_icons.png?v=355" alt="Miễn phí vận chuyển
+                                     Trong 60 phút tại TP Buôn Ma Thuột với đơn hàng>599k
 
-						</li>
-						<li class="list-group-item">
-							<span>
-								<img src="//theme.hstatic.net/1000356051/1001056962/14/product_deliverly_3_icons.png?v=355" alt="Đổi sản phẩm nhanh trong 24h">
-							</span>
-							Đổi sản phẩm nhanh trong 24h
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-		
-		
-	</div>
+                                Giao hàng toàn quốc từ 1-2 ngày">
+                            </span>
+                            Miễn phí vận chuyển
+                            <br>
+                            Trong 60 phút tại TP Buôn Ma Thuột với đơn hàng &gt;599k
+
+                        </li>
+                        <li class="list-group-item">
+                            <span>
+                                <img src="//theme.hstatic.net/1000356051/1001056962/14/product_deliverly_3_icons.png?v=355" alt="Đổi sản phẩm nhanh trong 24h">
+                            </span>
+                            Đổi sản phẩm nhanh trong 24h
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
 </section>
 
 <section class="ftco-section">
-	<div class="container">
-		<div class="row justify-content-center mb-3 pb-3">
-			<div class="col-md-12 heading-section text-center ftco-animate">
-				<h2 class="mb-4">Sản Phẩm liên quan</h2>
-			</div>
-		</div>
-	</div>
-	<div class="container">
-		<div class="row">
-			@if (ViewData["RelateProduct"] != null)
-			{
-				var relateProducts = ViewData["RelateProduct"] as List<ThoBayMau_ASM.Models.SanPham>;
-				foreach (var item in relateProducts)
-				{
-					<div class="col-md-6 col-lg-3 ftco-animate">
-						<div class="product">
-							<a href="#" class="img-prod">
-								<img class="img-fluid" src="@Url.Action("GetImage", "Home", new { id_sp = @item.Id})" alt="Colorlib Template">
-								@* <span class="status">30%</span> *@
-								<div class="overlay"></div>
-							</a>
-							<div class="text py-3 pb-4 px-3 text-center">
-								<h3 class="product-name"><a href="#">@item.Ten</a></h3>
-								<div class="d-flex">
-									<div class="pricing">
-										<p class="price d-block"><span class="mr-2 price-dc">@((item.ChiTietSPs.Min(ct => ct.Gia) + 50000).ToString("#,0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")))đ</span><span class="price-sale">@(item.ChiTietSPs.Min(ct => ct.Gia).ToString("#,0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")))đ</span></p>
-									</div>
-								</div>
-								<div class="bottom-area d-flex px-3">
-									<div class="m-auto d-flex">
-										<a asp-action="product_detail" asp-controller="Home" asp-route-id_sp="@item.Id" class="add-to-cart d-flex justify-content-center align-items-center text-center">
-											<span><i class="ion-ios-menu"></i></span>
-										</a>
-										<a asp-action="AddToGioHang" asp-controller="GioHang" asp-route-sanPhamId="@item.Id" asp-route-kichThuoc="@item.ChiTietSPs.Min(ct => ct.KichThuoc)" action="" class="buy-now d-flex justify-content-center align-items-center mx-1">
-											<span><i class="ion-ios-cart"></i></span>
-										</a>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				}
-			}
-		</div>
-	</div>
+    <div class="container">
+        <div class="row justify-content-center mb-3 pb-3">
+            <div class="col-md-12 heading-section text-center ftco-animate">
+                <h2 class="mb-4">Sản Phẩm liên quan</h2>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            @if (ViewData["RelateProduct"] != null)
+            {
+                var relateProducts = ViewData["RelateProduct"] as List<ThoBayMau_ASM.Models.SanPham>;
+                foreach (var item in relateProducts)
+                {
+                    <div class="col-md-6 col-lg-3 ftco-animate">
+                        <div class="product">
+                            <a href="#" class="img-prod">
+                                <img class="img-fluid" src="@Url.Action("GetImage", "Home", new { id_sp = @item.Id})" alt="Colorlib Template">
+                                @foreach (var TopID in ViewBag.SPTop5)
+                                {
+                                    if (TopID.Id == item.Id)
+                                    {
+                                        <p class="hot">HOT</p>
+                                        break;
+                                    }
+                                    if (item.TrangThai == "Mới")
+                                    {
+                                        <p class="new">NEW</p>
+                                        break;
+                                    }
+                                }
+                                <div class="overlay"></div>
+                            </a>
+                            <div class="text py-3 pb-4 px-3 text-center">
+                                <h3 class="product-name"><a href="#">@item.Ten</a></h3>
+                                <div class="d-flex">
+                                    <div class="pricing">
+                                        <p class="price d-block"><span class="mr-2 price-dc">@((item.ChiTietSPs.Min(ct => ct.Gia) + 50000).ToString("#,0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")))đ</span><span class="price-sale">@(item.ChiTietSPs.Min(ct => ct.Gia).ToString("#,0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")))đ</span></p>
+                                    </div>
+                                </div>
+                                <div class="bottom-area d-flex px-3">
+                                    <div class="m-auto d-flex">
+                                        <a asp-action="product_detail" asp-controller="Home" asp-route-id_sp="@item.Id" class="add-to-cart d-flex justify-content-center align-items-center text-center">
+                                            <span><i class="ion-ios-menu"></i></span>
+                                        </a>
+                                        <a asp-action="AddToGioHang" asp-controller="GioHang" asp-route-sanPhamId="@item.Id" asp-route-kichThuoc="@item.ChiTietSPs.Min(ct => ct.KichThuoc)" action="" class="buy-now d-flex justify-content-center align-items-center mx-1">
+                                            <span><i class="ion-ios-cart"></i></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
 </section>
 <script>
-	document.addEventListener("DOMContentLoaded", function () {
-		var minusButton = document.querySelector('.quantity-left-minus');
-		var plusButton = document.querySelector('.quantity-right-plus');
-		var quantityInput = document.getElementById('quantity');
+    document.addEventListener("DOMContentLoaded", function () {
+        var minusButton = document.querySelector('.quantity-left-minus');
+        var plusButton = document.querySelector('.quantity-right-plus');
+        var quantityInput = document.getElementById('quantity');
 
-		minusButton.addEventListener('click', function () {
-			var currentValue = parseInt(quantityInput.value);
-			if (currentValue > 1) {
-				quantityInput.value = currentValue - 1;
-			}
-		});
+        minusButton.addEventListener('click', function () {
+            var currentValue = parseInt(quantityInput.value);
+            if (currentValue > 1) {
+                quantityInput.value = currentValue - 1;
+            }
+        });
 
-		plusButton.addEventListener('click', function () {
-			var currentValue = parseInt(quantityInput.value);
-			quantityInput.value = currentValue + 1;
-		});
-	});
+        plusButton.addEventListener('click', function () {
+            var currentValue = parseInt(quantityInput.value);
+            quantityInput.value = currentValue + 1;
+        });
+    });
 
-	function showPrice(kt) {
-		var prices = document.querySelectorAll('p.price');
-		for (var i = 0; i < prices.length; i++) {
-			prices[i].style.display = 'none';
-		}
+    function showPrice(kt) {
+        var prices = document.querySelectorAll('p.price');
+        for (var i = 0; i < prices.length; i++) {
+            prices[i].style.display = 'none';
+        }
 
-		document.getElementById(kt).style.display = 'inline';
-	}
+        document.getElementById(kt).style.display = 'inline';
+    }
 
-	window.onload = function () {
-		var radios = document.querySelectorAll('input[type=radio][name="kichThuoc"]');
+    window.onload = function () {
+        var radios = document.querySelectorAll('input[type=radio][name="kichThuoc"]');
 
-		if (radios.length > 0) {
-			radios[0].checked = true;
-			showPrice(radios[0].value);
-		}
-	};
+        if (radios.length > 0) {
+            radios[0].checked = true;
+            showPrice(radios[0].value);
+        }
+    };
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

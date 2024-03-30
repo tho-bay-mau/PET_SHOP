@@ -27,15 +27,10 @@ namespace ThoBayMau_ASM.Controllers
 
         public IActionResult Index()
         {
-            var user = HttpContext.Session.GetJson<TaiKhoan>("User");
-            if (user != null)
-            {
-                ViewBag.User = user;
-            }
             var topProducts = _db.SPTop5.FromSqlRaw("EXEC SPTop5").ToList();
-            var result = _db.SanPham.Include(x => x.ChiTietSPs).Include(x => x.Anhs).ToList();
-            ViewBag.Index = true;
             ViewBag.SPTop5 = topProducts;
+            var result = _db.SanPham.Where(x => x.TrangThai == "Đang bán" || x.TrangThai == "Mới").Include(x => x.ChiTietSPs).Include(x => x.Anhs).ToList();
+            ViewBag.Index = true;
             return View(result);
         }
         public IActionResult GetImage(int? id_sp, int? id_hinh)
@@ -70,25 +65,19 @@ namespace ThoBayMau_ASM.Controllers
         }
         public IActionResult product_detail(int id_sp)
         {
-            var user = HttpContext.Session.GetJson<TaiKhoan>("User");
-            if (user != null)
-            {
-                ViewBag.User = user;
-            }
+            var topProducts = _db.SPTop5.FromSqlRaw("EXEC SPTop5").ToList();
+            ViewBag.SPTop5 = topProducts;
             var result = _db.SanPham
                     .Include(x => x.ChiTietSPs)
                     .Include(x => x.Anhs)
                     .FirstOrDefault(x => x.Id == id_sp);
-            ViewData["RelateProduct"] = _db.SanPham.Where(x => x.LoaiSPId == result.LoaiSPId).Include(x => x.ChiTietSPs).Include(x => x.Anhs).ToList();
+            ViewData["RelateProduct"] = _db.SanPham.Where(x => (x.LoaiSPId == result.LoaiSPId) && (x.TrangThai == "Đang bán" || x.TrangThai == "Mới")).Include(x => x.ChiTietSPs).Include(x => x.Anhs).ToList();
             return View(result);
         }
         public IActionResult Shop_list()
         {
-            var user = HttpContext.Session.GetJson<TaiKhoan>("User");
-            if (user != null)
-            {
-                ViewBag.User = user;
-            }
+            var topProducts = _db.SPTop5.FromSqlRaw("EXEC SPTop5").ToList();
+            ViewBag.SPTop5 = topProducts;
             ViewBag.LoaiSP = _db.LoaiSP.OrderBy(x => x.Id).ToList();
             int total = _db.SanPham.Where(x => x.TrangThai == "Đang bán").Count();
             countpages = (int)Math.Ceiling((double)total / ITEM_PER_PAGE);
@@ -106,7 +95,7 @@ namespace ThoBayMau_ASM.Controllers
             ViewBag.CountPages = countpages;
             if (total > 0)
             {
-                var result = _db.SanPham.Where(x => x.TrangThai == "Đang bán").Include(x => x.ChiTietSPs).Include(x => x.Anhs).Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
+                var result = _db.SanPham.Where(x => x.TrangThai == "Đang bán" || x.TrangThai == "Mới").Include(x => x.ChiTietSPs).Include(x => x.Anhs).Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
                 ViewBag.ProductList = true;
                 return View(result);
             }
@@ -118,14 +107,11 @@ namespace ThoBayMau_ASM.Controllers
         }
         public IActionResult List_Type(int id)
         {
-            var user = HttpContext.Session.GetJson<TaiKhoan>("User");
-            if (user != null)
-            {
-                ViewBag.User = user;
-            }
+            var topProducts = _db.SPTop5.FromSqlRaw("EXEC SPTop5").ToList();
+            ViewBag.SPTop5 = topProducts;
             ViewBag.SPID = id;
             ViewBag.LoaiSP = _db.LoaiSP.OrderBy(x => x.Id).ToList();
-            int total = _db.SanPham.Where(x => x.TrangThai == "Đang bán" && x.LoaiSPId == id).Count();
+            int total = _db.SanPham.Where(x => (x.TrangThai == "Đang bán" || x.TrangThai == "Mới") && x.LoaiSPId == id).Count();
             countpages = (int)Math.Ceiling((double)total / ITEM_PER_PAGE);
 
             if (currentpage < 1)
@@ -141,7 +127,7 @@ namespace ThoBayMau_ASM.Controllers
             ViewBag.CountPages = countpages;
             if (total > 0)
             {
-                var result = _db.SanPham.Where(x => x.TrangThai == "Đang bán" && x.LoaiSPId == id).Include(x => x.ChiTietSPs).Include(x => x.Anhs).Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
+                var result = _db.SanPham.Where(x => (x.TrangThai == "Đang bán" || x.TrangThai == "Mới") && (x.LoaiSPId == id)).Include(x => x.ChiTietSPs).Include(x => x.Anhs).Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
                 ViewBag.ProductList = true;
                 return View(result);
             }
@@ -153,28 +139,59 @@ namespace ThoBayMau_ASM.Controllers
         }
         public IActionResult About()
         {
-            var user = HttpContext.Session.GetJson<TaiKhoan>("User");
-            if (user != null)
-            {
-                ViewBag.User = user;
-            }
             ViewBag.About = true;
             return View();
         }
         public IActionResult Contact()
         {
-            var user = HttpContext.Session.GetJson<TaiKhoan>("User");
-            if (user != null)
-            {
-                ViewBag.User = user;
-            }
             ViewBag.Contact = true;
             return View();
+        }
+        public IActionResult SearchProducts(string key)
+        {
+            if (key == null)
+            {
+                return View(null);
+            }
+            ViewBag.key = key;
+            var topProducts = _db.SPTop5.FromSqlRaw("EXEC SPTop5").ToList();
+            ViewBag.SPTop5 = topProducts;
+            ViewData["RelateProduct"] = _db.SanPham.Where(x => x.TrangThai == "Đang bán" || x.TrangThai == "Mới").Include(x => x.ChiTietSPs).Include(x => x.Anhs).ToList();
+
+            int total = _db.SanPham.Where(x => (x.Ten.ToLower().Contains(key.ToLower())) && (x.TrangThai == "Đang bán" || x.TrangThai == "Mới")).Count();
+            countpages = (int)Math.Ceiling((double)total / ITEM_PER_PAGE);
+
+            if (currentpage < 1)
+            {
+                currentpage = 1;
+            }
+            if (currentpage > countpages)
+            {
+                currentpage = countpages;
+            }
+
+            ViewBag.CurrentPage = currentpage;
+            ViewBag.CountPages = countpages;
+            if (total > 0)
+            {
+                var result = _db.SanPham
+                            .Where(x => (x.Ten.ToLower().Contains(key.ToLower())) && (x.TrangThai == "Đang bán" || x.TrangThai == "Mới"))
+                            .Include(x => x.ChiTietSPs)
+                            .Include(x => x.Anhs)
+                            .Skip((currentpage - 1) * ITEM_PER_PAGE)
+                            .Take(ITEM_PER_PAGE)
+                            .ToList();
+                return View(result);
+            }
+            else
+            {
+                return View(null);
+            }
         }
         public JsonResult Search()
         {
             var result = _db.SanPham
-                        .Where(x => x.TrangThai == "Đang bán")
+                        .Where(x => x.TrangThai == "Đang bán" || x.TrangThai == "Mới")
                         .Include(x => x.Anhs)
                         .GroupBy(x => x.Id)
                         .Select(group => group.First())

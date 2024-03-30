@@ -27,6 +27,7 @@ namespace ThoBayMau_ASM.Controllers
         public int countpages { get; set; }
         public IActionResult Index()
         {
+            ViewBag.QLSanPham = true;
             int total = _context.SanPham.Include(x => x.Anhs).Where(x => x.TrangThai == "Đang bán").Count();
             countpages = (int)Math.Ceiling((double)total / ITEM_PER_PAGE);
 
@@ -50,18 +51,10 @@ namespace ThoBayMau_ASM.Controllers
             {
                 return View(null);
             }
-            /*var result = _context.SanPham
-                .Include(x => x.Anhs)
-                .Include(x => x.ChiTietSPs)
-                *//*.Where(x => x.TrangThai == "Đang bán")*//*
-                .ToList();
-            var detail = _context.ChiTiet_SP.ToList();
-            
-            return View(result);*/
-
         }
         public IActionResult Create()
         {
+            ViewBag.QLSanPham = true;
             var loaiSPList = _context.LoaiSP.OrderBy(x => x.Id)
                                      .Select(x => new SelectListItem
                                      {
@@ -122,6 +115,7 @@ namespace ThoBayMau_ASM.Controllers
         }
         public IActionResult Edit(int? id)
         {
+            ViewBag.QLSanPham = true;
             List<string> listTrangThai = new List<string> { "Đang bán", "Ngừng bán", "Mới" };
             ViewBag.TrangThai = new SelectList(listTrangThai);
             if (id == null || id == 0)
@@ -199,6 +193,7 @@ namespace ThoBayMau_ASM.Controllers
         }
         public IActionResult Search(string Key)
         {
+            ViewBag.QLSanPham = true;
             if (string.IsNullOrEmpty(Key))
             {
                 int total = _context.SanPham.Where(x => x.TrangThai == "1").Count();

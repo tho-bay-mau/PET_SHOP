@@ -67,7 +67,19 @@
                         <div class="product">
                             <a href="#" class="img-prod">
                                 <img class="img-fluid" src="@Url.Action("GetImage", "Home", new { id_sp = @item.Id})" alt="Colorlib Template">
-                                @* <span class="status">30%</span> *@
+                                @foreach (var TopID in ViewBag.SPTop5)
+                                {
+                                    if (TopID.Id == item.Id)
+                                    {
+                                        <p class="hot">HOT</p>
+                                        break;
+                                    }
+                                    if (item.TrangThai == "Mới")
+                                    {
+                                        <p class="new">NEW</p>
+                                        break;
+                                    }
+                                }
                                 <div class="overlay"></div>
                             </a>
                             <div class="text py-3 pb-4 px-3 text-center">

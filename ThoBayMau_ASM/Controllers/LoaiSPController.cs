@@ -9,7 +9,6 @@ namespace ThoBayMau_ASM.Controllers
         private readonly ThoBayMau_ASMContext _context;
         public LoaiSPController(ThoBayMau_ASMContext context)
         {
-
             _context = context;
         }
         public const int ITEM_PER_PAGE = 5;
@@ -20,6 +19,7 @@ namespace ThoBayMau_ASM.Controllers
         public int countpages { get; set; }
         public IActionResult Index()
         {
+            ViewBag.LoaiSP = true;
             int total = _context.LoaiSP.Count();
             countpages = (int)Math.Ceiling((double)total / ITEM_PER_PAGE);
 
@@ -43,11 +43,10 @@ namespace ThoBayMau_ASM.Controllers
             {
                 return View(null);
             }
-            /*var loaiSP = _context.LoaiSP.Where(x => x.TrangThai == true).ToList();
-            return View(loaiSP);*/
         }
         public IActionResult Create()
         {
+            ViewBag.LoaiSP = true;
             return View();
         }
         [HttpPost]
@@ -67,6 +66,7 @@ namespace ThoBayMau_ASM.Controllers
 
         public IActionResult Edit(int? id)
         {
+            ViewBag.LoaiSP = true;
             if (id == null || id == 0)
             {
                 return NotFound();
@@ -116,6 +116,7 @@ namespace ThoBayMau_ASM.Controllers
         }
         public IActionResult Search(string Key)
         {
+            ViewBag.LoaiSP = true;
             if (string.IsNullOrEmpty(Key))
             {
                 int total = _context.LoaiSP.Count();
