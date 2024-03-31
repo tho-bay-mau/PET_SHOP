@@ -23,6 +23,13 @@ namespace ThoBayMau_ASM.Controllers
             _vnPayService = vnPayService;
         }
 
+        public const int ITEM_PER_PAGE = 10;
+
+        [BindProperty(SupportsGet = true, Name = "p")]
+        public int currentpage { get; set; }
+
+        public int countpages { get; set; }
+
         public GioHang? GioHang { get; set; }
 
         public IActionResult Index()
@@ -318,22 +325,42 @@ namespace ThoBayMau_ASM.Controllers
             var user = HttpContext.Session.GetJson<TaiKhoan>("User");
             if (user != null)
             {
-                var donhang = _context.DonHang
-                    .Include(x => x.TaiKhoan)
-                    .Include(x => x.ThongTin_NhanHang)
-                    .Include(x => x.DonHang_ChiTiets)
-                    .ThenInclude(x => x.ChiTiet_SP)
-                    .ThenInclude(x => x.SanPham)
-                    .ThenInclude(x => x.LoaiSP)
-                    .Where(x => x.TaiKhoanId == user.Id)
-                    .OrderByDescending(x => x.ThoiGianTao)
-                    .ToList();
-                ViewBag.User = user;
-                return View(donhang);
+                int total = _context.DonHang.Where(x => x.TaiKhoanId == user.Id).Count();
+                countpages = (int)Math.Ceiling((double)total / ITEM_PER_PAGE);
+
+                if (currentpage < 1)
+                {
+                    currentpage = 1;
+                }
+                if (currentpage > countpages)
+                {
+                    currentpage = countpages;
+                }
+
+                ViewBag.CurrentPage = currentpage;
+                ViewBag.CountPages = countpages;
+                if (total > 0)
+                {
+                    var result = _context.DonHang
+                        .Include(x => x.TaiKhoan)
+                        .Include(x => x.ThongTin_NhanHang)
+                        .Include(x => x.DonHang_ChiTiets)
+                        .ThenInclude(x => x.ChiTiet_SP)
+                        .ThenInclude(x => x.SanPham)
+                        .ThenInclude(x => x.LoaiSP)
+                        .Where(x => x.TaiKhoanId == user.Id)
+                        .OrderByDescending(x => x.ThoiGianTao)
+                        .Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
+                    return View(result);
+                }
+                else
+                {
+                    return View(null);
+                }
             }
             else
             {
-                return View(null);
+                return NotFound();
             }
         }
 

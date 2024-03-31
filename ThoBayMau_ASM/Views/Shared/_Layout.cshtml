@@ -32,6 +32,10 @@
 
     <link rel="stylesheet" href="~//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css"
+          integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <link href="~/vega/css/hotandnew.css" rel="stylesheet" />
     <style>
         #txt-frm-email {
@@ -82,7 +86,7 @@
             <div class="collapse navbar-collapse" id="ftco-nav">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item @(ViewBag.Index == true ? "active" : "")"><a asp-action="Index" asp-controller="Home" class="nav-link">Trang chủ</a></li>
-                    <li class="nav-item @(ViewBag.ProductList == true ? "active" : "")"><a asp-action="Shop_list" asp-controller="Home" class="nav-link">Sản phẩm</a></li>
+                    <li class="nav-item @(ViewBag.ProductList == true ? "active" : "")"><a asp-action="List_Type" asp-controller="Home" class="nav-link">Sản phẩm</a></li>
                     <li class="nav-item @(ViewBag.About == true ? "active" : "")"><a asp-controller="Home" asp-action="About" class="nav-link">Về chúng tôi</a></li>
                     <li class="nav-item @(ViewBag.Contact == true ? "active" : "")"><a asp-controller="Home" asp-action="Contact" class="nav-link">Liên hệ</a></li>
                     @await Component.InvokeAsync("GiohangWidget")

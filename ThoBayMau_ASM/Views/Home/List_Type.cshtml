@@ -7,7 +7,7 @@
             {
                 currentpage = (int)(@ViewBag.CurrentPage),
                 countpages = (int)(@ViewBag.CountPages),
-                generateUrl = (int? p) => Url.Page("", new { p = p, Key = @ViewBag.Search })
+                generateUrl = (int? p) => Url.Page("", new { p = p, Key = @ViewBag.Search, id = ViewBag.SPID })
             };
 }
 
@@ -45,15 +45,10 @@
         <div class="row justify-content-center">
             <div class="col-md-10 mb-5 text-center">
                 <ul class="product-category">
-                    <li><a class="product-type" asp-action="Shop_list">Tất cả</a></li>
+                    <li><a asp-action="List_Type" asp-route-id = "" class="@(ViewBag.SPID == null ? "active" : "") product-type" id="@(ViewBag.SPID == null ? "active-product" : "")">Tất cả</a></li>
                     @foreach (var item in ViewBag.LoaiSP)
                     {
-                        bool isActive = false;
-                        if (ViewBag.SPID == item.Id)
-                        {
-                            isActive = true;
-                        }
-                        <li><a asp-action="List_Type" asp-route-id="@item.Id" class="@(isActive ? "active" : "") product-type" id="@(isActive ? "active-product" : "")">@item.Ten</a></li>
+                        <li><a asp-action="List_Type" asp-route-id="@item.Id" class="@(ViewBag.SPID == item.Id ? "active" : "") product-type" id="@(ViewBag.SPID == item.Id ? "active-product" : "")">@item.Ten</a></li>
                     }
                 </ul>
             </div>
@@ -94,7 +89,7 @@
                                         <a asp-action="product_detail" asp-controller="Home" asp-route-id_sp="@item.Id" class="add-to-cart d-flex justify-content-center align-items-center text-center">
                                             <span><i class="ion-ios-menu"></i></span>
                                         </a>
-                                        <a asp-action="AddToGioHang" asp-controller="GioHang" asp-route-sanPhamId="@item.Id" asp-route-kichThuoc="@item.ChiTietSPs.Min(ct => ct.KichThuoc)" asp-route-returnUrl="@Url.Action("Shop_list", "Home")" action="" class="buy-now d-flex justify-content-center align-items-center mx-1">
+                                        <a asp-action="AddToGioHang" asp-controller="GioHang" asp-route-sanPhamId="@item.Id" asp-route-kichThuoc="@item.ChiTietSPs.Min(ct => ct.KichThuoc)" asp-route-returnUrl="@Url.Action("List_Type", "Home", new{id = ViewBag.SPID, p = ViewBag.CurrentPage})" class="buy-now d-flex justify-content-center align-items-center mx-1">
                                             <span><i class="ion-ios-cart"></i></span>
                                         </a>
                                     </div>
