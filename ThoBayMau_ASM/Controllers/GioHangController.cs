@@ -149,7 +149,7 @@ namespace ThoBayMau_ASM.Controllers
             }
             return RedirectToAction(nameof(Index), GioHang);
         }
-        public IActionResult AddToDonHang(string HoTen, string SDT, string DiaChi, string GhiChu, TaiKhoan tk, string payment = "COD")
+        public IActionResult AddToDonHang(string HoTen, string SDT, string DiaChi, string GhiChu, TaiKhoan tk, string now, string payment = "COD")
         {
             ViewBag.HoTen = HoTen;
             TempData["HoTen"] = ViewBag.HoTen;
@@ -233,6 +233,12 @@ namespace ThoBayMau_ASM.Controllers
                 _context.SaveChanges();
 
                 HttpContext.Session.Remove("giohang");
+
+
+                if (now == "early")
+                {
+                    return RedirectToAction("TTDH", "GioHang");
+                } 
                 if (payment == "Thanh toán VNPay")
                 {
                     var vnPayModel = new VnPaymentRequestModel
