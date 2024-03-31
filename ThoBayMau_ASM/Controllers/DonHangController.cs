@@ -106,16 +106,16 @@ namespace ThoBayMau_ASM.Controllers
                 return RedirectToAction("Index", "DonHang");
             }
         }
-        public IActionResult HuyDon(int id, string? returnUrl)
+        public IActionResult HuyDon(int txt_ID, string? returnUrl)
         {
             
-            if (id == null)
+            if (txt_ID == null)
             {
                 return NotFound();
             }
             else
             {
-                var DonHang = _context.DonHang.FirstOrDefault(a => a.Id == id);
+                var DonHang = _context.DonHang.FirstOrDefault(a => a.Id == txt_ID);
                 DonHang.TrangThaiDonHang = "da huy";
                 _context.Update(DonHang);
                 _context.SaveChanges();
