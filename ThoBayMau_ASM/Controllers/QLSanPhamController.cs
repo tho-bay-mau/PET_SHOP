@@ -71,6 +71,7 @@ namespace ThoBayMau_ASM.Controllers
         [HttpPost]
         public IActionResult Create( SanPham sp, IFormFile[] files,int gia, int soluong, int kichthuoc, DateTime ngaysanxuat, DateTime hansudung)
         {
+            
             var loaiSPList = _context.LoaiSP.OrderBy(x => x.Id)
                                      .Select(x => new SelectListItem
                                      {
@@ -85,7 +86,29 @@ namespace ThoBayMau_ASM.Controllers
             ViewBag.LoaiSPid = new SelectList(loaiSPList, "Value", "Text");
             List<string> listTrangThai = new List<string> { "Đang bán", "Ngừng bán", "Mới" };
             ViewBag.TrangThai = new SelectList(listTrangThai);
-            
+            if (gia < 0 || soluong < 0 || kichthuoc < 0)
+            {
+                ViewBag.ktSo = "Gía số lượng kích thước không được âm";
+                ViewBag.LoaiSPid = new SelectList(loaiSPList, "Value", "Text");
+                ViewBag.TrangThai = new SelectList(listTrangThai);
+                return View(sp);
+            }
+
+            if (ngaysanxuat >= hansudung)
+            {
+                ViewBag.ktNgay = "Ngày sản suất phải bé hơn hạn sử dụng";
+                ViewBag.LoaiSPid = new SelectList(loaiSPList, "Value", "Text");
+                ViewBag.TrangThai = new SelectList(listTrangThai);
+                return View(sp);
+            }
+            if (ngaysanxuat == DateTime.MinValue && hansudung == DateTime.MinValue)
+            {
+                ViewBag.ktTrongNgay = "Vui lòng nhập ngày sản suất, hạn sử dụng";
+                ViewBag.LoaiSPid = new SelectList(loaiSPList, "Value", "Text");
+                ViewBag.TrangThai = new SelectList(listTrangThai);
+                return View(sp);
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(sp);
@@ -127,6 +150,8 @@ namespace ThoBayMau_ASM.Controllers
             {
                 return NotFound();
             }
+            var danhSachAnh = _context.Anh.Where(x => x.SanphamId == id).ToList();
+            ViewBag.DanhSachAnh = danhSachAnh;
             return View(SanPhamID);
 
         }
@@ -194,37 +219,9 @@ namespace ThoBayMau_ASM.Controllers
         public IActionResult Search(string Key)
         {
             ViewBag.QLSanPham = true;
-            if (string.IsNullOrEmpty(Key))
-            {
-                int total = _context.SanPham.Where(x => x.TrangThai == "1").Count();
-                countpages = (int)Math.Ceiling((double)total / ITEM_PER_PAGE);
-
-                if (currentpage < 1)
-                {
-                    currentpage = 1;
-                }
-                if (currentpage > countpages)
-                {
-                    currentpage = countpages;
-                }
-
-                ViewBag.CurrentPage = currentpage;
-                ViewBag.CountPages = countpages;
-                ViewBag.Search = Key;
-                if (total > 0)
-                {
-                    var result = _context.SanPham.Where(x => x.TrangThai == "Đang bán").Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
-                    return View("Index", result);
-                }
-                else
-                {
-                    return View("Index", null);
-                }
-            }
-            else
+            if (Key != null)
             {
                 int total = _context.SanPham.Where(x => x.TrangThai == "Đang bán" && x.Id.ToString() == Key).Count();
-                
                 countpages = (int)Math.Ceiling((double)total / ITEM_PER_PAGE);
 
                 if (currentpage < 1)
@@ -242,6 +239,34 @@ namespace ThoBayMau_ASM.Controllers
                 if (total > 0)
                 {
                     var result = _context.SanPham.Where(x => x.TrangThai == "Đang bán" && x.Id.ToString() == Key).Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
+                    return View("Index", result);
+                }
+                else
+                {
+                    return View("Index", null);
+                }
+            }
+            else
+            {
+                int total = _context.SanPham.Where(x => x.TrangThai == "Đang bán").Count();
+                
+                countpages = (int)Math.Ceiling((double)total / ITEM_PER_PAGE);
+
+                if (currentpage < 1)
+                {
+                    currentpage = 1;
+                }
+                if (currentpage > countpages)
+                {
+                    currentpage = countpages;
+                }
+
+                ViewBag.CurrentPage = currentpage;
+                ViewBag.CountPages = countpages;
+                ViewBag.Search = Key;
+                if (total > 0)
+                {
+                    var result = _context.SanPham.Where(x => x.TrangThai == "Đang bán").Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
                     return View("Index", result);
                 }
                 else

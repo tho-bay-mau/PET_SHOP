@@ -302,8 +302,9 @@
                                         <div class="col mt-3">
                                             @if (item.TrangThaiDonHang == "cho duyet" && item.TrangThaiThanhToan == false)
                                             {
-                                                <a asp-action="HuyDon" asp-controller="DonHang" asp-route-id="@item.Id"
-                                                   class="btn btn-danger" style="--bs-btn-bg: #ff3500;">Huỷ đơn</a>
+                                                <a class="btn btn-red" asp-action="HuyDon" asp-controller="DonHang" asp-route-id="@item.Id" data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-Id="@item.Id" onclick="setId(this)">
+                                                    Hủy đơn
+                                                </a>
                                             }
                                             else if (item.TrangThaiDonHang == "dang giao")
                                             {

@@ -38,6 +38,10 @@ namespace ThoBayMau_ASM.Controllers
                                     })
                                     .ToList();
             ViewBag.LoaiSPid = new SelectList(SPList, "Value", "Text");
+            if(ct.NgaySanXuat >= ct.HanSuDung)
+            {
+                ModelState.AddModelError("NgaySanXuat", "Ngày sản suất phải bé hơn hạn sử dụng");
+            }
             if (ModelState.IsValid)
             {
                 _context.Add(ct);
@@ -58,6 +62,7 @@ namespace ThoBayMau_ASM.Controllers
                                     })
                                     .ToList();
             ViewBag.LoaiSPid = new SelectList(SPList, "Value", "Text");
+
             if (id == null || id == 0)
             {
                 return NotFound();
@@ -80,6 +85,10 @@ namespace ThoBayMau_ASM.Controllers
                                     })
                                     .ToList();
             ViewBag.LoaiSPid = new SelectList(SPList, "Value", "Text");
+            if (ct.NgaySanXuat >= ct.HanSuDung)
+            {
+                ModelState.AddModelError("NgaySanXuat", "Ngày sản suất phải bé hơn hạn sử dụng");
+            }
             if (ModelState.IsValid)
             {
                 _context.Update(ct);

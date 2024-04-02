@@ -117,9 +117,9 @@ namespace ThoBayMau_ASM.Controllers
         public IActionResult Search(string Key)
         {
             ViewBag.LoaiSP = true;
-            if (string.IsNullOrEmpty(Key))
+            if (Key != null)
             {
-                int total = _context.LoaiSP.Count();
+                int total = _context.LoaiSP.Where(x => x.TrangThai == true && x.Ten.ToLower().Contains(Key.ToLower())).Count();
                 countpages = (int)Math.Ceiling((double)total / ITEM_PER_PAGE);
 
                 if (currentpage < 1)
@@ -136,7 +136,7 @@ namespace ThoBayMau_ASM.Controllers
                 ViewBag.Search = Key;
                 if (total > 0)
                 {
-                    var result = _context.LoaiSP.Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
+                    var result = _context.LoaiSP.Where(x => x.TrangThai == true && x.Ten.ToLower().Contains(Key.ToLower())).Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
                     return View("Index", result);
                 }
                 else
@@ -146,7 +146,7 @@ namespace ThoBayMau_ASM.Controllers
             }
             else
             {
-                int total = _context.LoaiSP.Where(x => x.Ten == Key).Count();
+                int total = _context.LoaiSP.Where(x => x.TrangThai == true).Count();
                 countpages = (int)Math.Ceiling((double)total / ITEM_PER_PAGE);
 
                 if (currentpage < 1)
@@ -163,7 +163,7 @@ namespace ThoBayMau_ASM.Controllers
                 ViewBag.Search = Key;
                 if (total > 0)
                 {
-                    var result = _context.LoaiSP.Where(x => x.Ten == Key).Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
+                    var result = _context.LoaiSP.Where(x => x.TrangThai == true).Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
                     return View("Index", result);
                 }
                 else

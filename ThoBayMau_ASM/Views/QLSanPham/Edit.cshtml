@@ -15,9 +15,13 @@
         </div>
             <div class="mb-3 mt-3">
             <label for="imageUpload" class="form-label">Chọn ảnh mới:</label>
-            <div>
-                <img id="previewImage" src="#" class="img-thumbnail" alt="Product Image">
+                <div class="row" style="justify-content: space-around">
+                @foreach (var anh in ViewBag.DanhSachAnh)
+                {
+                        <img src="~/img/products/@anh.TenAnh" alt="Ảnh sản phẩm" class="img-thumbnail" style="width:18%"/>    
+                }
             </div>
+            <br />
             <input type="file" class="form-control" id="imageUpload" name="files" multiple onchange="previewFile()">
         </div>
             <div class="mb-3 mt-3">
@@ -35,7 +39,7 @@
             <input asp-for="LoaiSPId" class="form-control" id="exampleInputEmail1">
             <span asp-validation-for="LoaiSPId" class="text-danger"></span>
         </div>
-        <button type="submit" class="btn btn-primary">Sửa</button>
+        
         <a asp-controller="QLSanPham" asp-action="Index" class="btn btn-primary">Trở về</a>
     </div>
 </form>
@@ -58,4 +62,5 @@
             }
         }
     </script>
+    
 }

@@ -45,11 +45,12 @@
                                 <form asp-action="Login" asp-controller="DangNhapDangKi" asp-route-returnUrl="@ViewBag.ReturnUrl" method="post" class="form">
                                     <div class="mb-3">
                                         <label class="form-label">Tên tài khoản</label>
-                                        <input type="text" name="TenTK" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                        <input type="text" asp-for="TenTK" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
                                     </div>
                                     <div class="mb-4">
                                         <label for="exampleInputPassword1" class="form-label">Mật khẩu</label>
-                                        <input type="password" name="MatKhau" class="form-control" id="exampleInputPassword1">
+                                        <input type="password" asp-for="MatKhau" class="form-control" id="exampleInputPassword1">
+                                        <span class="text-danger">@ViewBag.ErrPassword</span>
                                     </div>
                                     <div class="row">
                                         <div class="d-flex align-items-center justify-content-between mb-4">

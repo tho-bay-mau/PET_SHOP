@@ -26,7 +26,7 @@ namespace ThoBayMau_ASM.Controllers
         [HttpGet]
         public IActionResult Login(string? returnUrl)
         {
-            if(returnUrl != null)
+            if (returnUrl != null)
             {
                 ViewBag.returnUrl = returnUrl;
             }
@@ -44,26 +44,35 @@ namespace ThoBayMau_ASM.Controllers
         [HttpPost]
         public IActionResult Login(TaiKhoan tk, string? returnUrl)
         {
-            var user = _db.TaiKhoan.FirstOrDefault(x => x.TenTK == tk.TenTK && x.MatKhau == tk.MatKhau);
+            var user = _db.TaiKhoan.FirstOrDefault(x => x.TenTK == tk.TenTK);
 
             if (user != null)
             {
-                HttpContext.Session.SetString("UserName", user.TenTK.ToString());
-                HttpContext.Session.SetJson("User", user);
-                if (returnUrl != null)
+                if (user.MatKhau == tk.MatKhau)
                 {
-                    return Redirect(returnUrl);
-                }
-                if (user.LoaiTK)
-                {
-                    return RedirectToAction("Index", "Admin");
+                    HttpContext.Session.SetString("UserName", user.TenTK.ToString());
+                    HttpContext.Session.SetJson("User", user);
+                    if (returnUrl != null)
+                    {
+                        return Redirect(returnUrl);
+                    }
+                    if (user.LoaiTK)
+                    {
+                        return RedirectToAction("Index", "Admin");
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
                 }
                 else
                 {
-                    return RedirectToAction("Index", "Home");
+                    ViewBag.ErrPassword = "Tên tài khoản hoặc mật khẩu không chính xác";
+                    return View(tk);
                 }
             }
-            return View();
+            ViewBag.ErrPassword = "Tên tài khoản hoặc mật khẩu không chính xác";
+            return View(tk);
         }
         //chuyển tên tài khoản google thành không dấu cho phù hợp với varchar
         static string RemoveDiacritics(string input)
@@ -315,7 +324,7 @@ namespace ThoBayMau_ASM.Controllers
             }
             ViewBag.errCode = "Mã xác nhận không chính xác";
             return View();
-        } 
+        }
     }
 }
 

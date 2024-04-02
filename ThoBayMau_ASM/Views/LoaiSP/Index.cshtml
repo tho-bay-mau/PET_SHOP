@@ -2,6 +2,12 @@
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var pagingmodel = new ThoBayMau_ASM.Helpers.PagingModel()
+            {
+                currentpage = (int)(@ViewBag.CurrentPage),
+                countpages = (int)(@ViewBag.CountPages),
+                generateUrl = (int? p) => Url.Page("", new { p = p, Key = @ViewBag.Search })
+            };
 }
 <style>
     .btn-red {
@@ -117,6 +123,6 @@
                 }
             </tbody>
         </table>
-        <
     </div>
 </div>
+<partial name="_Paging" model="pagingmodel" />

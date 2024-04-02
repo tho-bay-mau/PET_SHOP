@@ -160,7 +160,7 @@ namespace ThoBayMau_ASM.Controllers
         public IActionResult Search(string Key)
         {
             ViewBag.TaiKhoan = true;
-            if (string.IsNullOrEmpty(Key))
+            if (Key != null)
             {
                 int total = _db.TaiKhoan.Where(x => x.TenTK.ToLower().Contains(Key.ToLower()) && x.TrangThai == true).Count();
                 countpages = (int)Math.Ceiling((double)total / ITEM_PER_PAGE);
@@ -189,7 +189,7 @@ namespace ThoBayMau_ASM.Controllers
             }
             else
             {
-                int total = _db.TaiKhoan.Where(x => x.TenTK.ToLower().Contains(Key.ToLower()) && x.TrangThai == true).Count();
+                int total = _db.TaiKhoan.Where(x => x.TrangThai == true).Count();
                 countpages = (int)Math.Ceiling((double)total / ITEM_PER_PAGE);
 
                 if (currentpage < 1)
@@ -206,7 +206,7 @@ namespace ThoBayMau_ASM.Controllers
                 ViewBag.Search = Key;
                 if (total > 0)
                 {
-                    var result = _db.TaiKhoan.Where(x => x.TenTK.ToLower().Contains(Key.ToLower()) && x.TrangThai == true).Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
+                    var result = _db.TaiKhoan.Where(x => x.TrangThai == true).Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
                     return View("Index", result);
                 }
                 else
