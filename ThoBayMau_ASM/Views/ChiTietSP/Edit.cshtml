@@ -8,31 +8,71 @@
 
     <div class="card-body">
 
-        <div class="mb-2">
-            <label asp-for="Gia" class="form-label">Giá</label>
-            <input asp-for="Gia" class="form-control" id="exampleInputEmail1">
-            <span asp-validation-for="Gia" class="text-danger"></span>
+        <div class="mb-3 mt-3">
+            <label asp-for="Gia" class="form-label">Giá </label>
+            <input asp-for="Gia" type="number" class="form-control" id="numberInput">
+
+            @if (ViewBag.ktgia != null)
+            {
+                <span class="text-danger">@ViewBag.ktgia</span>
+            }
+            else
+            {
+                <span asp-validation-for="Gia" class="text-danger"></span>
+            }
+
+
         </div>
 
-        <div class="mb-2">
+        <div class="mb-3 mt-3">
             <label asp-for="SoLuong" class="form-label">Số lượng</label>
-            <input asp-for="SoLuong" class="form-control" id="exampleInputEmail1">
-            <span asp-validation-for="SoLuong" class="text-danger"></span>
+            <input asp-for="SoLuong" type="number" class="form-control" id="numberInput">
+            @if (ViewBag.ktSoLuong != null)
+            {
+                <span class="text-danger">@ViewBag.ktSoLuong</span>
+            }
+            else
+            {
+                <span asp-validation-for="SoLuong" class="text-danger"></span>
+            }
+
         </div>
-        <div class="mb-2">
+        <div class="mb-3 mt-3">
             <label asp-for="KichThuoc" class="form-label">Kích thước</label>
-            <input asp-for="KichThuoc" class="form-control" id="exampleInputEmail1">
+            <input asp-for="KichThuoc" type="number" class="form-control" id="numberInput">
+            @if (ViewBag.ktKichThuoc != null)
+            {
+                <span class="text-danger">@ViewBag.ktKichThuoc</span>
+            }
             <span asp-validation-for="KichThuoc" class="text-danger"></span>
         </div>
-        <div class="mb-2">
-            <label asp-for="NgaySanXuat" class="form-label">Ngày sản xuất</label>
-            <input asp-for="NgaySanXuat" type="date" class="form-control" id="ngaySanXuatInput">
-            <span asp-validation-for="NgaySanXuat" class="text-danger"></span>
-        </div>
-        <div class="mb-2">
-            <label asp-for="HanSuDung" class="form-label">Hạn sử dụng</label>
-            <input asp-for="HanSuDung" type="date" class="form-control">
-            <span asp-validation-for="HanSuDung" class="text-danger"></span>
+        <div class="row">
+            <div class="col-md-6 mb-3 mt-3">
+                <label asp-for="NgaySanXuat" class="form-label">Ngày sản xuất</label>
+                <input asp-for="NgaySanXuat" type="date" class="form-control" id="datepicker">
+                @if (ViewBag.ktNSX != null)
+                {
+                    <span class="text-danger">@ViewBag.ktNSX</span>
+                }
+                else
+                {
+                    <span asp-validation-for="NgaySanXuat" class="text-danger"></span>
+                }
+
+            </div>
+            <div class="col-md-6 mb-3 mt-3">
+                <label asp-for="HanSuDung" class="form-label">Hạn sử dụng</label>
+                <input asp-for="HanSuDung" type="date" class="form-control">
+                @if (ViewBag.ktHSD != null)
+                {
+                    <span class="text-danger">@ViewBag.ktHSD</span>
+                }
+                else
+                {
+                    <span asp-validation-for="HanSuDung" class="text-danger"></span>
+                }
+
+            </div>
         </div>
         <div class=" mb-3 mt-3">
             <label asp-for="SanPhamId" class="form-label">Mã sản phẩm</label>
