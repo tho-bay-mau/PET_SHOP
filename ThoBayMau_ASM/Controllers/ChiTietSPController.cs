@@ -38,7 +38,23 @@ namespace ThoBayMau_ASM.Controllers
                                     })
                                     .ToList();
             ViewBag.LoaiSPid = new SelectList(SPList, "Value", "Text");
-            if(ct.NgaySanXuat >= ct.HanSuDung)
+
+            if (ct.Gia <= 0 || ct.Gia > 2000000000)
+            {
+                ModelState.AddModelError("Gia", "Giá không hợp lệ!!");
+            }
+
+            if (ct.SoLuong <= 0 || ct.SoLuong > 2000000000)
+            {
+                ModelState.AddModelError("SoLuong", "Số lượng không hợp lệ!!");
+            }
+
+            if (ct.KichThuoc <= 0 || ct.KichThuoc > 2000000000)
+            {
+                ModelState.AddModelError("KichThuoc", "Kích thước không hợp lệ!!");
+            }
+
+            if (ct.NgaySanXuat >= ct.HanSuDung)
             {
                 ModelState.AddModelError("NgaySanXuat", "Ngày sản suất phải bé hơn hạn sử dụng");
             }
@@ -85,10 +101,27 @@ namespace ThoBayMau_ASM.Controllers
                                     })
                                     .ToList();
             ViewBag.LoaiSPid = new SelectList(SPList, "Value", "Text");
+
+            if (ct.Gia <= 0 || ct.Gia > 2000000000)
+            {
+                ModelState.AddModelError("Gia", "Giá không hợp lệ!!");
+            }
+
+            if (ct.SoLuong <= 0 || ct.SoLuong > 2000000000)
+            {
+                ModelState.AddModelError("SoLuong", "Số lượng không hợp lệ!!");
+            }
+
+            if (ct.KichThuoc <= 0 || ct.KichThuoc > 2000000000)
+            {
+                ModelState.AddModelError("KichThuoc", "Kích thước không hợp lệ!!");
+            }
+
             if (ct.NgaySanXuat >= ct.HanSuDung)
             {
                 ModelState.AddModelError("NgaySanXuat", "Ngày sản suất phải bé hơn hạn sử dụng");
             }
+
             if (ModelState.IsValid)
             {
                 _context.Update(ct);

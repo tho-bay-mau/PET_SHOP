@@ -13,7 +13,7 @@ namespace ThoBayMau_ASM.Controllers
         private readonly ThoBayMau_ASMContext _context;
         private readonly IWebHostEnvironment _webhost;
 
-        public QLSanPhamController(ThoBayMau_ASMContext context,IWebHostEnvironment webHostEnvironment)
+        public QLSanPhamController(ThoBayMau_ASMContext context, IWebHostEnvironment webHostEnvironment)
         {
             // Khai báo constructor
             _webhost = webHostEnvironment;
@@ -69,9 +69,9 @@ namespace ThoBayMau_ASM.Controllers
 
         }
         [HttpPost]
-        public IActionResult Create( SanPham sp, IFormFile[] files,int gia, int soluong, int kichthuoc, DateTime ngaysanxuat, DateTime hansudung)
+        public IActionResult Create(SanPham sp, IFormFile[] files, int gia, int soluong, int kichthuoc, DateTime ngaysanxuat, DateTime hansudung)
         {
-            
+
             var loaiSPList = _context.LoaiSP.OrderBy(x => x.Id)
                                      .Select(x => new SelectListItem
                                      {
@@ -86,26 +86,37 @@ namespace ThoBayMau_ASM.Controllers
             ViewBag.LoaiSPid = new SelectList(loaiSPList, "Value", "Text");
             List<string> listTrangThai = new List<string> { "Đang bán", "Ngừng bán", "Mới" };
             ViewBag.TrangThai = new SelectList(listTrangThai);
-            if (gia < 0 || soluong < 0 || kichthuoc < 0)
+            if (gia <= 0)
             {
-                ViewBag.ktSo = "Gía số lượng kích thước không được âm";
-                ViewBag.LoaiSPid = new SelectList(loaiSPList, "Value", "Text");
-                ViewBag.TrangThai = new SelectList(listTrangThai);
-                return View(sp);
+                ViewBag.ktGia = "Giá không hợp lệ";
+
+            }
+
+            if (soluong <= 0)
+            {
+                ViewBag.ktSoLuong = "Số lượng không hợp lệ";
+
+            }
+
+            if (kichthuoc <= 0)
+            {
+                ViewBag.ktKichThuoc = "Kích thước không hợp lệ";
+
             }
 
             if (ngaysanxuat >= hansudung)
             {
                 ViewBag.ktNgay = "Ngày sản suất phải bé hơn hạn sử dụng";
-                ViewBag.LoaiSPid = new SelectList(loaiSPList, "Value", "Text");
-                ViewBag.TrangThai = new SelectList(listTrangThai);
-                return View(sp);
+
             }
             if (ngaysanxuat == DateTime.MinValue && hansudung == DateTime.MinValue)
             {
                 ViewBag.ktTrongNgay = "Vui lòng nhập ngày sản suất, hạn sử dụng";
-                ViewBag.LoaiSPid = new SelectList(loaiSPList, "Value", "Text");
-                ViewBag.TrangThai = new SelectList(listTrangThai);
+
+            }
+
+            if (ViewBag.ktGia != null || ViewBag.ktSoLuong != null || ViewBag.ktKichThuoc != null || ViewBag.ktNgay != null || ViewBag.ktTrongNgay != null)
+            {
                 return View(sp);
             }
 
@@ -160,11 +171,11 @@ namespace ThoBayMau_ASM.Controllers
         {
             List<string> listTrangThai = new List<string> { "Đang bán", "Ngừng bán", "Mới" };
             ViewBag.TrangThai = new SelectList(listTrangThai);
-            
+
             if (ModelState.IsValid)
             {
-                    _context.Update(obj);
-                    _context.SaveChanges();
+                _context.Update(obj);
+                _context.SaveChanges();
                 var anhdaco = _context.Anh.Where(x => x.SanphamId == obj.Id).ToList();
                 foreach (var existingImage in anhdaco)
                 {
@@ -173,15 +184,15 @@ namespace ThoBayMau_ASM.Controllers
                 }
                 foreach (var item in files)
                 {
-                        Uploadfile(item);
-                        Anh anh = new Anh();
-                        anh.SanphamId = obj.Id;
-                        anh.TenAnh = item.FileName;
-                        _context.Anh.Add(anh);
+                    Uploadfile(item);
+                    Anh anh = new Anh();
+                    anh.SanphamId = obj.Id;
+                    anh.TenAnh = item.FileName;
+                    _context.Anh.Add(anh);
                 }
-                    _context.SaveChanges();
-                    TempData["Sucess"] = "Sửa sản phẩm thành công!!";
-                    return RedirectToAction("Index");
+                _context.SaveChanges();
+                TempData["Sucess"] = "Sửa sản phẩm thành công!!";
+                return RedirectToAction("Index");
             }
             return View(obj);
         }
@@ -190,7 +201,7 @@ namespace ThoBayMau_ASM.Controllers
             if (file != null)
             {
                 string uploadDir = Path.Combine(_webhost.WebRootPath, "img/products"); // đưa ảnh vào file
-                string filePath = Path.Combine(uploadDir,file.FileName); // đưa ảnh vào file
+                string filePath = Path.Combine(uploadDir, file.FileName); // đưa ảnh vào file
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
                     file.CopyTo(fileStream);
@@ -249,7 +260,7 @@ namespace ThoBayMau_ASM.Controllers
             else
             {
                 int total = _context.SanPham.Where(x => x.TrangThai == "Đang bán").Count();
-                
+
                 countpages = (int)Math.Ceiling((double)total / ITEM_PER_PAGE);
 
                 if (currentpage < 1)
