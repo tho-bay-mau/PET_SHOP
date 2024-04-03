@@ -195,7 +195,7 @@
                                                     <th scope="col">STT</th>
                                                     <th scope="col">Tên sản phẩm</th>
                                                     <th scope="col">Loại</th>
-                                                    <th scope="col">Kích thước</th>
+                                                    <th scope="col">Kích thước(kg)</th>
                                                     <th scope="col">Số lượng</th>
                                                     <th scope="col">Giá</th>
                                                 </tr>
@@ -300,7 +300,8 @@
                                                     <div class="col mt-3">
                                                         @if (item.TrangThaiDonHang == "cho duyet" && item.TrangThaiThanhToan == false)
                                                         {
-                                                            <a asp-action="PaymentUser" asp-route-Id="@item.Id" class="btn btn-danger">Tiến hành thanh toán</a>
+                                                            <a asp-action="PaymentUser" asp-route-Id="@item.Id" class="btn btn-danger pay">Thanh toán</a>
+                                                            <a class="btn btn-primary cancel-order" data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-id="@item.Id" onclick="setId(this)">Huỷ Đơn</a>
                                                         }
 
                                                     </div>
