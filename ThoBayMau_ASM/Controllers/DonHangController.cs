@@ -65,7 +65,9 @@ namespace ThoBayMau_ASM.Controllers
                 .ThenInclude(x => x.ChiTiet_SP)
                 .ThenInclude(x => x.SanPham)
                 .ThenInclude(x => x.LoaiSP)
-                .Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
+                .Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE)
+                .OrderByDescending(x => x.ThoiGianTao)
+                .ToList();
                 int count = _context.DonHang.Where(x => x.TrangThaiDonHang == "cho duyet").Count();
                 ViewBag.Count = count;
                 return View(result);
@@ -117,6 +119,7 @@ namespace ThoBayMau_ASM.Controllers
             {
                 var DonHang = _context.DonHang.FirstOrDefault(a => a.Id == txt_ID);
                 DonHang.TrangThaiDonHang = "da huy";
+                DonHang.ThoiGianHuy = DateTime.Now;
                 _context.Update(DonHang);
                 _context.SaveChanges();
 

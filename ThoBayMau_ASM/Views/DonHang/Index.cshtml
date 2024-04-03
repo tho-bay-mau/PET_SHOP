@@ -108,12 +108,16 @@
         <th>Khách hàng</th>
         <th>Tổng số lượng</th>
         <th>Tổng tiền</th>
-        <th>Trang thái thanh toán</th>
-            @if (ViewBag.TrangThai == "cho duyet" || ViewBag.TrangThai == "dang giao")
+            @if (ViewBag.TrangThai == "da huy")
             {
-            <th>Thao tác</th>
+            <th>Thời gian huỷ đơn</th>
+            } else{
+            <th>Trang thái thanh toán</th>
+                @if (ViewBag.TrangThai == "cho duyet" || ViewBag.TrangThai == "dang giao")
+                {
+                <th>Thao tác</th>
+                }
             }
-
         <th>Chi tiết</th>
         </thead>
         <tbody class="align-middle">
@@ -145,13 +149,19 @@
                             @tongGia
                         </td>
                         <td>
-                            @if (item.TrangThaiThanhToan == true)
+                            @if (ViewBag.TrangThai == "da huy")
                             {
-                                <span style="color: green">Đã thanh toán</span>
-                            }
-                            else
+                                @item.ThoiGianHuy
+                            } else
                             {
-                                <span style="color: red">Chờ thanh toán</span>
+                                @if (item.TrangThaiThanhToan == true)
+                                {
+                                    <span style="color: green">Đã thanh toán</span>
+                                }
+                                else
+                                {
+                                    <span style="color: red">Chờ thanh toán</span>
+                                }
                             }
                         </td>
                         @if (item.TrangThaiDonHang == "cho duyet" || item.TrangThaiDonHang == "dang giao")
