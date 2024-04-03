@@ -39,25 +39,37 @@ namespace ThoBayMau_ASM.Controllers
                                     .ToList();
             ViewBag.LoaiSPid = new SelectList(SPList, "Value", "Text");
 
-            if (ct.Gia <= 0 || ct.Gia > 2000000000)
+            
+            if(ct.Gia == 0)
             {
-                ModelState.AddModelError("Gia", "Giá không hợp lệ!!");
+                ViewBag.ktgia = "Vui lòng nhập giá!!";
             }
 
-            if (ct.SoLuong <= 0 || ct.SoLuong > 2000000000)
+            if (ct.SoLuong == 0)
             {
-                ModelState.AddModelError("SoLuong", "Số lượng không hợp lệ!!");
+                ViewBag.ktSoLuong = "Vui lòng nhập số lượng!!";
             }
 
-            if (ct.KichThuoc <= 0 || ct.KichThuoc > 2000000000)
+            if (ct.KichThuoc == 0)
             {
-                ModelState.AddModelError("KichThuoc", "Kích thước không hợp lệ!!");
+                ViewBag.ktKichThuoc = "Vui lòng nhập kích thước!!";
             }
 
             if (ct.NgaySanXuat >= ct.HanSuDung)
             {
                 ModelState.AddModelError("NgaySanXuat", "Ngày sản suất phải bé hơn hạn sử dụng");
             }
+
+            if (ct.NgaySanXuat == DateTime.MinValue)
+            {
+                ViewBag.ktNSX = "Vui lòng nhập ngày sản xuất!!";
+            }
+
+            if (ct.HanSuDung == DateTime.MinValue)
+            {
+                ViewBag.ktHSD = "Vui lòng nhập hạn sử dụng!!";
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(ct);
@@ -102,25 +114,36 @@ namespace ThoBayMau_ASM.Controllers
                                     .ToList();
             ViewBag.LoaiSPid = new SelectList(SPList, "Value", "Text");
 
-            if (ct.Gia <= 0 || ct.Gia > 2000000000)
+            if (ct.Gia == 0)
             {
-                ModelState.AddModelError("Gia", "Giá không hợp lệ!!");
+                ViewBag.ktgia = "Vui lòng nhập giá!!";
             }
 
-            if (ct.SoLuong <= 0 || ct.SoLuong > 2000000000)
+            if (ct.SoLuong == 0)
             {
-                ModelState.AddModelError("SoLuong", "Số lượng không hợp lệ!!");
+                ViewBag.ktSoLuong = "Vui lòng nhập số lượng!!";
             }
 
-            if (ct.KichThuoc <= 0 || ct.KichThuoc > 2000000000)
+            if (ct.KichThuoc == 0)
             {
-                ModelState.AddModelError("KichThuoc", "Kích thước không hợp lệ!!");
+                ViewBag.ktKichThuoc = "Vui lòng nhập kích thước!!";
             }
 
             if (ct.NgaySanXuat >= ct.HanSuDung)
             {
                 ModelState.AddModelError("NgaySanXuat", "Ngày sản suất phải bé hơn hạn sử dụng");
             }
+
+            if (ct.NgaySanXuat == DateTime.MinValue)
+            {
+                ViewBag.ktNSX = "Vui lòng nhập ngày sản xuất!!";
+            }
+
+            if (ct.HanSuDung == DateTime.MinValue)
+            {
+                ViewBag.ktHSD = "Vui lòng nhập hạn sử dụng!!";
+            }
+
 
             if (ModelState.IsValid)
             {
