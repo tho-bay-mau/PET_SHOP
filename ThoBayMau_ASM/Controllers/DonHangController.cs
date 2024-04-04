@@ -117,9 +117,18 @@ namespace ThoBayMau_ASM.Controllers
             }
             else
             {
-                var DonHang = _context.DonHang.FirstOrDefault(a => a.Id == txt_ID);
+                var DonHang = _context.DonHang
+                    .Include(x => x.DonHang_ChiTiets)
+                    .FirstOrDefault(a => a.Id == txt_ID);
                 DonHang.TrangThaiDonHang = "da huy";
                 DonHang.ThoiGianHuy = DateTime.Now;
+                foreach (var item in DonHang.DonHang_ChiTiets)
+                {
+                    var sp = _context.ChiTiet_SP.FirstOrDefault(a => a.Id == item.ChiTiet_SPId);
+                    sp.SoLuong += item.SoLuong;
+                    _context.Update(sp);
+                    _context.SaveChanges();
+                }
                 _context.Update(DonHang);
                 _context.SaveChanges();
 
