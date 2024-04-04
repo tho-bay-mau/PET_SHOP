@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Aram.Infrastructure;
+using Microsoft.AspNetCore.Mvc;
 using ThoBayMau_ASM.Data;
 using ThoBayMau_ASM.Models;
 
@@ -53,15 +54,47 @@ namespace ThoBayMau_ASM.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(LoaiSP Loai)
         {
-            if (ModelState.IsValid)
+            var user = HttpContext.Session.GetJson<TaiKhoan>("User");
+            if (user != null)
             {
-                _context.Add(Loai);
-                _context.SaveChanges();
-                TempData["Sucess"] = "Thêm loại sản phẩm thành công!!";
-                return RedirectToAction("Index");
+                try
+                {
+                    if (ModelState.IsValid)
+                    {
+                        Loai.TrangThai = true;
+                        _context.Add(Loai);
+                        _context.SaveChanges();
+                        TempData["Sucess"] = "Thêm loại sản phẩm thành công!!";
+                        
+                        var ls = new LichSu
+                        {
+                            ThongTin_ThaoTac = $"Thêm loại sản phẩm",
+                            NgayGio = DateTime.Now,
+                            ChiTiet = $"Loại sản phẩm: {Loai.Id}",
+                            TaiKhoanId = user.Id
+                        };
+                        _context.LichSu.Add(ls);
+                        _context.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    return View(Loai);
+                }
+                catch (Exception ex)
+                {
+                    var ls = new LichSu
+                    {
+                        ThongTin_ThaoTac = $"Thêm loại sản phẩm",
+                        NgayGio = DateTime.Now,
+                        ChiTiet = $"Lỗi: {ex}",
+                        TaiKhoanId = user.Id
+                    };
+                    _context.LichSu.Add(ls);
+                    _context.SaveChanges();
+                    TempData["Error"] = "Lỗi nghiêm trọng hãy báo IT để được hỗ trợ";
+                    return RedirectToAction("Index");
+                }
             }
-
-            return View(Loai);
+            return NotFound();
         }
 
         public IActionResult Edit(int? id)
@@ -83,36 +116,97 @@ namespace ThoBayMau_ASM.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(LoaiSP loai)
         {
-            if (ModelState.IsValid)
+            var user = HttpContext.Session.GetJson<TaiKhoan>("User");
+            if (user != null)
             {
-                _context.Update(loai);
-                _context.SaveChanges();
-                TempData["Sucess"] = "Sửa loại sản phẩm thành công!!";
-                return RedirectToAction("Index");
+                try
+                {
+                    if (ModelState.IsValid)
+                    {
+                        _context.Update(loai);
+                        _context.SaveChanges();
+                        TempData["Sucess"] = "Sửa loại sản phẩm thành công!!";
+                        var ls = new LichSu
+                        {
+                            ThongTin_ThaoTac = $"Sửa loại sản phẩm",
+                            NgayGio = DateTime.Now,
+                            ChiTiet = $"Loại sản phẩm: {loai.Id}",
+                            TaiKhoanId = user.Id
+                        };
+                        _context.LichSu.Add(ls);
+                        _context.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    return View(loai);
+                }
+                catch (Exception ex)
+                {
+                    var ls = new LichSu
+                    {
+                        ThongTin_ThaoTac = $"Sửa loại sản phẩm",
+                        NgayGio = DateTime.Now,
+                        ChiTiet = $"Lỗi: {ex}",
+                        TaiKhoanId = user.Id
+                    };
+                    _context.LichSu.Add(ls);
+                    _context.SaveChanges();
+                    TempData["Error"] = "Lỗi nghiêm trọng hãy báo IT để được hỗ trợ";
+                    return RedirectToAction("Index");
+                }
             }
-            return View(loai);
+            return NotFound();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Delete(int? txt_ID)
         {
-            if (txt_ID == null || txt_ID == 0)
+            var user = HttpContext.Session.GetJson<TaiKhoan>("User");
+            if (user != null)
             {
-                return NotFound();
+                try
+                {
+                    if (txt_ID == null || txt_ID == 0)
+                    {
+                        return NotFound();
+                    }
+                    var obj = _context.LoaiSP.FirstOrDefault(x => x.Id == txt_ID);
+                    if (obj == null)
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        obj.TrangThai = false;
+                        _context.SaveChanges();
+                        TempData["Sucess"] = "Xóa loại sản phẩm thành công";
+                        var ls = new LichSu
+                        {
+                            ThongTin_ThaoTac = $"Xóa loại sản phẩm",
+                            NgayGio = DateTime.Now,
+                            ChiTiet = $"Loại sản phẩm: {obj.Id}",
+                            TaiKhoanId = user.Id
+                        };
+                        _context.LichSu.Add(ls);
+                        _context.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    var ls = new LichSu
+                    {
+                        ThongTin_ThaoTac = $"Xóa loại sản phẩm",
+                        NgayGio = DateTime.Now,
+                        ChiTiet = $"Lỗi: {ex}",
+                        TaiKhoanId = user.Id
+                    };
+                    _context.LichSu.Add(ls);
+                    _context.SaveChanges();
+                    TempData["Error"] = "Lỗi nghiêm trọng hãy báo IT để được hỗ trợ";
+                    return RedirectToAction("Index");
+                }
             }
-            var obj = _context.LoaiSP.FirstOrDefault(x => x.Id == txt_ID);
-            if (obj == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                obj.TrangThai = false;
-                _context.SaveChanges();
-                TempData["Sucess"] = "Xóa loại sản phẩm thành công";
-                return RedirectToAction("Index");
-            }
-
+            return NotFound();
         }
         public IActionResult Search(string Key)
         {

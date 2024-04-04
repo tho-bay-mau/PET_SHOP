@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Aram.Infrastructure;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ThoBayMau_ASM.Data;
 using ThoBayMau_ASM.Helpers;
@@ -59,28 +60,59 @@ namespace ThoBayMau_ASM.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(TaiKhoan obj)
         {
-            if (_db.TaiKhoan.Any(x => x.TenTK == obj.TenTK))
+            var user = HttpContext.Session.GetJson<TaiKhoan>("User");
+            if (user != null)
             {
-                ModelState.AddModelError("TenTK", "Tên tài khoản đã tồn tại");
+                try
+                {
+                    if (_db.TaiKhoan.Any(x => x.TenTK == obj.TenTK))
+                    {
+                        ModelState.AddModelError("TenTK", "Tên tài khoản đã tồn tại");
+                    }
+                    if (_db.TaiKhoan.Any(x => x.SDT == obj.SDT))
+                    {
+                        ModelState.AddModelError("SDT", "SDT đã liên kết với tài khoản khác");
+                    }
+                    if (_db.TaiKhoan.Any(x => x.Email == obj.Email))
+                    {
+                        ModelState.AddModelError("Email", "Email đã liên kết với tài khoản khác");
+                    }
+                    if (ModelState.IsValid)
+                    {
+                        obj.NgayDangKy = DateTime.Now;
+                        obj.TrangThai = true;
+                        _db.TaiKhoan.Add(obj);
+                        _db.SaveChanges();
+                        TempData["Sucess"] = "Thêm tài khoản thành công";
+                        var ls = new LichSu
+                        {
+                            ThongTin_ThaoTac = $"Thêm tài khoản",
+                            NgayGio = DateTime.Now,
+                            ChiTiet = $"Tài khoản: {obj.TenTK}",
+                            TaiKhoanId = user.Id
+                        };
+                        _db.LichSu.Add(ls);
+                        _db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    return View(obj);
+                }
+                catch (Exception ex)
+                {
+                    var ls = new LichSu
+                    {
+                        ThongTin_ThaoTac = $"Thêm tài khoản",
+                        NgayGio = DateTime.Now,
+                        ChiTiet = $"Lỗi: {ex}",
+                        TaiKhoanId = user.Id
+                    };
+                    _db.LichSu.Add(ls);
+                    _db.SaveChanges();
+                    TempData["Error"] = "Lỗi nghiêm trọng hãy báo IT để được hỗ trợ";
+                    return RedirectToAction("Index");
+                }
             }
-            if (_db.TaiKhoan.Any(x => x.SDT == obj.SDT))
-            {
-                ModelState.AddModelError("SDT", "SDT đã liên kết với tài khoản khác");
-            }
-            if (_db.TaiKhoan.Any(x => x.Email == obj.Email))
-            {
-                ModelState.AddModelError("Email", "Email đã liên kết với tài khoản khác");
-            }
-            if (ModelState.IsValid)
-            {
-                obj.NgayDangKy = DateTime.Now;
-                obj.TrangThai = true;
-                _db.TaiKhoan.Add(obj);
-                _db.SaveChanges();
-                TempData["Sucess"] = "Thêm tài khoản thành công";
-                return RedirectToAction("Index");
-            }
-            return View(obj);
+            return NotFound();
         }
 
         public IActionResult Edit(int? id)
@@ -102,59 +134,121 @@ namespace ThoBayMau_ASM.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(TaiKhoan obj)
         {
-            var tkNow = _db.TaiKhoan.FirstOrDefault(x => x.Id == obj.Id);
-            if (tkNow == null)
+            var user = HttpContext.Session.GetJson<TaiKhoan>("User");
+            if (user != null)
             {
-                return NotFound();
-            }
-            else
-            {
-                if (tkNow.SDT != obj.SDT)
+                try
                 {
-                    if (_db.TaiKhoan.Any(x => x.SDT == obj.SDT))
+                    var tkNow = _db.TaiKhoan.FirstOrDefault(x => x.Id == obj.Id);
+                    if (tkNow == null)
                     {
-                        ModelState.AddModelError("SDT", "SDT đã liên kết với tài khoản khác");
+                        return NotFound();
                     }
+                    else
+                    {
+                        if (tkNow.SDT != obj.SDT)
+                        {
+                            if (_db.TaiKhoan.Any(x => x.SDT == obj.SDT))
+                            {
+                                ModelState.AddModelError("SDT", "SDT đã liên kết với tài khoản khác");
+                            }
+                        }
+                        if (tkNow.Email != obj.Email)
+                        {
+                            if (_db.TaiKhoan.Any(x => x.Email == obj.Email))
+                            {
+                                ModelState.AddModelError("Email", "Email đã liên kết với tài khoản khác");
+                            }
+                        }
+                    }
+                    if (ModelState.IsValid)
+                    {
+                        _db.Entry(tkNow).State = EntityState.Detached;
+                        _db.TaiKhoan.Update(obj);
+                        _db.SaveChanges();
+                        TempData["Sucess"] = "Chỉnh sửa tài khoản thành công";
+                        var ls = new LichSu
+                        {
+                            ThongTin_ThaoTac = $"Chỉnh sửa tài khoản",
+                            NgayGio = DateTime.Now,
+                            ChiTiet = $"Tài khoản: {obj.TenTK}",
+                            TaiKhoanId = user.Id
+                        };
+                        _db.LichSu.Add(ls);
+                        _db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    return View(obj);
                 }
-                if (tkNow.Email != obj.Email)
+                catch (Exception ex)
                 {
-                    if (_db.TaiKhoan.Any(x => x.Email == obj.Email))
+                    var ls = new LichSu
                     {
-                        ModelState.AddModelError("Email", "Email đã liên kết với tài khoản khác");
-                    }
+                        ThongTin_ThaoTac = $"Chỉnh sửa tài khoản",
+                        NgayGio = DateTime.Now,
+                        ChiTiet = $"Lỗi: {ex}",
+                        TaiKhoanId = user.Id
+                    };
+                    _db.LichSu.Add(ls);
+                    _db.SaveChanges();
+                    TempData["Error"] = "Lỗi nghiêm trọng hãy báo IT để được hỗ trợ";
+                    return RedirectToAction("Index");
                 }
             }
-            if (ModelState.IsValid)
-            {
-                _db.Entry(tkNow).State = EntityState.Detached;
-                _db.TaiKhoan.Update(obj);
-                _db.SaveChanges();
-                TempData["Sucess"] = "Chỉnh sửa tài khoản thành công";
-                return RedirectToAction("Index");
-            }
-            return View(obj);
+            return NotFound();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Delete(int? txt_ID)
         {
-            if (txt_ID == null || txt_ID == 0)
+            var user = HttpContext.Session.GetJson<TaiKhoan>("User");
+            if (user != null)
             {
-                return NotFound();
+                try
+                {
+                    if (txt_ID == null || txt_ID == 0)
+                    {
+                        return NotFound();
+                    }
+                    var obj = _db.TaiKhoan.FirstOrDefault(x => x.Id == txt_ID);
+                    if (obj == null)
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        obj.TrangThai = false;
+                        _db.SaveChanges();
+                        TempData["Sucess"] = "Xóa tài khoản thành công";
+                        var ls = new LichSu
+                        {
+                            ThongTin_ThaoTac = $"Xóa tài khoản",
+                            NgayGio = DateTime.Now,
+                            ChiTiet = $"Tài khoản: {obj.TenTK}",
+                            TaiKhoanId = user.Id
+                        };
+                        _db.LichSu.Add(ls);
+                        _db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    var ls = new LichSu
+                    {
+                        ThongTin_ThaoTac = $"Xóa tài khoản",
+                        NgayGio = DateTime.Now,
+                        ChiTiet = $"Lỗi: {ex}",
+                        TaiKhoanId = user.Id
+                    };
+                    _db.LichSu.Add(ls);
+                    _db.SaveChanges();
+                    TempData["Error"] = "Lỗi nghiêm trọng hãy báo IT để được hỗ trợ";
+                    return RedirectToAction("Index");
+                }
             }
-            var obj = _db.TaiKhoan.FirstOrDefault(x => x.Id == txt_ID);
-            if (obj == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                obj.TrangThai = false;
-                _db.SaveChanges();
-                TempData["Sucess"] = "Xóa tài khoản thành công";
-                return RedirectToAction("Index");
-            }
+            return NotFound();
         }
 
         public IActionResult Search(string Key)
