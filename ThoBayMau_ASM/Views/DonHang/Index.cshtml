@@ -113,11 +113,11 @@
             <th>Thời gian huỷ đơn</th>
             } else{
             <th>Trang thái thanh toán</th>
-                @if (ViewBag.TrangThai == "cho duyet" || ViewBag.TrangThai == "dang giao")
-                {
+            @if (ViewBag.TrangThai == "cho duyet" || ViewBag.TrangThai == "dang giao")
+            {
                 <th>Thao tác</th>
-                }
             }
+        }
         <th>Chi tiết</th>
         </thead>
         <tbody class="align-middle">
@@ -167,16 +167,17 @@
                         @if (item.TrangThaiDonHang == "cho duyet" || item.TrangThaiDonHang == "dang giao")
                         {
                             <td>
-                                <a class="btn btn-primaty" asp-action="DuyetDon" asp-controller="DonHang" asp-route-id="@item.Id">
-                                    <i class="fa-solid fa-check"></i>
-                                </a>
-
-                                @if (item.TrangThaiDonHang == "cho duyet" && item.TrangThaiThanhToan == false)
+                                @if (item.TrangThaiThanhToan == true)
                                 {
-                                    <span>|</span>
+                                    <a class="btn btn-primaty" asp-action="DuyetDon" asp-controller="DonHang" asp-route-id="@item.Id" asp-route-returnUrl="@Url.Action("Index", "DonHang", new {trangThai = @ViewBag.TrangThai})">
+                                        <i class="fa-solid fa-check"></i>
+                                    </a>
+                                } else
+                                {
+                                    
                                     <a class="btn btn-red" asp-action="HuyDon" asp-controller="DonHang" asp-route-id="@item.Id" data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-Id="@item.Id" onclick="setId(this)">
-                                       <i class="bi bi-trash3"></i>
-                                   </a>
+                                        <i class="bi bi-trash3"></i>
+                                    </a>
                                 }
                             </td>
                         }
