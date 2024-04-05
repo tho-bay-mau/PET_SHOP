@@ -225,6 +225,13 @@ namespace ThoBayMau_ASM.Controllers
                 {
                     var donHang_chiTiet = new DonHang_ChiTiet();
                     donHang_chiTiet.ChiTiet_SPId = item.ChiTiet_SP.Id;
+                    var SP = _context.ChiTiet_SP.FirstOrDefault(p => p.Id == item.ChiTiet_SP.Id);
+                    if (SP != null)
+                    {
+                        SP.SoLuong -= item.SoLuong;
+                        _context.Update(SP);
+                        _context.SaveChanges();
+                    }
                     donHang_chiTiet.DonHangId = donHang.Id;
                     donHang_chiTiet.SoLuong = item.SoLuong;
                     _context.Add(donHang_chiTiet);

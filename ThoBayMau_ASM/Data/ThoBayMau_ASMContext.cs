@@ -19,6 +19,7 @@ namespace ThoBayMau_ASM.Data
         public DbSet<ThoBayMau_ASM.Models.LoaiSP> LoaiSP { get; set; } = default!;
         public DbSet<ThoBayMau_ASM.Models.ChiTiet_SP> ChiTiet_SP { get; set; } = default!;
         public DbSet<ThoBayMau_ASM.Models.Anh> Anh { get; set; } = default!;
+        public DbSet<ThoBayMau_ASM.Models.LichSu> LichSu { get; set; } = default!;
         public DbSet<ThongKeDoanhThu> ThongKeDoanhThu { get; set; }
         public DbSet<SPTop5> SPTop5 { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)

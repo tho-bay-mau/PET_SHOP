@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using ThoBayMau_ASM.Data;
 using ThoBayMau_ASM.Models;
 using System.IO;
+using Aram.Infrastructure;
 
 namespace ThoBayMau_ASM.Controllers
 {
@@ -72,80 +73,110 @@ namespace ThoBayMau_ASM.Controllers
         public IActionResult Create(SanPham sp, IFormFile[] files, int gia, int soluong, int kichthuoc, DateTime ngaysanxuat, DateTime hansudung)
         {
 
-            var loaiSPList = _context.LoaiSP.OrderBy(x => x.Id)
+            var user = HttpContext.Session.GetJson<TaiKhoan>("User");
+            if (user != null)
+            {
+                try
+                {
+                    var loaiSPList = _context.LoaiSP.OrderBy(x => x.Id)
                                      .Select(x => new SelectListItem
                                      {
                                          Value = x.Id.ToString(),
                                          Text = x.Ten
                                      })
                                      .ToList();
-            if (_context.SanPham.Any(x => x.Ten == sp.Ten))
-            {
-                ModelState.AddModelError("Ten", "Tên sản phẩm đã tồn tại");
-            }
-            ViewBag.LoaiSPid = new SelectList(loaiSPList, "Value", "Text");
-            List<string> listTrangThai = new List<string> { "Đang bán", "Ngừng bán", "Mới" };
-            ViewBag.TrangThai = new SelectList(listTrangThai);
-            if (gia <= 0)
-            {
-                ViewBag.ktGia = "Giá không hợp lệ";
+                    if (_context.SanPham.Any(x => x.Ten == sp.Ten))
+                    {
+                        ModelState.AddModelError("Ten", "Tên sản phẩm đã tồn tại");
+                    }
+                    ViewBag.LoaiSPid = new SelectList(loaiSPList, "Value", "Text");
+                    List<string> listTrangThai = new List<string> { "Đang bán", "Ngừng bán", "Mới" };
+                    ViewBag.TrangThai = new SelectList(listTrangThai);
+                    if (gia <= 0)
+                    {
+                        ViewBag.ktGia = "Giá không hợp lệ";
 
-            }
+                    }
 
-            if (soluong <= 0)
-            {
-                ViewBag.ktSoLuong = "Số lượng không hợp lệ";
+                    if (soluong <= 0)
+                    {
+                        ViewBag.ktSoLuong = "Số lượng không hợp lệ";
 
-            }
+                    }
 
-            if (kichthuoc <= 0)
-            {
-                ViewBag.ktKichThuoc = "Kích thước không hợp lệ";
+                    if (kichthuoc <= 0)
+                    {
+                        ViewBag.ktKichThuoc = "Kích thước không hợp lệ";
 
-            }
+                    }
 
-            if (ngaysanxuat >= hansudung)
-            {
-                ViewBag.ktNgay = "Ngày sản suất phải bé hơn hạn sử dụng";
+                    if (ngaysanxuat >= hansudung)
+                    {
+                        ViewBag.ktNgay = "Ngày sản suất phải bé hơn hạn sử dụng";
 
-            }
-            if (ngaysanxuat == DateTime.MinValue && hansudung == DateTime.MinValue)
-            {
-                ViewBag.ktTrongNgay = "Vui lòng nhập ngày sản suất, hạn sử dụng";
+                    }
+                    if (ngaysanxuat == DateTime.MinValue && hansudung == DateTime.MinValue)
+                    {
+                        ViewBag.ktTrongNgay = "Vui lòng nhập ngày sản suất, hạn sử dụng";
 
-            }
+                    }
 
-            if (ViewBag.ktGia != null || ViewBag.ktSoLuong != null || ViewBag.ktKichThuoc != null || ViewBag.ktNgay != null || ViewBag.ktTrongNgay != null)
-            {
-                return View(sp);
-            }
-
-            if (ModelState.IsValid)
-            {
-                _context.Add(sp);
-                _context.SaveChanges();
-                var SP_CT = new ChiTiet_SP();
-                SP_CT.SanPhamId = sp.Id;
-                SP_CT.Gia = gia;
-                SP_CT.SoLuong = soluong;
-                SP_CT.KichThuoc = kichthuoc;
-                SP_CT.NgaySanXuat = ngaysanxuat;
-                SP_CT.HanSuDung = hansudung;
-                _context.Add(SP_CT);
-                _context.SaveChanges();
-                foreach (var item in files)
-                {
-                    Uploadfile(item);
-                    Anh anh = new Anh();
-                    anh.SanphamId = sp.Id;
-                    anh.TenAnh = item.FileName;
-                    _context.Anh.Add(anh);
+                    if (ViewBag.ktGia != null || ViewBag.ktSoLuong != null || ViewBag.ktKichThuoc != null || ViewBag.ktNgay != null || ViewBag.ktTrongNgay != null)
+                    {
+                        return View(sp);
+                    }
+                    if (ModelState.IsValid)
+                    {
+                        _context.Add(sp);
+                        _context.SaveChanges();
+                        var SP_CT = new ChiTiet_SP();
+                        SP_CT.SanPhamId = sp.Id;
+                        SP_CT.Gia = gia;
+                        SP_CT.SoLuong = soluong;
+                        SP_CT.KichThuoc = kichthuoc;
+                        SP_CT.NgaySanXuat = ngaysanxuat;
+                        SP_CT.HanSuDung = hansudung;
+                        _context.Add(SP_CT);
+                        _context.SaveChanges();
+                        foreach (var item in files)
+                        {
+                            Uploadfile(item);
+                            Anh anh = new Anh();
+                            anh.SanphamId = sp.Id;
+                            anh.TenAnh = item.FileName;
+                            _context.Anh.Add(anh);
+                        }
+                        _context.SaveChanges();
+                        TempData["Sucess"] = "Thêm sản phẩm thành công!!";
+                        var ls = new LichSu
+                        {
+                            ThongTin_ThaoTac = $"Thêm sản phẩm",
+                            NgayGio = DateTime.Now,
+                            ChiTiet = $"Sản phẩm: {sp.Id}, chi tiết sản phẩm: {SP_CT.Id}",
+                            TaiKhoanId = user.Id
+                        };
+                        _context.LichSu.Add(ls);
+                        _context.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    return View(sp);
                 }
-                _context.SaveChanges();
-                TempData["Sucess"] = "Thêm sản phẩm thành công!!";
-                return RedirectToAction("Index");
+                catch (Exception ex)
+                {
+                    var ls = new LichSu
+                    {
+                        ThongTin_ThaoTac = $"Thêm sản phẩm",
+                        NgayGio = DateTime.Now,
+                        ChiTiet = $"Lỗi: {ex}",
+                        TaiKhoanId = user.Id
+                    };
+                    _context.LichSu.Add(ls);
+                    _context.SaveChanges();
+                    TempData["Error"] = "Lỗi nghiêm trọng hãy báo IT để được hỗ trợ";
+                    return RedirectToAction("Index");
+                }
             }
-            return View(sp);
+            return NotFound();
         }
         public IActionResult Edit(int? id)
         {
@@ -172,29 +203,60 @@ namespace ThoBayMau_ASM.Controllers
             List<string> listTrangThai = new List<string> { "Đang bán", "Ngừng bán", "Mới" };
             ViewBag.TrangThai = new SelectList(listTrangThai);
 
-            if (ModelState.IsValid)
+            var user = HttpContext.Session.GetJson<TaiKhoan>("User");
+            if (user != null)
             {
-                _context.Update(obj);
-                _context.SaveChanges();
-                var anhdaco = _context.Anh.Where(x => x.SanphamId == obj.Id).ToList();
-                foreach (var existingImage in anhdaco)
+                try
                 {
-                    _context.Anh.Remove(existingImage);
+                    if (ModelState.IsValid)
+                    {
+                        _context.Update(obj);
+                        _context.SaveChanges();
+                        var anhdaco = _context.Anh.Where(x => x.SanphamId == obj.Id).ToList();
+                        foreach (var existingImage in anhdaco)
+                        {
+                            _context.Anh.Remove(existingImage);
+                            _context.SaveChanges();
+                        }
+                        foreach (var item in files)
+                        {
+                            Uploadfile(item);
+                            Anh anh = new Anh();
+                            anh.SanphamId = obj.Id;
+                            anh.TenAnh = item.FileName;
+                            _context.Anh.Add(anh);
+                        }
+                        _context.SaveChanges();
+                        TempData["Sucess"] = "Sửa sản phẩm thành công!!";
+                        var ls = new LichSu
+                        {
+                            ThongTin_ThaoTac = $"Sửa sản phẩm",
+                            NgayGio = DateTime.Now,
+                            ChiTiet = $"Sản phẩm: {obj.Id}",
+                            TaiKhoanId = user.Id
+                        };
+                        _context.LichSu.Add(ls);
+                        _context.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    return View(obj);
+                }
+                catch (Exception ex)
+                {
+                    var ls = new LichSu
+                    {
+                        ThongTin_ThaoTac = $"Sửa sản phẩm",
+                        NgayGio = DateTime.Now,
+                        ChiTiet = $"Lỗi: {ex}",
+                        TaiKhoanId = user.Id
+                    };
+                    _context.LichSu.Add(ls);
                     _context.SaveChanges();
+                    TempData["Error"] = "Lỗi nghiêm trọng hãy báo IT để được hỗ trợ";
+                    return RedirectToAction("Index");
                 }
-                foreach (var item in files)
-                {
-                    Uploadfile(item);
-                    Anh anh = new Anh();
-                    anh.SanphamId = obj.Id;
-                    anh.TenAnh = item.FileName;
-                    _context.Anh.Add(anh);
-                }
-                _context.SaveChanges();
-                TempData["Sucess"] = "Sửa sản phẩm thành công!!";
-                return RedirectToAction("Index");
             }
-            return View(obj);
+            return NotFound();
         }
         public void Uploadfile(IFormFile file)
         {
@@ -210,22 +272,53 @@ namespace ThoBayMau_ASM.Controllers
         }
         public IActionResult Delete(int? txt_ID)
         {
-            if (txt_ID == null || txt_ID == 0)
+            var user = HttpContext.Session.GetJson<TaiKhoan>("User");
+            if (user != null)
             {
-                return NotFound();
+                try
+                {
+                    if (txt_ID == null || txt_ID == 0)
+                    {
+                        return NotFound();
+                    }
+                    var obj = _context.SanPham.FirstOrDefault(x => x.Id == txt_ID);
+                    if (obj == null)
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        obj.TrangThai = "Ngừng bán";
+                        _context.SaveChanges();
+                        TempData["Sucess"] = "Xóa sản phẩm thành công";
+                        var ls = new LichSu
+                        {
+                            ThongTin_ThaoTac = $"Xóa sản phẩm",
+                            NgayGio = DateTime.Now,
+                            ChiTiet = $"Sản phẩm: {obj.Id}",
+                            TaiKhoanId = user.Id
+                        };
+                        _context.LichSu.Add(ls);
+                        _context.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    var ls = new LichSu
+                    {
+                        ThongTin_ThaoTac = $"Xóa sản phẩm",
+                        NgayGio = DateTime.Now,
+                        ChiTiet = $"Lỗi: {ex}",
+                        TaiKhoanId = user.Id
+                    };
+                    _context.LichSu.Add(ls);
+                    _context.SaveChanges();
+                    TempData["Error"] = "Lỗi nghiêm trọng hãy báo IT để được hỗ trợ";
+                    return RedirectToAction("Index");
+                }
             }
-            var obj = _context.SanPham.FirstOrDefault(x => x.Id == txt_ID);
-            if (obj == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                obj.TrangThai = "Ngừng bán";
-                _context.SaveChanges();
-                TempData["Sucess"] = "Xóa sản phẩm thành công";
-                return RedirectToAction("Index");
-            }
+            return NotFound();
         }
         public IActionResult Search(string Key)
         {

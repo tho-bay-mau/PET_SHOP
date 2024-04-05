@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Aram.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -65,7 +66,9 @@ namespace ThoBayMau_ASM.Controllers
                 .ThenInclude(x => x.ChiTiet_SP)
                 .ThenInclude(x => x.SanPham)
                 .ThenInclude(x => x.LoaiSP)
-                .Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
+                .Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE)
+                .OrderByDescending(x => x.ThoiGianTao)
+                .ToList();
                 int count = _context.DonHang.Where(x => x.TrangThaiDonHang == "cho duyet").Count();
                 ViewBag.Count = count;
                 return View(result);
@@ -78,62 +81,174 @@ namespace ThoBayMau_ASM.Controllers
         // duyệt đơn
         public IActionResult DuyetDon(int id)
         {
-            if (id == null)
+            var user = HttpContext.Session.GetJson<TaiKhoan>("User");
+            if (user != null)
             {
-                return NotFound();
+                try
+                {
+                    if (id == null)
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        var DonHang = _context.DonHang.FirstOrDefault(a => a.Id == id);
+                        DonHang.TrangThaiDonHang = "dang giao";
+                        _context.Update(DonHang);
+                        _context.SaveChanges();
+                        TempData["Sucess"] = "Thành công";
+
+                        var ls = new LichSu
+                        {
+                            ThongTin_ThaoTac = $"Duyệt đơn",
+                            NgayGio = DateTime.Now,
+                            ChiTiet = $"Đơn hàng: {DonHang.Id}",
+                            TaiKhoanId = user.Id
+                        };
+                        _context.LichSu.Add(ls);
+                        _context.SaveChanges();
+
+                        return RedirectToAction("Index", "DonHang");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    var ls = new LichSu
+                    {
+                        ThongTin_ThaoTac = $"Duyệt đơn",
+                        NgayGio = DateTime.Now,
+                        ChiTiet = $"Lỗi: {ex}",
+                        TaiKhoanId = user.Id
+                    };
+                    _context.LichSu.Add(ls);
+                    _context.SaveChanges();
+                    TempData["Error"] = "Lỗi nghiêm trọng hãy báo IT để được hỗ trợ";
+                    return RedirectToAction("Index", "DonHang");
+                }
             }
-            else
-            {
-                var DonHang = _context.DonHang.FirstOrDefault(a => a.Id == id);
-                DonHang.TrangThaiDonHang = "dang giao";
-                _context.Update(DonHang);
-                _context.SaveChanges();
-                return RedirectToAction("Index", "DonHang");
-            }
+            return NotFound();
         }
         public IActionResult GiaoHangThanhCong(int id)
         {
-            if (id == null)
+            var user = HttpContext.Session.GetJson<TaiKhoan>("User");
+            if (user != null)
             {
-                return NotFound();
+                try
+                {
+                    if (id == null)
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        var DonHang = _context.DonHang.FirstOrDefault(a => a.Id == id);
+                        DonHang.TrangThaiDonHang = "da giao";
+                        _context.Update(DonHang);
+                        _context.SaveChanges();
+                        TempData["Sucess"] = "Thành công";
+
+                        var ls = new LichSu
+                        {
+                            ThongTin_ThaoTac = $"Đã giao",
+                            NgayGio = DateTime.Now,
+                            ChiTiet = $"Đơn hàng: {DonHang.Id}",
+                            TaiKhoanId = user.Id
+                        };
+                        _context.LichSu.Add(ls);
+                        _context.SaveChanges();
+                        return RedirectToAction("Index", "DonHang");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    var ls = new LichSu
+                    {
+                        ThongTin_ThaoTac = $"Đã giao",
+                        NgayGio = DateTime.Now,
+                        ChiTiet = $"Lỗi: {ex}",
+                        TaiKhoanId = user.Id
+                    };
+                    _context.LichSu.Add(ls);
+                    _context.SaveChanges();
+                    TempData["Error"] = "Lỗi nghiêm trọng hãy báo IT để được hỗ trợ";
+                    return RedirectToAction("Index", "DonHang");
+                }
             }
-            else
-            {
-                var DonHang = _context.DonHang.FirstOrDefault(a => a.Id == id);
-                DonHang.TrangThaiDonHang = "da giao";
-                _context.Update(DonHang);
-                _context.SaveChanges();
-                return RedirectToAction("Index", "DonHang");
-            }
+            return NotFound();
         }
         public IActionResult HuyDon(int txt_ID, string? returnUrl)
         {
-            
-            if (txt_ID == null)
+            var user = HttpContext.Session.GetJson<TaiKhoan>("User");
+            if (user != null)
             {
-                return NotFound();
-            }
-            else
-            {
-                var DonHang = _context.DonHang.FirstOrDefault(a => a.Id == txt_ID);
-                DonHang.TrangThaiDonHang = "da huy";
-                _context.Update(DonHang);
-                _context.SaveChanges();
+                try
+                {
+                    if (txt_ID == null)
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        var DonHang = _context.DonHang
+                            .Include(x => x.DonHang_ChiTiets)
+                            .FirstOrDefault(a => a.Id == txt_ID);
+                        DonHang.TrangThaiDonHang = "da huy";
+                        DonHang.ThoiGianHuy = DateTime.Now;
+                        foreach (var item in DonHang.DonHang_ChiTiets)
+                        {
+                            var sp = _context.ChiTiet_SP.FirstOrDefault(a => a.Id == item.ChiTiet_SPId);
+                            sp.SoLuong += item.SoLuong;
+                            _context.Update(sp);
+                            _context.SaveChanges();
+                        }
+                        _context.Update(DonHang);
+                        _context.SaveChanges();
+                        TempData["Sucess"] = "Thành công";
 
-                if (returnUrl != null)
-                {
-                    return Redirect(returnUrl);
-                } else
-                {
-                    return RedirectToAction("Index", "DonHang");
+                        var ls = new LichSu
+                        {
+                            ThongTin_ThaoTac = $"Hủy đơn",
+                            NgayGio = DateTime.Now,
+                            ChiTiet = $"Đơn hàng: {DonHang.Id}",
+                            TaiKhoanId = user.Id
+                        };
+                        _context.LichSu.Add(ls);
+                        _context.SaveChanges();
+
+                        if (returnUrl != null)
+                        {
+                            return Redirect(returnUrl);
+                        }
+                        else
+                        {
+                            return RedirectToAction("Index", "DonHang");
+                        }
+                    }
                 }
-                
-            }
-        }
-        public IActionResult TimKiem()
-        {
+                catch (Exception ex)
+                {
+                    var ls = new LichSu
+                    {
+                        ThongTin_ThaoTac = $"Hủy đơn",
+                        NgayGio = DateTime.Now,
+                        ChiTiet = $"Lỗi: {ex}",
+                        TaiKhoanId = user.Id
+                    };
+                    _context.LichSu.Add(ls);
+                    _context.SaveChanges();
+                    TempData["Error"] = "Lỗi nghiêm trọng hãy báo IT để được hỗ trợ";
 
-            return View();
+                    if (returnUrl != null)
+                    {
+                        return Redirect(returnUrl);
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "DonHang");
+                    }
+                }
+            }
+            return NotFound();
         }
     }
 }
