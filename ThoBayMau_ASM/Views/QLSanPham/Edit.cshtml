@@ -23,6 +23,7 @@
             </div>
             <br />
             <input type="file" class="form-control" id="imageUpload" name="files" multiple onchange="previewFile()">
+
         </div>
             <div class="mb-3 mt-3">
             <label asp-for="Mota" class="form-label">Mô tả</label>
@@ -39,7 +40,7 @@
             <input asp-for="LoaiSPId" class="form-control" id="exampleInputEmail1">
             <span asp-validation-for="LoaiSPId" class="text-danger"></span>
         </div>
-        
+            <button type="submit" class="btn btn-primary">Sửa</button>
         <a asp-controller="QLSanPham" asp-action="Index" class="btn btn-primary">Trở về</a>
     </div>
 </form>

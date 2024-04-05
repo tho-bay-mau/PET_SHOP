@@ -150,6 +150,11 @@
                     {
                         <p id="@ct_sp.KichThuoc" class="price m-0" style="display: none"><span>@(ct_sp.Gia.ToString("#,0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")))đ</span></p>
                     }
+                    @foreach (var ct_sp in Model.ChiTietSPs)
+                    {
+                        
+                        <p id="sl_@ct_sp.KichThuoc" class="sl" style="display: none; color: red; margin-left: 10px"><span>Số lượng còn lại: @ct_sp.SoLuong</span></p>
+                    }
                     <div class="row align-items-center">
                         <div class="input-group col-md-6 d-flex">
                             <span class="input-group-btn mr-2">
@@ -309,7 +314,11 @@
         for (var i = 0; i < prices.length; i++) {
             prices[i].style.display = 'none';
         }
-
+        var sl =  document.querySelectorAll('p.sl');
+        for (var i = 0; i < sl.length; i++) {
+            sl[i].style.display = 'none';
+        }
+        document.getElementById('sl_' + kt).style.display = 'inline';
         document.getElementById(kt).style.display = 'inline';
     }
 

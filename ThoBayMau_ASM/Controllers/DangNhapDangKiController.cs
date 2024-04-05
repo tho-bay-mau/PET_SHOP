@@ -52,6 +52,11 @@ namespace ThoBayMau_ASM.Controllers
                 {
                     HttpContext.Session.SetString("UserName", user.TenTK.ToString());
                     HttpContext.Session.SetJson("User", user);
+                    if (user.TrangThai == false)
+                    {
+                        TempData["warning"] = "Tài khoản của bạn đã bị khóa. Vui lòng liên hệ admin website để được hỗ trợ";
+                        return View(tk);
+                    }
                     if (returnUrl != null)
                     {
                         return Redirect(returnUrl);
@@ -72,6 +77,7 @@ namespace ThoBayMau_ASM.Controllers
                 }
             }
             ViewBag.ErrPassword = "Tên tài khoản hoặc mật khẩu không chính xác";
+
             return View(tk);
         }
         //chuyển tên tài khoản google thành không dấu cho phù hợp với varchar
@@ -126,16 +132,30 @@ namespace ThoBayMau_ASM.Controllers
             var email = emailClaim?.Value;
             var name = User.Identity.Name;
             var timEmail = _db.TaiKhoan.FirstOrDefault(x => x.Email == email);
+
             if (timEmail == null)
             {
+
                 CreateByGoogle(email, name);
-                DangNhapByGoogle(email);
-                return RedirectToAction("Index", "Home");
+
+                if (DangNhapByGoogle(email))
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                return NotFound();
             }
             else
             {
-                DangNhapByGoogle(email);
-                return RedirectToAction("Index", "Home");
+                if (DangNhapByGoogle(email))
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    TempData["warning"] = "Tài khoản của bạn đã bị khóa. Vui lòng liên hệ admin website để được hỗ trợ";
+                    return RedirectToAction("Login", "DangNhapDangKi");
+                }
+
             }
         }
         public async Task LogoutByGoogle()
@@ -155,11 +175,19 @@ namespace ThoBayMau_ASM.Controllers
             _db.TaiKhoan.Add(tk);
             _db.SaveChanges();
         }
-        public void DangNhapByGoogle(string email)
+        public bool DangNhapByGoogle(string email)
         {
             var user = _db.TaiKhoan.FirstOrDefault(x => x.Email == email);
-            HttpContext.Session.SetString("UserName", user.TenTK.ToString());
-            HttpContext.Session.SetJson("User", user);
+            if (user != null && user.TrangThai == true)
+            {
+                HttpContext.Session.SetString("UserName", user.TenTK.ToString());
+                HttpContext.Session.SetJson("User", user);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
         public async Task<IActionResult> Logout()
         {
