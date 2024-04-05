@@ -17,6 +17,20 @@
         display: -webkit-box;
         height: 40px;
     }
+
+    .out-of-stock {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: black;
+        opacity: 0.7
+    }
+
+        .out-of-stock h4 {
+            color: white;
+        }
 </style>
 
 <section id="home-section" class="hero">
@@ -44,8 +58,6 @@
             </div>
         </div>
     </div>
-
-
 </section>
 
 <section class="ftco-section">
@@ -60,25 +72,37 @@
         <div class="row">
             @foreach (var item in Model)
             {
+                var sum = 0;
+                foreach (var chiTiet in item.ChiTietSPs)
+                {
+                    sum += chiTiet.SoLuong;
+                }
                 <div class="col-md-6 col-lg-3 ftco-animate">
                     <div class="product">
-                        <a href="#" class="img-prod">
-                            <img class="img-fluid" src="@Url.Action("GetImage", "Home", new { id_sp = @item.Id})" alt="Colorlib Template">
-                            @foreach (var TopID in ViewBag.SPTop5)
-                            {
-                                if (TopID.Id == item.Id)
+                        <div class="group-product">
+                            <a asp-action="product_detail" asp-controller="Home" asp-route-id_sp="@item.Id" class="img-prod">
+                                <img class="img-fluid" src="@Url.Action("GetImage", "Home", new { id_sp = @item.Id})" alt="Colorlib Template">
+                                <div class="overlay"></div>
+                                @if(sum == 0)
                                 {
-                                    <p class="hot">HOT</p>
-                                    break;
+                                    <div class="out-of-stock d-flex justify-content-center align-items-center"><h4>Hết hàng</h4></div>
                                 }
-                                if (item.TrangThai == "Mới")
+                                @foreach (var TopID in ViewBag.SPTop5)
                                 {
-                                    <p class="new">NEW</p>
-                                    break;
+                                    if (TopID.Id == item.Id)
+                                    {
+                                        <p class="hot">HOT</p>
+                                        break;
+                                    }
+                                    if (item.TrangThai == "Mới")
+                                    {
+                                        <p class="new">NEW</p>
+                                        break;
+                                    }
                                 }
-                            }
-                            <div class="overlay"></div>
-                        </a>
+                            </a>
+                        </div>
+
                         <div class="text py-3 pb-4 px-3 text-center">
                             <h3 class="product-name"><a href="#">@item.Ten</a></h3>
                             <div class="d-flex">
@@ -88,12 +112,20 @@
                             </div>
                             <div class="bottom-area d-flex px-3">
                                 <div class="m-auto d-flex">
-                                    <a asp-action="product_detail" asp-controller="Home" asp-route-id_sp="@item.Id" class="add-to-cart d-flex justify-content-center align-items-center text-center">
-                                        <span><i class="ion-ios-menu"></i></span>
-                                    </a>
-                                    <a asp-action="AddToGioHang" asp-controller="GioHang" asp-route-sanPhamId="@item.Id" asp-route-kichThuoc="@item.ChiTietSPs.Min(ct => ct.KichThuoc)" asp-route-returnUrl="@Url.Action("Index", "Home")" action="" class="buy-now d-flex justify-content-center align-items-center mx-1">
-                                        <span><i class="ion-ios-cart"></i></span>
-                                    </a>
+                                    @if(sum == 0){
+                                        <a asp-action="product_detail" asp-controller="Home" asp-route-id_sp="@item.Id" class="add-to-cart d-flex justify-content-center align-items-center text-center">
+                                            <span><i class="ion-ios-menu"></i></span>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a asp-action="product_detail" asp-controller="Home" asp-route-id_sp="@item.Id" class="add-to-cart d-flex justify-content-center align-items-center text-center">
+                                            <span><i class="ion-ios-menu"></i></span>
+                                        </a>
+                                        <a asp-action="AddToGioHang" asp-controller="GioHang" asp-route-sanPhamId="@item.Id" asp-route-kichThuoc="@item.ChiTietSPs.Min(ct => ct.KichThuoc)" asp-route-returnUrl="@Url.Action("Index", "Home")" action="" class="buy-now d-flex justify-content-center align-items-center mx-1">
+                                            <span><i class="ion-ios-cart"></i></span>
+                                        </a>
+                                    }
                                 </div>
                             </div>
                         </div>

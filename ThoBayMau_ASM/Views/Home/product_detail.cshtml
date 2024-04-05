@@ -77,6 +77,20 @@
         display: -webkit-box;
         height: 40px;
     }
+
+    .out-of-stock {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: black;
+        opacity: 0.7
+    }
+
+        .out-of-stock h4 {
+            color: white;
+        }
 </style>
 <section class="ftco-section">
     <div class="container">
@@ -110,8 +124,21 @@
             </div>
             <div class="col-lg-6 product-details pl-md-5 ftco-animate">
                 <form method="post" asp-action="AddToGioHang" asp-controller="GioHang" asp-route-sanPhamId="@Model.Id">
-                    <h3>@Model.Ten</h3>
-                    @foreach (var ct_sp in Model?.ChiTietSPs.OrderBy(ct_sp => ct_sp.KichThuoc))
+                    @{
+                        var sumpr = 0;
+                        foreach (var item in Model?.ChiTietSPs)
+                        {
+                            sumpr += item.SoLuong;
+                        }
+                    }
+                    <div class="product-title-group d-flex">
+                        <h3>@Model.Ten</h3>
+                        @if (sumpr == 0)
+                        {
+                            <h3 style="color:red">(Hết hàng)</h3>
+                        }
+                    </div>
+                    @foreach (var ct_sp in Model?.ChiTietSPs.OrderBy(x => x.KichThuoc))
                     {
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" id="kichThuoc" name="kichThuoc" value="@ct_sp.KichThuoc" onchange="showPrice('@ct_sp.KichThuoc')">
@@ -121,7 +148,6 @@
                     <br />
                     @foreach (var ct_sp in Model.ChiTietSPs)
                     {
-
                         <p id="@ct_sp.KichThuoc" class="price m-0" style="display: none"><span>@(ct_sp.Gia.ToString("#,0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")))đ</span></p>
                     }
                     @foreach (var ct_sp in Model.ChiTietSPs)
@@ -144,7 +170,7 @@
                             </span>
                         </div>
                         <div class="col-md-6">
-                            <input id="btn-add-cart" type="submit" class="btn btn-black py-3 px-5" value="Thêm vào giỏ hàng">
+                            <input style="@(sumpr == 0 ? "pointer-events: none;" : "")" id="btn-add-cart" type="submit" class="btn btn-black py-3 px-5" value="Thêm vào giỏ hàng">
                         </div>
                     </div>
                 </form>
@@ -202,10 +228,20 @@
                 var relateProducts = ViewData["RelateProduct"] as List<ThoBayMau_ASM.Models.SanPham>;
                 foreach (var item in relateProducts)
                 {
+                    var sum = 0;
+                    foreach (var chiTiet in item.ChiTietSPs)
+                    {
+                        sum += chiTiet.SoLuong;
+                    }
                     <div class="col-md-6 col-lg-3 ftco-animate">
                         <div class="product">
-                            <a href="#" class="img-prod">
+                            <a asp-action="product_detail" asp-controller="Home" asp-route-id_sp="@item.Id" class="img-prod">
                                 <img class="img-fluid" src="@Url.Action("GetImage", "Home", new { id_sp = @item.Id})" alt="Colorlib Template">
+                                <div class="overlay"></div>
+                                @if (sum == 0)
+                                {
+                                    <div class="out-of-stock d-flex justify-content-center align-items-center"><h4>Hết hàng</h4></div>
+                                }
                                 @foreach (var TopID in ViewBag.SPTop5)
                                 {
                                     if (TopID.Id == item.Id)
@@ -219,7 +255,6 @@
                                         break;
                                     }
                                 }
-                                <div class="overlay"></div>
                             </a>
                             <div class="text py-3 pb-4 px-3 text-center">
                                 <h3 class="product-name"><a href="#">@item.Ten</a></h3>
@@ -230,12 +265,21 @@
                                 </div>
                                 <div class="bottom-area d-flex px-3">
                                     <div class="m-auto d-flex">
-                                        <a asp-action="product_detail" asp-controller="Home" asp-route-id_sp="@item.Id" class="add-to-cart d-flex justify-content-center align-items-center text-center">
-                                            <span><i class="ion-ios-menu"></i></span>
-                                        </a>
-                                        <a asp-action="AddToGioHang" asp-controller="GioHang" asp-route-returnUrl="@Url.Action("product_detail", "Home", new{ id_sp = @item.Id})" asp-route-sanPhamId="@item.Id" asp-route-kichThuoc="@item.ChiTietSPs.Min(ct => ct.KichThuoc)" action="" class="buy-now d-flex justify-content-center align-items-center mx-1">
-                                            <span><i class="ion-ios-cart"></i></span>
-                                        </a>
+                                        @if (sum == 0)
+                                        {
+                                            <a asp-action="product_detail" asp-controller="Home" asp-route-id_sp="@item.Id" class="add-to-cart d-flex justify-content-center align-items-center text-center">
+                                                <span><i class="ion-ios-menu"></i></span>
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a asp-action="product_detail" asp-controller="Home" asp-route-id_sp="@item.Id" class="add-to-cart d-flex justify-content-center align-items-center text-center">
+                                                <span><i class="ion-ios-menu"></i></span>
+                                            </a>
+                                            <a asp-action="AddToGioHang" asp-controller="GioHang" asp-route-sanPhamId="@item.Id" asp-route-kichThuoc="@item.ChiTietSPs.Min(ct => ct.KichThuoc)" asp-route-returnUrl="@Url.Action("Index", "Home")" action="" class="buy-now d-flex justify-content-center align-items-center mx-1">
+                                                <span><i class="ion-ios-cart"></i></span>
+                                            </a>
+                                        }
                                     </div>
                                 </div>
                             </div>

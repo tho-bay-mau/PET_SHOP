@@ -37,7 +37,7 @@ namespace ThoBayMau_ASM.Controllers
             ViewBag.CountPages = countpages;
             if (total > 0)
             {
-                var result = _context.LoaiSP.Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
+                var result = _context.LoaiSP.Where(x => x.TrangThai == true).Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
                 return View(result);
             }
             else
