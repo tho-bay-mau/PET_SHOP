@@ -113,11 +113,11 @@
             <th>Thời gian huỷ đơn</th>
             } else{
             <th>Trang thái thanh toán</th>
-                @if (ViewBag.TrangThai == "cho duyet" || ViewBag.TrangThai == "dang giao")
-                {
+            @if (ViewBag.TrangThai == "cho duyet" || ViewBag.TrangThai == "dang giao")
+            {
                 <th>Thao tác</th>
-                }
             }
+        }
         <th>Chi tiết</th>
         </thead>
         <tbody class="align-middle">
@@ -167,16 +167,17 @@
                         @if (item.TrangThaiDonHang == "cho duyet" || item.TrangThaiDonHang == "dang giao")
                         {
                             <td>
-                                <a class="btn btn-primaty" asp-action="DuyetDon" asp-controller="DonHang" asp-route-id="@item.Id">
-                                    <i class="fa-solid fa-check"></i>
-                                </a>
-
-                                @if (item.TrangThaiDonHang == "cho duyet" && item.TrangThaiThanhToan == false)
+                                @if (item.TrangThaiThanhToan == true)
                                 {
-                                    <span>|</span>
+                                    <a class="btn btn-primaty" asp-action="DuyetDon" asp-controller="DonHang" asp-route-id="@item.Id" asp-route-returnUrl="@Url.Action("Index", "DonHang", new {trangThai = @ViewBag.TrangThai})">
+                                        <i class="fa-solid fa-check"></i>
+                                    </a>
+                                } else
+                                {
+                                    
                                     <a class="btn btn-red" asp-action="HuyDon" asp-controller="DonHang" asp-route-id="@item.Id" data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-Id="@item.Id" onclick="setId(this)">
-                                       <i class="bi bi-trash3"></i>
-                                   </a>
+                                        <i class="bi bi-trash3"></i>
+                                    </a>
                                 }
                             </td>
                         }
@@ -192,6 +193,10 @@
 
                         <td colspan="8">
                             <span class="text-start">Thời gian tạo đơn : @item.ThoiGianTao</span>
+                            @if(ViewBag.TrangThai == "dang giao" || ViewBag.TrangThai == "da giao")
+                            {
+                                <span class="text-start" style="margin-left: 20px">Thời gian duyệt đơn : @item.ThoiGianHuy</span>
+                            }
                             <p><strong>Sản phẩm trong đơn hàng</strong></p>
                             <table class="table table-sm table-hover">
                                 <thead>
@@ -301,27 +306,23 @@
 
                                             <strong>@tongGia</strong>
                                         </div>
-                                        <div class="col mt-3">
-                                            @if (item.TrangThaiDonHang == "cho duyet")
-                                            {
-                                                <a asp-action="DuyetDon" asp-controller="DonHang" asp-route-id="@item.Id"
-                                                   class="btn btn-primary">Duyệt đơn</a>
-                                            }
-
-                                        </div>
-                                        <div class="col mt-3">
-                                            @if (item.TrangThaiDonHang == "cho duyet" && item.TrangThaiThanhToan == false)
-                                            {
-                                                <a class="btn btn-red" asp-action="HuyDon" asp-controller="DonHang" asp-route-id="@item.Id" data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-Id="@item.Id" onclick="setId(this)">
-                                                    Hủy đơn
-                                                </a>
-                                            }
-                                            else if (item.TrangThaiDonHang == "dang giao")
-                                            {
-                                                <a asp-action="GiaoHangThanhCong" asp-controller="DonHang" asp-route-id="@item.Id"
-                                                   class="btn btn-primary">Đã giao</a>
-                                            }
-                                        </div>
+                                        @if (item.TrangThaiDonHang == "cho duyet" || item.TrangThaiDonHang == "dang giao")
+                                        {
+                                            <div class="col mt-3">
+                                                @if(item.TrangThaiThanhToan == true)
+                                                {
+                                                    <a asp-action="DuyetDon" asp-controller="DonHang" asp-route-id="@item.Id" asp-route-returnUrl="@Url.Action("Index", "DonHang", new {trangThai = @ViewBag.TrangThai})"
+                                                        class="btn btn-primary">Duyệt đơn
+                                                    </a>
+                                                } else
+                                                {
+                                                    <a class="btn btn-red" asp-action="HuyDon" asp-controller="DonHang" asp-route-id="@item.Id" data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-Id="@item.Id" onclick="setId(this)">
+                                                        Hủy đơn
+                                                    </a>
+                                                }
+                                            </div>
+                                        }
+                                        
                                     </div>
                                 </div>
                             </div>

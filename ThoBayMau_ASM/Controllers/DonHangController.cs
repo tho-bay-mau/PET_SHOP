@@ -67,7 +67,7 @@ namespace ThoBayMau_ASM.Controllers
                 .ThenInclude(x => x.SanPham)
                 .ThenInclude(x => x.LoaiSP)
                 .Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE)
-                .OrderByDescending(x => x.ThoiGianTao)
+                .OrderByDescending(x => x.ThoiGianHuy == null ? x.ThoiGianTao : x.ThoiGianHuy)
                 .ToList();
                 int count = _context.DonHang.Where(x => x.TrangThaiDonHang == "cho duyet").Count();
                 ViewBag.Count = count;
@@ -79,7 +79,7 @@ namespace ThoBayMau_ASM.Controllers
             }
         }
         // duyệt đơn
-        public IActionResult DuyetDon(int id)
+        public IActionResult DuyetDon(int id, string? returnUrl)
         {
             var user = HttpContext.Session.GetJson<TaiKhoan>("User");
             if (user != null)
@@ -93,7 +93,15 @@ namespace ThoBayMau_ASM.Controllers
                     else
                     {
                         var DonHang = _context.DonHang.FirstOrDefault(a => a.Id == id);
-                        DonHang.TrangThaiDonHang = "dang giao";
+                        if(DonHang.TrangThaiDonHang == "cho duyet")
+                        {
+                            DonHang.TrangThaiDonHang = "dang giao";
+                            DonHang.ThoiGianHuy = DateTime.Now;
+                        } else
+                        {
+                            DonHang.TrangThaiDonHang = "da giao";
+                            DonHang.ThoiGianHuy = DateTime.Now;
+                        }
                         _context.Update(DonHang);
                         _context.SaveChanges();
                         TempData["Sucess"] = "Thành công";
@@ -105,10 +113,15 @@ namespace ThoBayMau_ASM.Controllers
                             ChiTiet = $"Đơn hàng: {DonHang.Id}",
                             TaiKhoanId = user.Id
                         };
-                        _context.LichSu.Add(ls);
+                        _context.Add(ls);
                         _context.SaveChanges();
-
-                        return RedirectToAction("Index", "DonHang");
+                        if(returnUrl != null)
+                        {
+                            return Redirect(returnUrl);
+                        } else
+                        {
+                            return RedirectToAction("Index", "DonHang");
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -120,7 +133,7 @@ namespace ThoBayMau_ASM.Controllers
                         ChiTiet = $"Lỗi: {ex}",
                         TaiKhoanId = user.Id
                     };
-                    _context.LichSu.Add(ls);
+                    _context.Add(ls);
                     _context.SaveChanges();
                     TempData["Error"] = "Lỗi nghiêm trọng hãy báo IT để được hỗ trợ";
                     return RedirectToAction("Index", "DonHang");
@@ -154,7 +167,7 @@ namespace ThoBayMau_ASM.Controllers
                             ChiTiet = $"Đơn hàng: {DonHang.Id}",
                             TaiKhoanId = user.Id
                         };
-                        _context.LichSu.Add(ls);
+                        _context.Add(ls);
                         _context.SaveChanges();
                         return RedirectToAction("Index", "DonHang");
                     }
@@ -168,7 +181,7 @@ namespace ThoBayMau_ASM.Controllers
                         ChiTiet = $"Lỗi: {ex}",
                         TaiKhoanId = user.Id
                     };
-                    _context.LichSu.Add(ls);
+                    _context.Add(ls);
                     _context.SaveChanges();
                     TempData["Error"] = "Lỗi nghiêm trọng hãy báo IT để được hỗ trợ";
                     return RedirectToAction("Index", "DonHang");
@@ -212,7 +225,7 @@ namespace ThoBayMau_ASM.Controllers
                             ChiTiet = $"Đơn hàng: {DonHang.Id}",
                             TaiKhoanId = user.Id
                         };
-                        _context.LichSu.Add(ls);
+                        _context.Add(ls);
                         _context.SaveChanges();
 
                         if (returnUrl != null)
@@ -234,7 +247,7 @@ namespace ThoBayMau_ASM.Controllers
                         ChiTiet = $"Lỗi: {ex}",
                         TaiKhoanId = user.Id
                     };
-                    _context.LichSu.Add(ls);
+                    _context.Add(ls);
                     _context.SaveChanges();
                     TempData["Error"] = "Lỗi nghiêm trọng hãy báo IT để được hỗ trợ";
 
