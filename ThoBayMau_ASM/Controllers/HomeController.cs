@@ -31,7 +31,7 @@ namespace ThoBayMau_ASM.Controllers
         {
             var topProducts = _db.SPTop5.FromSqlRaw("EXEC SPTop5").ToList();
             ViewBag.SPTop5 = topProducts;
-            var result = _db.SanPham.Where(x => x.TrangThai == "Đang bán" || x.TrangThai == "Mới").Include(x => x.ChiTietSPs).Include(x => x.Anhs).ToList();
+            var result = _db.SanPham.Where(x => x.TrangThai == "Đang bán" || x.TrangThai == "Mới").Include(x => x.ChiTietSPs).Include(x => x.Anhs).Take(8).ToList();
             ViewBag.Index = true;
             return View(result);
         }
@@ -73,7 +73,13 @@ namespace ThoBayMau_ASM.Controllers
                     .Include(x => x.ChiTietSPs)
                     .Include(x => x.Anhs)
                     .FirstOrDefault(x => x.Id == id_sp);
-            ViewData["RelateProduct"] = _db.SanPham.Where(x => (x.LoaiSPId == result.LoaiSPId) && (x.TrangThai == "Đang bán" || x.TrangThai == "Mới")).Include(x => x.ChiTietSPs).Include(x => x.Anhs).ToList();
+            var spLienQuan = _db.SanPham.Where(x => (x.LoaiSPId == result.LoaiSPId) && (x.TrangThai == "Đang bán" || x.TrangThai == "Mới")).Include(x => x.ChiTietSPs).Include(x => x.Anhs).ToList();
+            if (spLienQuan.Count() > 4)
+            {
+                spLienQuan = spLienQuan.Take(4).ToList();
+            }
+            ViewData["RelateProduct"] = spLienQuan;
+
             return View(result);
         }
         public IActionResult List_Type(int? id)
@@ -144,7 +150,12 @@ namespace ThoBayMau_ASM.Controllers
             ViewBag.key = key;
             var topProducts = _db.SPTop5.FromSqlRaw("EXEC SPTop5").ToList();
             ViewBag.SPTop5 = topProducts;
-            ViewData["RelateProduct"] = _db.SanPham.Where(x => x.TrangThai == "Đang bán" || x.TrangThai == "Mới").Include(x => x.ChiTietSPs).Include(x => x.Anhs).ToList();
+            var spKhac = _db.SanPham.Where(x => x.TrangThai == "Đang bán" || x.TrangThai == "Mới").Include(x => x.ChiTietSPs).Include(x => x.Anhs).ToList();
+            if(spKhac.Count() > 8)
+            {
+                spKhac = spKhac.Take(8).ToList();
+            }
+            ViewData["RelateProduct"] = spKhac;
 
             int total = _db.SanPham
                         .Count(x => x.Ten.ToLower().Contains(key.ToLower()) && (x.TrangThai == "Đang bán" || x.TrangThai == "Mới"));
