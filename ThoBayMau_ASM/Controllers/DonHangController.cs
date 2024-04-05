@@ -130,7 +130,7 @@ namespace ThoBayMau_ASM.Controllers
                 
             }
         }
-        public IActionResult ThanhToan(string payment = "COD")
+        public IActionResult TimKiem()
         {
 
             return View();
