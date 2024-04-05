@@ -10,12 +10,12 @@
     <form method="post">
         <div class="mb-3 mt-3">
             @Html.DisplayNameFor(model => model.TenTK)
-            <input asp-for="TenTK" class="form-control" placeholder="Nhập tên tài khoản" />
+            <input asp-for="TenTK" class="form-control" placeholder="Nhập tên tài khoản" maxlength="50"/>
             <span asp-validation-for="TenTK" class="text-danger"></span>
         </div>
         <div class="mb-3 mt-3">
             @Html.DisplayNameFor(model => model.MatKhau)
-            <input asp-for="MatKhau" class="form-control" placeholder="Nhập mật khẩu" />
+            <input asp-for="MatKhau" class="form-control" placeholder="Nhập mật khẩu" maxlength="15"/>
             <span asp-validation-for="MatKhau" class="text-danger"></span>
         </div>
         <div class="mb-3 mt-3">

@@ -118,16 +118,31 @@ namespace ThoBayMau_ASM.Controllers
         public IActionResult Edit(int? id)
         {
             ViewBag.TaiKhoan = true;
-            if (id == null || id == 0)
+            var user = HttpContext.Session.GetJson<TaiKhoan>("User");
+            if (user != null)
             {
-                return NotFound();
+                if (user.Id == id)
+                {
+                    TempData["Warning"] = "Tài khoản đăng nhập không được chỉnh sửa";
+                    return RedirectToAction("Index");
+                }
+                if (id == null || id == 0)
+                {
+                    return NotFound();
+                }
+                var obj = _db.TaiKhoan.FirstOrDefault(x => x.Id == id);
+                if (obj == null)
+                {
+                    return NotFound();
+                }
+                if (obj.SDT == "00000000000")
+                {
+                    TempData["Warning"] = "Tài khoản google không được chỉnh sửa";
+                    return RedirectToAction("Index");
+                }
+                return View(obj);
             }
-            var obj = _db.TaiKhoan.FirstOrDefault(x => x.Id == id);
-            if (obj == null)
-            {
-                return NotFound();
-            }
-            return View(obj);
+            return NotFound();
         }
 
         [HttpPost]
@@ -207,6 +222,11 @@ namespace ThoBayMau_ASM.Controllers
             {
                 try
                 {
+                    if (user.Id == txt_ID)
+                    {
+                        TempData["Warning"] = "Tài khoản đăng nhập không được xóa";
+                        return RedirectToAction("Index");
+                    }
                     if (txt_ID == null || txt_ID == 0)
                     {
                         return NotFound();
