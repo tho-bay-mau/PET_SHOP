@@ -138,7 +138,7 @@
                             <h3 style="color:red">(Hết hàng)</h3>
                         }
                     </div>
-                    @foreach (var ct_sp in Model?.ChiTietSPs)
+                    @foreach (var ct_sp in Model?.ChiTietSPs.OrderBy(x => x.KichThuoc))
                     {
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" id="kichThuoc" name="kichThuoc" value="@ct_sp.KichThuoc" onchange="showPrice('@ct_sp.KichThuoc')">
