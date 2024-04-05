@@ -7,6 +7,8 @@ using ThoBayMau_ASM.Models;
 using Microsoft.AspNetCore;
 using Aram.Infrastructure;
 using Newtonsoft.Json;
+using System.Text.RegularExpressions;
+using System.Text;
 
 namespace ThoBayMau_ASM.Controllers
 {
@@ -144,7 +146,8 @@ namespace ThoBayMau_ASM.Controllers
             ViewBag.SPTop5 = topProducts;
             ViewData["RelateProduct"] = _db.SanPham.Where(x => x.TrangThai == "Đang bán" || x.TrangThai == "Mới").Include(x => x.ChiTietSPs).Include(x => x.Anhs).ToList();
 
-            int total = _db.SanPham.Where(x => (x.Ten.ToLower().Contains(key.ToLower())) && (x.TrangThai == "Đang bán" || x.TrangThai == "Mới")).Count();
+            int total = _db.SanPham
+                        .Count(x => x.Ten.ToLower().Contains(key.ToLower()) && (x.TrangThai == "Đang bán" || x.TrangThai == "Mới"));
             countpages = (int)Math.Ceiling((double)total / ITEM_PER_PAGE);
 
             if (currentpage < 1)
@@ -161,7 +164,7 @@ namespace ThoBayMau_ASM.Controllers
             if (total > 0)
             {
                 var result = _db.SanPham
-                            .Where(x => (x.Ten.ToLower().Contains(key.ToLower())) && (x.TrangThai == "Đang bán" || x.TrangThai == "Mới"))
+                            .Where(x => x.Ten.ToLower().Contains(key.ToLower()) && (x.TrangThai == "Đang bán" || x.TrangThai == "Mới"))
                             .Include(x => x.ChiTietSPs)
                             .Include(x => x.Anhs)
                             .Skip((currentpage - 1) * ITEM_PER_PAGE)
