@@ -66,8 +66,8 @@ namespace ThoBayMau_ASM.Controllers
                 .ThenInclude(x => x.ChiTiet_SP)
                 .ThenInclude(x => x.SanPham)
                 .ThenInclude(x => x.LoaiSP)
-                .Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE)
                 .OrderByDescending(x => x.ThoiGianHuy == null ? x.ThoiGianTao : x.ThoiGianHuy)
+                .Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE)
                 .ToList();
                 int count = _context.DonHang.Where(x => x.TrangThaiDonHang == "cho duyet").Count();
                 ViewBag.Count = count;
