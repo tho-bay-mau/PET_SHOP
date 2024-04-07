@@ -14,7 +14,7 @@ namespace ThoBayMau_ASM.Models
         [Required(ErrorMessage = "Tên tài khoản không được để trống")]
         [RegularExpression(@"^[a-zA-Z0-9]+$", ErrorMessage = "Tên tài khoản không được chứa khoảng trắng hoặc ký tự tiếng Việt")]
         public string TenTK { get; set; }
-        [Column(TypeName = "Varchar(50)")]
+        [Column(TypeName = "Varchar(60)")]
         [Display(Name = "Mật khẩu")]
         [Required(ErrorMessage = "Mật khẩu không được để trống")]
         [CheckWhiteSpace]

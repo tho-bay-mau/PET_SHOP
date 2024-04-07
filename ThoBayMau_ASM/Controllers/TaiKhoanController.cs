@@ -81,6 +81,7 @@ namespace ThoBayMau_ASM.Controllers
                     {
                         obj.NgayDangKy = DateTime.Now;
                         obj.TrangThai = true;
+                        obj.MatKhau = BCrypt.Net.BCrypt.HashPassword(obj.MatKhau);
                         _db.TaiKhoan.Add(obj);
                         _db.SaveChanges();
                         TempData["Sucess"] = "Thêm tài khoản thành công";
@@ -178,6 +179,7 @@ namespace ThoBayMau_ASM.Controllers
                     }
                     if (ModelState.IsValid)
                     {
+                        obj.MatKhau = BCrypt.Net.BCrypt.HashPassword(obj.MatKhau);
                         _db.Entry(tkNow).State = EntityState.Detached;
                         _db.TaiKhoan.Update(obj);
                         _db.SaveChanges();

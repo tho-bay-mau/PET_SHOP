@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication;
 using System.Text.RegularExpressions;
 using System.Text;
+using BCrypt.Net;
+using System.Security.Policy;
 
 namespace ThoBayMau_ASM.Controllers
 {
@@ -45,10 +47,13 @@ namespace ThoBayMau_ASM.Controllers
         public IActionResult Login(TaiKhoan tk, string? returnUrl)
         {
             var user = _db.TaiKhoan.FirstOrDefault(x => x.TenTK == tk.TenTK);
-
+            
             if (user != null)
             {
-                if (user.MatKhau == tk.MatKhau)
+                
+                
+
+                if (BCrypt.Net.BCrypt.Verify(tk.MatKhau, user.MatKhau))
                 {
                     HttpContext.Session.SetString("UserName", user.TenTK.ToString());
                     HttpContext.Session.SetJson("User", user);
@@ -169,7 +174,7 @@ namespace ThoBayMau_ASM.Controllers
             tk.Email = email;
             tk.SDT = "00000000000";
             tk.TenTK = RemoveDiacritics(name);
-            tk.MatKhau = RandomPassword(12);
+            tk.MatKhau = BCrypt.Net.BCrypt.HashPassword(RandomPassword(15));
             tk.NgayDangKy = DateTime.Now;
             tk.TrangThai = true;
             _db.TaiKhoan.Add(tk);
@@ -238,7 +243,7 @@ namespace ThoBayMau_ASM.Controllers
                     {
                         TenTK = tk.TenTK,
                         Email = tk.Email,
-                        MatKhau = tk.MatKhau,
+                        MatKhau = BCrypt.Net.BCrypt.HashPassword(tk.MatKhau),
                         SDT = tk.SDT,
                         DiaChi = tk.DiaChi,
                         NgayDangKy = DateTime.Now,

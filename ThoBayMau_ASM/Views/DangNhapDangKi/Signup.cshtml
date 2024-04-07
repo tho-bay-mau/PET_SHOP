@@ -38,12 +38,12 @@
                                     @Html.AntiForgeryToken()
                                     <div class="mb-3">
                                         <label for="TenTK" class="form-label">Tên tài khoản</label>
-                                        <input type="text" class="form-control" id="TenTK" name="TenTK" aria-describedby="textHelp">
+                                        <input type="text" class="form-control" id="TenTK" name="TenTK" aria-describedby="textHelp" maxlength="50">
                                         @Html.ValidationMessageFor(model => model.TenTK, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="mb-3">
                                         <label for="MatKhau" class="form-label">Password</label>
-                                        <input type="password" class="form-control" id="MatKhau" name="MatKhau">
+                                        <input type="password" class="form-control" id="MatKhau" name="MatKhau" maxlength="15">
                                         @Html.ValidationMessageFor(model => model.MatKhau, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="mb-3">
@@ -53,7 +53,7 @@
                                     </div>
                                     <div class="mb-3">
                                         <label for="SDT" class="form-label">SDT</label>
-                                        <input type="text" class="form-control" id="SDT" name="SDT">
+                                        <input type="text" class="form-control" id="SDT" name="SDT" maxlength="11">
                                         @Html.ValidationMessageFor(model => model.SDT, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="mb-3">

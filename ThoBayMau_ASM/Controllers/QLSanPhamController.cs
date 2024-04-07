@@ -145,6 +145,11 @@ namespace ThoBayMau_ASM.Controllers
                             anh.SanphamId = sp.Id;
                             anh.TenAnh = item.FileName;
                             _context.Anh.Add(anh);
+                            if (_context.Anh.Any(a => a.TenAnh == item.FileName))
+                            {
+                                ViewBag.ktAnh = "Ảnh đã tồn tại";
+                                return View(sp);
+                            }
                         }
                         _context.SaveChanges();
                         TempData["Sucess"] = "Thêm sản phẩm thành công!!";
@@ -213,20 +218,28 @@ namespace ThoBayMau_ASM.Controllers
                         _context.Update(obj);
                         _context.SaveChanges();
                         var anhdaco = _context.Anh.Where(x => x.SanphamId == obj.Id).ToList();
-                        foreach (var existingImage in anhdaco)
+                        if (files.Length > 0)
                         {
-                            _context.Anh.Remove(existingImage);
-                            _context.SaveChanges();
+                            foreach (var existingImage in anhdaco)
+                            {
+                                _context.Anh.Remove(existingImage);
+                                _context.SaveChanges();
+                            }
+                            foreach (var item in files)
+                            {
+                                Uploadfile(item);
+                                Anh anh = new Anh();
+                                anh.SanphamId = obj.Id;
+                                anh.TenAnh = item.FileName;
+                                _context.Anh.Add(anh);
+                                if (_context.Anh.Any(a => a.TenAnh == item.FileName))
+                                {
+                                    ViewBag.ktAnh = "Ảnh đã tồn tại";
+                                    return View(obj);
+                                }
+                            }
+                            _context.SaveChanges(); 
                         }
-                        foreach (var item in files)
-                        {
-                            Uploadfile(item);
-                            Anh anh = new Anh();
-                            anh.SanphamId = obj.Id;
-                            anh.TenAnh = item.FileName;
-                            _context.Anh.Add(anh);
-                        }
-                        _context.SaveChanges();
                         TempData["Sucess"] = "Sửa sản phẩm thành công!!";
                         var ls = new LichSu
                         {
