@@ -346,7 +346,7 @@ namespace ThoBayMau_ASM.Controllers
                     if (user != null)
                     {
                         // Đặt lại mật khẩu cho người dùng
-                        user.MatKhau = newPassword;
+                        user.MatKhau = BCrypt.Net.BCrypt.HashPassword(newPassword);
                         _db.Update(user);
                         _db.SaveChanges();
 
