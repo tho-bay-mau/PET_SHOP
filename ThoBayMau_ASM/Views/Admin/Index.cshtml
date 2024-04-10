@@ -16,10 +16,15 @@
 <h2>THỐNG KÊ DOANH THU</h2>
 <div class="cotainer">
     <div>
-
-        <div class="col-md-12">
-            <canvas id="chartUser"></canvas>
+        <div class="row">
+            <div class="col-md-6">
+                <canvas id="chartUser"></canvas>
+            </div>
+            <div class="col-md-6">
+                <canvas id="chartDay"></canvas>
+            </div>
         </div>
+        
         <br />
         <div class="row">
             <div class="col-md-5">
@@ -53,9 +58,11 @@
                         </tbody>
 
                     }
+                    
                 </table>
             </div>
         </div>
+        
     </div>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -70,14 +77,15 @@
             console.log(data);
             var ctx = document.getElementById('chartUser');
 
-            var labels = data.map(function (item) {
-                return "Tháng " + item.thang + "/" + item.nam; // Display month/year as labels
-            });
-            var userCounts = data.map(function (item) {
-                return item.doanhThu; // Get the user counts
-            });
+            var labels = [];
+            var userCounts = [];
             // Mảng các màu cho các thanh cột
             var barColors = ['#29BFDA', '#FF5733', '#9A33FF', '#33FF57', '#FF33C7', '#33A3FF'];
+            for (var i = 0; i < Math.min(data.length, 6); i++) {
+                labels.push("Tháng " + data[i].thang + "/" + data[i].nam);
+                userCounts.push(data[i].doanhThu);
+            }
+
             var barChartData = {
                 labels: labels,
                 datasets: [{
@@ -86,7 +94,7 @@
                     borderColor: '#FFFFFF',
                     backgroundColor: barColors,
                     tension: 0.1,
-                    barThickness: 160
+                    barThickness: 60
 
                 }]
             };
@@ -107,7 +115,42 @@
             strHtml += "</tr>";
         });
         $("#load_data").html(strHtml);
-    }
+    };
+    $.ajax({
+        type: "GET",
+        url: "@Url.Action("ThongKeDoanhThuTheoNgay", "Admin")",
+        dataType: "json",
+        success: function (data) {
+            console.log(data);
+            var ctx = document.getElementById('chartDay');
+
+            var labels = [];
+            var userCounts = [];
+            // Mảng các màu cho các thanh cột
+            var barColors = ['#29BFDA', '#FF5733', '#9A33FF', '#33FF57', '#FF33C7', '#33A3FF'];
+            for (var i = 0; i < Math.min(data.length, 6); i++) {
+                labels.push("Ngày " + data[i].ngay + "/" + data[i].thang);
+                userCounts.push(data[i].doanhThu);
+            }
+            var barChartData = {
+                labels: labels,
+                datasets: [{
+                    label: 'vnđ',
+                    data: userCounts,
+                    borderColor: '#FFFFFF',
+                    backgroundColor: barColors,
+                    tension: 0.1,
+                    barThickness: 60
+
+                }]
+            };
+            var myBarChart = new Chart(ctx, {
+                type: 'bar',
+                data: barChartData,
+            });
+            
+        }
+    });
 </script>
 
 

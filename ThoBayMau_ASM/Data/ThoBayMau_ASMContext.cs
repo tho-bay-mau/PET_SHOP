@@ -21,11 +21,13 @@ namespace ThoBayMau_ASM.Data
         public DbSet<ThoBayMau_ASM.Models.Anh> Anh { get; set; } = default!;
         public DbSet<ThoBayMau_ASM.Models.LichSu> LichSu { get; set; } = default!;
         public DbSet<ThongKeDoanhThu> ThongKeDoanhThu { get; set; }
+        public DbSet<ThongKeDoanhThuTheoNgay> ThongKeDoanhThuTheoNgay { get; set; }
         public DbSet<SPTop5> SPTop5 { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ThongKeDoanhThu>().HasNoKey();
             modelBuilder.Entity<SPTop5>().HasNoKey();
+            modelBuilder.Entity<ThongKeDoanhThuTheoNgay>().HasNoKey();
         }
     }
     public class ThongKeDoanhThu
@@ -34,6 +36,14 @@ namespace ThoBayMau_ASM.Data
         public int Nam { get; set; }
         public int DoanhThu { get; set; }
     }
+
+    public class ThongKeDoanhThuTheoNgay
+    {
+        public int Thang { get; set; }
+        public int DoanhThu { get; set; }
+        public int Ngay { get; set; }
+    }
+
     public class SPTop5
     {
         public string Ten { get; set; }
