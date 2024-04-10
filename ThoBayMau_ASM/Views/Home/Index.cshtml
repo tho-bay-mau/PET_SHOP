@@ -119,10 +119,20 @@
                                     }
                                     else
                                     {
+                                        var chiTiet = item.ChiTietSPs.OrderBy(ct => ct.KichThuoc).ToList();
+                                        int ctKT = 0;
+                                        foreach (var ct in chiTiet)
+                                        {
+                                            if (ct.SoLuong > 0)
+                                            {
+                                                ctKT = ct.KichThuoc;
+                                                break;
+                                            }
+                                        }
                                         <a asp-action="product_detail" asp-controller="Home" asp-route-id_sp="@item.Id" class="add-to-cart d-flex justify-content-center align-items-center text-center">
                                             <span><i class="ion-ios-menu"></i></span>
                                         </a>
-                                        <a asp-action="AddToGioHang" asp-controller="GioHang" asp-route-sanPhamId="@item.Id" asp-route-kichThuoc="@item.ChiTietSPs.Min(ct => ct.KichThuoc)" asp-route-returnUrl="@Url.Action("Index", "Home")" action="" class="buy-now d-flex justify-content-center align-items-center mx-1">
+                                        <a asp-action="AddToGioHang" asp-controller="GioHang" asp-route-sanPhamId="@item.Id" asp-route-kichThuoc="@ctKT" asp-route-returnUrl="@Url.Action("Index", "Home")" class="buy-now d-flex justify-content-center align-items-center mx-1">
                                             <span><i class="ion-ios-cart"></i></span>
                                         </a>
                                     }

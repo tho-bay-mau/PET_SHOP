@@ -52,10 +52,6 @@ namespace ThoBayMau_ASM.Controllers
 
         public IActionResult AddToGioHang(int sanPhamId, int? quantity, int? kichThuoc, string? returnUrl)
         {
-            /*SanPham? sanPham = _context.SanPham
-				.Where(x => x.Id == sanPhamId)
-				.Include(x => x.ChiTietSPs)
-				.FirstOrDefault(x => x.ChiTietSPs.Any(x => x.KichThuoc == kichThuoc));*/
             ChiTiet_SP? chiTietSP = _context.ChiTiet_SP
                 .Include(x => x.SanPham)
                 .FirstOrDefault(s => s.KichThuoc == kichThuoc && s.SanPhamId == sanPhamId);
