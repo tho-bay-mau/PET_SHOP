@@ -23,7 +23,6 @@ namespace ThoBayMau_ASM.Controllers
 		{
             var topProducts = _context.SPTop5.FromSqlRaw("EXEC SPTop5").ToList();
             ViewBag.SPTop5 = topProducts;
-            
             return View();
 		}
         
@@ -33,7 +32,12 @@ namespace ThoBayMau_ASM.Controllers
             var data = _context.Set<ThongKeDoanhThu>().FromSqlInterpolated($"EXEC ThongKeDoanhThu").ToList();
             return Json(data);
         }
-        
+        [HttpGet]
+        public IActionResult ThongKeDoanhThuTheoNgay()
+        {
+            var data = _context.Set<ThongKeDoanhThuTheoNgay>().FromSqlInterpolated($"EXEC ThongKeDoanhThuTheoNgay").ToList();
+            return Json(data);
+        }
 
     }
 }
