@@ -13,14 +13,17 @@
     }
 </style>
 
-<h2>THỐNG KÊ DOANH THU</h2>
 <div class="cotainer">
     <div>
         <div class="row">
             <div class="col-md-6">
+                <h5 class="text-center">Doanh thu 6 tháng gần nhất</h5>
+                <br />
                 <canvas id="chartUser"></canvas>
             </div>
             <div class="col-md-6">
+                <h5 class="text-center">Doanh thu 7 ngày gần nhất</h5>
+                <br />
                 <canvas id="chartDay"></canvas>
             </div>
         </div>
@@ -36,11 +39,12 @@
                             <th>Doanh Thu</th>
                         </tr>
                     </thead>
+                    <h5 class="text-center">Tổng doanh thu của shop</h5>
                     <tbody id="load_data"></tbody>
                 </table>
             </div>
             <div class="col-md-7">
-                <h4 class="text-center">Top 5 sản phẩm bán chạy</h4>
+                <h5 class="text-center">Top 5 sản phẩm bán chạy</h5>
                 <table class="table table-bordered">
                     <thead>
                         <tr>
@@ -128,7 +132,7 @@
             var userCounts = [];
             // Mảng các màu cho các thanh cột
             var barColors = ['#29BFDA', '#FF5733', '#9A33FF', '#33FF57', '#FF33C7', '#33A3FF'];
-            for (var i = 0; i < Math.min(data.length, 6); i++) {
+            for (var i = 0; i < Math.min(data.length, 7); i++) {
                 labels.push("Ngày " + data[i].ngay + "/" + data[i].thang);
                 userCounts.push(data[i].doanhThu);
             }
