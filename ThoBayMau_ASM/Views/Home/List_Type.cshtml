@@ -104,7 +104,7 @@
                                 <h3 class="product-name"><a href="#">@item.Ten</a></h3>
                                 <div class="d-flex">
                                     <div class="pricing">
-                                        <p class="price"><span class="mr-2 price-dc">@((item.ChiTietSPs.Min(ct => ct.Gia) + 50000).ToString("#,0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")))đ</span><span class="price-sale">@(item.ChiTietSPs.Min(ct => ct.Gia).ToString("#,0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")))đ</span></p>
+                                        <p class="price">@* <span class="mr-2 price-dc">@((item.ChiTietSPs.Min(ct => ct.Gia) + 50000).ToString("#,0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")))đ</span> *@<span class="price-sale">@(item.ChiTietSPs.Min(ct => ct.Gia).ToString("#,0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN")))đ</span></p>
                                     </div>
                                 </div>
                                 <div class="bottom-area d-flex px-3">
