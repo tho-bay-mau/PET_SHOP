@@ -82,6 +82,14 @@
                                 <span class="hide-menu">Loại sản phẩm</span>
                             </a>
                         </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link @(ViewBag.LichSu == true ? "active" : "")" asp-action="Index" asp-controller="History" aria-expanded="false">
+                                <span>
+                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                </span>
+                                <span class="hide-menu">Lịch sử thao tác</span>
+                            </a>
+                        </li>
                     </ul>
                 </nav>
                 <!-- End Sidebar navigation -->

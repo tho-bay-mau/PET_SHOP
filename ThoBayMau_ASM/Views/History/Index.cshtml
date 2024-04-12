@@ -1,0 +1,84 @@
+﻿@model IEnumerable<ThoBayMau_ASM.Models.LichSu>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var pagingmodel = new ThoBayMau_ASM.Helpers.PagingModel()
+            {
+                currentpage = (int)(@ViewBag.CurrentPage),
+                countpages = (int)(@ViewBag.CountPages),
+                generateUrl = (int? p) => Url.Page("", new { p = p, Key = @ViewBag.Search })
+            };
+}
+
+<div class="container p-3">
+    <div class="row">
+        <div class="col-12">
+            <h3>Lịch sử thao tác</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <form class="d-flex" role="search" asp-action="Search">
+                <input style="max-width:50%;" name="Key" value="@ViewBag.Search" class="form-control me-2" type="search" placeholder="Nhập thao tác" aria-label="Tìm kiếm">
+                <button class="btn btn-outline-success" type="submit">Tìm kiếm</button>
+            </form>
+        </div>
+    </div>
+    <br /><br />
+    <style>
+        th {
+            min-width: 130px;
+            color: black;
+        }
+    </style>
+    <div class="table-responsive">
+        <table class="table align-middle table-condensed table-hover text-center">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Id)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ThongTin_ThaoTac)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.NgayGio)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ChiTiet)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TaiKhoanId)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null)
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @item.Id
+                            </td>
+                            <td>
+                                @item.ThongTin_ThaoTac
+                            </td>
+                            <td>
+                                @item.NgayGio
+                            </td>
+                            <td>
+                                @item.ChiTiet
+                            </td>
+                            <td>
+                                @item.TaiKhoanId
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<partial name="_Paging" model="pagingmodel" />

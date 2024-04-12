@@ -140,19 +140,29 @@
                     </div>
                     @foreach (var ct_sp in Model?.ChiTietSPs.OrderBy(x => x.KichThuoc))
                     {
-                        if (ct_sp.SoLuong == 0)
+                        if (sumpr == 0)
                         {
                             <div class="form-check form-check-inline">
-                                <input disabled class="form-check-input" type="radio" id="kichThuoc" name="kichThuoc" value="0">
+                                <input disabled class="form-check-input" type="radio" name="kichThuocHet" value="@ct_sp.KichThuoc" onchange="showPrice('@ct_sp.KichThuoc')">
                                 <label class="form-check-label fw-bold">@(ct_sp.KichThuoc)KG</label>
                             </div>
                         }
                         else
                         {
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" id="kichThuoc" name="kichThuoc" value="@ct_sp.KichThuoc" onchange="showPrice('@ct_sp.KichThuoc')">
-                                <label class="form-check-label fw-bold">@(ct_sp.KichThuoc)KG</label>
-                            </div>
+                            if (ct_sp.SoLuong == 0)
+                            {
+                                <div class="form-check form-check-inline">
+                                    <input disabled class="form-check-input" type="radio" name="kichThuoc" value="0">
+                                    <label class="form-check-label fw-bold">@(ct_sp.KichThuoc)KG</label>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="kichThuoc" value="@ct_sp.KichThuoc" onchange="showPrice('@ct_sp.KichThuoc')">
+                                    <label class="form-check-label fw-bold">@(ct_sp.KichThuoc)KG</label>
+                                </div>
+                            }
                         }
                     }
                     <br />
@@ -162,7 +172,7 @@
                     }
                     @foreach (var ct_sp in Model.ChiTietSPs)
                     {
-                        <p id="sl_@ct_sp.KichThuoc" class="sl" style="display: none; color: red; margin-left: 10px"><span>Số lượng còn lại: @ct_sp.SoLuong</span></p>
+                        <p id="sl_@ct_sp.KichThuoc" class="sl"></p>
                     }
                     <div class="row align-items-center">
                         <div class="input-group col-md-6 d-flex">
@@ -342,17 +352,22 @@
     }
 
     window.onload = function () {
-        var radios = document.querySelectorAll('input[type=radio][name="kichThuoc"]');
+        var radios1 = document.querySelectorAll('input[type=radio][name="kichThuoc"]');
+        var radios2 = document.querySelectorAll('input[type=radio][name="kichThuocHet"]');
 
-        if (radios.length > 0) {
-            if (radios[0].value == 0) {
-                radios[1].checked = true;
-                showPrice(radios[1].value);
+        if (radios1.length > 0) {
+            for (var i = 0; i < radios1.length; i++) {
+                if (radios1[i].value != 0) {
+                    radios1[i].checked = true;
+                    showPrice(radios1[i].value);
+                    break;
+                }
             }
-            else {
-                radios[0].checked = true;
-                showPrice(radios[0].value);
-            }
+        }
+
+        if (radios2.length > 0) {
+            radios2[0].checked = true;
+            showPrice(radios2[0].value);
         }
     };
 </script>
