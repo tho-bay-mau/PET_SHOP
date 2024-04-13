@@ -91,6 +91,41 @@
     </div>
 </div>
 
+<div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="container mt-1">
+                <div class="cancel-dndk d-flex flex-row-reverse">
+                    <button class="btn-close" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+
+                <!-- Tab panes -->
+                <div class="tab-content px-5 pb-3">
+                    <div class="container tab-pane active">
+                        <form name="frm_Delete" asp-controller="GioHang" asp-action="DatLai" method="POST">
+                            <div class="mb-3">
+                                <input id="txt_ID2" hidden type="text" name="txt_ID" />
+                            </div>
+                            <div class="mb-3 text-center">
+                                <h5>Bạn muốn đặt lại đơn hàng này không?</h5>
+                            </div>
+                            <div class="d-flex justify-content-around">
+                                <button type="submit" class="btn btn-primary" style="width:100px;">
+                                    Có
+                                </button>
+                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close" style="width:100px;">
+                                    Không
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div>
     <img style="width:100%;" src="http://www.perfectcompanion.com.vn/vnt_upload/weblink/3.Brid.jpg" alt="" />
 </div>
@@ -176,6 +211,11 @@
                                             {
                                                 <a asp-action="PaymentUser" asp-route-Id="@item.Id" class="btn btn-danger pay">Thanh toán</a>
                                                 <a class="btn btn-primary cancel-order" data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-id="@item.Id" onclick="setId(this)">Huỷ Đơn</a>
+                                            } else if (item.TrangThaiDonHang == "da huy")
+                                            {
+                                                <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop2" data-id="@item.Id" onclick="setId2(this)">
+                                                    Đặt lại
+                                                </a>
                                             }
                                         }
                                     </td>
@@ -329,5 +369,9 @@
     function setId(button) {
         var Id = button.getAttribute('data-id');
         document.getElementById('txt_ID').value = Id;
+    }
+    function setId2(button) {
+        var Id = button.getAttribute('data-id');
+        document.getElementById('txt_ID2').value = Id;
     }
 </script>
