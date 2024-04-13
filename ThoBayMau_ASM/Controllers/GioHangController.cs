@@ -366,6 +366,52 @@ namespace ThoBayMau_ASM.Controllers
                 return NotFound();
             }
         }
+        public IActionResult DatLai(int txt_ID)
+        {
+            
+            var dh = _context.DonHang.Include(x => x.DonHang_ChiTiets)
+                .Include(x => x.ThongTin_NhanHang)
+                .FirstOrDefault(x => x.Id == txt_ID);
+            if (dh == null)
+            {
+                return NotFound();
+            } else
+            {
+                var DH = new DonHang();
+                DH.TaiKhoanId = dh.TaiKhoanId;
+                _context.Add(DH);
+                if(_context.SaveChanges() > 0)
+                {
+                    foreach (var item in dh.DonHang_ChiTiets)
+                    {
+                        var donHang_chiTiet = new DonHang_ChiTiet();
+                        donHang_chiTiet.ChiTiet_SPId = item.ChiTiet_SPId;
+                        donHang_chiTiet.DonHangId = DH.Id;
+                        donHang_chiTiet.SoLuong = item.SoLuong;
+                        var SP = _context.ChiTiet_SP.FirstOrDefault(p => p.Id == item.Id);
+                        if (SP != null)
+                        {
+                            SP.SoLuong -= item.SoLuong;
+                            _context.Update(SP);
+                            _context.SaveChanges();
+                        }
+                        _context.Add(donHang_chiTiet);
+                        _context.SaveChanges();
+                    }
+                    var tt_nh = dh.ThongTin_NhanHang;
+                    var TT_NH = new ThongTin_NhanHang();
+                    TT_NH.DonhangId = DH.Id;
+                    TT_NH.HoTen = tt_nh.HoTen;
+                    TT_NH.SDT = tt_nh.SDT;
+                    TT_NH.DiaChi = tt_nh.DiaChi;
+                    TT_NH.GhiChu = tt_nh.GhiChu;
+                    _context.Add(TT_NH);
+                    _context.SaveChanges();
+                }
+            }
+            TempData["Sucess"] = $"Đặt lại đơn thành công";
+            return RedirectToAction("TTDH", "GioHang");
+        }
 
     }
 }
