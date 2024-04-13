@@ -310,7 +310,7 @@ namespace ThoBayMau_ASM.Controllers
             if (response == null || response.VnPayResponseCode != "00")
             {
                 TempData["Error"] = $"Lỗi thanh toán VN Pay: {response.VnPayResponseCode}";
-                return RedirectToAction("Index","GioHang");
+                return RedirectToAction("TTDH","GioHang");
             }
             var ID = int.Parse(response.OrderId);
             var sp = _context.DonHang.FirstOrDefault(x => x.Id == ID);
@@ -320,7 +320,7 @@ namespace ThoBayMau_ASM.Controllers
                 _context.SaveChanges();
             }
             TempData["Sucess"] = $"Thanh toán VN Pay thành công";
-            return RedirectToAction("Index", "GioHang");
+            return RedirectToAction("TTDH", "GioHang");
 
         }
         public IActionResult TTDH()
