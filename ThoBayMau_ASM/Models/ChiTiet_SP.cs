@@ -27,6 +27,6 @@ namespace ThoBayMau_ASM.Models
         public DateTime HanSuDung { get; set; }
 		public int SanPhamId { get; set; }
 		public SanPham? SanPham { get; set; }
-		public bool TrangThai { get; set; }
+		public bool TrangThai { get; set; } = true;
 	}
 }

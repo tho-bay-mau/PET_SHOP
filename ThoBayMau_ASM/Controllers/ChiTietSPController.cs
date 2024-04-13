@@ -23,9 +23,10 @@ namespace ThoBayMau_ASM.Controllers
             var detail = _context.ChiTiet_SP.Where(x => x.SanPhamId == Id).ToList();
             return View(detail);
         }
-        public IActionResult Create()
+        public IActionResult Create(int? Id)
         {
             ViewBag.QLSanPham = true;
+
             return View();
         }
         [HttpPost]
