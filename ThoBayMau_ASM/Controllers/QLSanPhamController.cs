@@ -29,7 +29,7 @@ namespace ThoBayMau_ASM.Controllers
         public IActionResult Index()
         {
             ViewBag.QLSanPham = true;
-            int total = _context.SanPham.Include(x => x.Anhs).Where(x => x.TrangThai == "Đang bán").Count();
+            int total = _context.SanPham.Include(x => x.Anhs).Where(x => x.TrangThai == "Đang bán" || x.TrangThai == "Mới").Count();
             countpages = (int)Math.Ceiling((double)total / ITEM_PER_PAGE);
 
             if (currentpage < 1)
