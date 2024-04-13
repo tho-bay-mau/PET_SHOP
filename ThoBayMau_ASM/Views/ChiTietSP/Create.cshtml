@@ -9,7 +9,9 @@
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 <div class="container" style="width:50%;">
-    <form method="post" asp-action="Create">
+    <h3>Sản phẩm : @ViewBag.tenSP</h3>
+    <h2>Thêm chi tiết sản phẩm</h2>
+    <form method="post" asp-action="Create" asp-route-SanPhamId="@ViewBag.SanPhamId">
 
         <div class="card-body">
 
@@ -82,11 +84,6 @@
                     }
 
                 </div>
-            </div>
-            <div class=" mb-3 mt-3">
-                <label asp-for="SanPhamId" class="form-label">Tên sản phẩm</label>
-                <input asp-for="SanPhamId" type="text"  class="form-control" id="numberInput">
-                <span asp-validation-for="SanPhamId" class="text-danger"></span>
             </div>
             <br />
             <button type="submit" class="btn btn-primary">Thêm</button>
