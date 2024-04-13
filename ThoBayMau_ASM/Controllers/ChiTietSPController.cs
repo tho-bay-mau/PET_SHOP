@@ -201,7 +201,8 @@ namespace ThoBayMau_ASM.Controllers
                         };
                         _context.LichSu.Add(ls);
                         _context.SaveChanges();
-                        return RedirectToAction("Index", "QLSanPham");
+                        string returnUrl = Url.Action("Index", "ChiTietSP", new { SanPhamId = ct.SanPhamId });
+                        return Redirect(returnUrl);
                     }
                     return View(ct);
                 }
@@ -217,7 +218,8 @@ namespace ThoBayMau_ASM.Controllers
                     _context.LichSu.Add(ls);
                     _context.SaveChanges();
                     TempData["Error"] = "Lỗi nghiêm trọng hãy báo IT để được hỗ trợ";
-                    return RedirectToAction("Index", "QLSanPham");
+                    string returnUrl = Url.Action("Index", "ChiTietSP", new { SanPhamId = ct.SanPhamId });
+                    return Redirect(returnUrl);
                 }
             }
             return NotFound();
