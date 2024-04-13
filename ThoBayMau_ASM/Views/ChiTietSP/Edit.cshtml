@@ -75,8 +75,8 @@
             </div>
         </div>
         <div class=" mb-3 mt-3">
-            <label asp-for="SanPhamId" class="form-label">Mã sản phẩm</label>
-            <select asp-for="SanPhamId" class="form-control" asp-items="ViewBag.LoaiSPid"></select>
+            <label asp-for="SanPhamId" class="form-label">Tên sản phẩm</label>
+            <select asp-for="SanPhamId" class="form-control" asp-items="ViewBag.LoaiSPid" disabled></select>
             <span asp-validation-for="SanPhamId" class="text-danger"></span>
         </div>
         <br />
