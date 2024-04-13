@@ -88,10 +88,13 @@
 
         <a class="btn @(ViewBag.TrangThai == "cho duyet" || ViewBag.TrangThai == null ? "active-trangThai" : "")" asp-action="Index" asp-route-trangThai="@cd">
             Chờ duyệt
-            <span class="badge text-bg-warning">@ViewBag.Count</span>
+            <span class="badge text-bg-warning">@(((IEnumerable<ThoBayMau_ASM.Models.DonHang>)ViewBag.dh).Where(x => x.TrangThaiDonHang == "cho duyet").Count())</span>
         </a>
 
-        <a class="btn @(ViewBag.TrangThai == "dang giao" ? "active-trangThai" : "")" asp-action="Index" asp-route-trangThai="@dg">Đang giao</a>
+        <a class="btn @(ViewBag.TrangThai == "dang giao" ? "active-trangThai" : "")" asp-action="Index" asp-route-trangThai="@dg">Đang giao
+
+            <span class="badge text-bg-warning">@(((IEnumerable<ThoBayMau_ASM.Models.DonHang>)ViewBag.dh).Where(x => x.TrangThaiDonHang == "dang giao").Count())</span>
+        </a>
 
 
         <a class="btn @(ViewBag.TrangThai == "da giao" ? "active-trangThai" : "")" asp-action="Index" asp-route-trangThai="@dag">Đã giao</a>
