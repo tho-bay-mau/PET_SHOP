@@ -100,6 +100,7 @@ namespace ThoBayMau_ASM.Controllers
                 }
                 catch (Exception ex)
                 {
+                    _db.Entry(obj).State = EntityState.Detached;
                     var ls = new LichSu
                     {
                         ThongTin_ThaoTac = $"Thêm tài khoản",
@@ -199,6 +200,7 @@ namespace ThoBayMau_ASM.Controllers
                 }
                 catch (Exception ex)
                 {
+                    _db.Entry(obj).State = EntityState.Detached;
                     var ls = new LichSu
                     {
                         ThongTin_ThaoTac = $"Chỉnh sửa tài khoản",

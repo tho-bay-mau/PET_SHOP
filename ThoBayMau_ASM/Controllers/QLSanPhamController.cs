@@ -168,6 +168,7 @@ namespace ThoBayMau_ASM.Controllers
                 }
                 catch (Exception ex)
                 {
+                    _context.Entry(sp).State = EntityState.Detached;
                     var ls = new LichSu
                     {
                         ThongTin_ThaoTac = $"Thêm sản phẩm",
@@ -256,6 +257,7 @@ namespace ThoBayMau_ASM.Controllers
                 }
                 catch (Exception ex)
                 {
+                    _context.Entry(obj).State = EntityState.Detached;
                     var ls = new LichSu
                     {
                         ThongTin_ThaoTac = $"Sửa sản phẩm",
