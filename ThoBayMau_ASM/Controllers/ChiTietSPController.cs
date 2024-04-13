@@ -121,50 +121,33 @@ namespace ThoBayMau_ASM.Controllers
         public IActionResult Edit(int? id)
         {
             ViewBag.QLSanPham = true;
-            var SPList = _context.SanPham.OrderBy(x => x.Id)
-                                    .Select(x => new SelectListItem
-                                    {
-                                        Value = x.Id.ToString(),
-                                        Text = x.Ten
-                                    })
-                                    .ToList();
-            ViewBag.LoaiSPid = new SelectList(SPList, "Value", "Text");
-
             if (id == null || id == 0)
             {
                 return NotFound();
             }
+
             var SanPhamID = _context.ChiTiet_SP.SingleOrDefault(x => x.Id == id);
+            var SP = _context.SanPham.FirstOrDefault(X => X.Id == SanPhamID.SanPhamId);
+            ViewBag.tenSP = SP.Ten;
             if (SanPhamID == null)
             {
                 return NotFound();
             }
+
             return View(SanPhamID);
         }
         [HttpPost]
-        public IActionResult Edit(ChiTiet_SP ct)
+        public IActionResult Edit(ChiTiet_SP ct, int id)
         {
             var user = HttpContext.Session.GetJson<TaiKhoan>("User");
             if (user != null)
             {
                 try
-                {
-                    var SPList = _context.SanPham.OrderBy(x => x.Id)
-                                    .Select(x => new SelectListItem
-                                    {
-                                        Value = x.Id.ToString(),
-                                        Text = x.Ten
-                                    })
-                                    .ToList();
-                    ViewBag.LoaiSPid = new SelectList(SPList, "Value", "Text");
-
-
+                { 
                     if (ct.Gia == null)
                     {
                         ViewBag.ktgia = "Vui lòng nhập giá!!";
                     }
-
-                    
 
                     if (ct.SoLuong == null)
                     {
@@ -190,8 +173,10 @@ namespace ThoBayMau_ASM.Controllers
                     {
                         ViewBag.ktHSD = "Vui lòng nhập hạn sử dụng!!";
                     }
+
                     if (ModelState.IsValid)
                     {
+                        ct.SanPhamId = id;
                         _context.Update(ct);
                         _context.SaveChanges();
                         TempData["Sucess"] = "Sửa Chi tiết sản phẩm thành công!!";

@@ -8,13 +8,17 @@
 <link rel="stylesheet" href="/resources/demos/style.css">
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<h4>Tạo mới chi tiết sản phẩm</h4>
 <div class="container" style="width:50%;">
-    <h3>Sản phẩm : @ViewBag.tenSP</h3>
-    <h2>Thêm chi tiết sản phẩm</h2>
+    
+    
     <form method="post" asp-action="Create" asp-route-SanPhamId="@ViewBag.SanPhamId">
 
         <div class="card-body">
-
+            <div class="mb-3 mt-3">
+                <label class="form-label">Tên sản phẩm</label>
+                <input type="text" class="form-control" value="@ViewBag.tenSP" readonly />
+            </div>
             <div class="mb-3 mt-3">
                 <label asp-for="Gia" class="form-label">Giá </label>
                 <input asp-for="Gia" type="text" class="form-control" id="numberInput" maxlength="8">
