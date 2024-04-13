@@ -17,7 +17,7 @@
 
             <div class="mb-3 mt-3">
                 <label asp-for="Gia" class="form-label">Giá </label>
-                <input asp-for="Gia" type="number" class="form-control" id="numberInput">
+                <input asp-for="Gia" type="text" class="form-control" id="numberInput" maxlength="8">
 
                 @if (ViewBag.ktgia != null)
                 {
@@ -33,7 +33,7 @@
 
             <div class="mb-3 mt-3">
                 <label asp-for="SoLuong" class="form-label">Số lượng</label>
-                <input asp-for="SoLuong" type="number" class="form-control" id="numberInput">
+                <input asp-for="SoLuong" type="text" class="form-control" id="numberInput" maxlength="4">
                 @if (ViewBag.ktSoLuong != null)
                 {
                     <span class="text-danger">@ViewBag.ktSoLuong</span>
@@ -46,7 +46,7 @@
             </div>
             <div class="mb-3 mt-3">
                 <label asp-for="KichThuoc" class="form-label">Kích thước</label>
-                <input asp-for="KichThuoc" type="number" class="form-control" id="numberInput">
+                <input asp-for="KichThuoc" type="text" class="form-control" id="numberInput" maxlength="2">
                 @if (ViewBag.ktKichThuoc != null)
                 {
                     <span class="text-danger">@ViewBag.ktKichThuoc</span>
