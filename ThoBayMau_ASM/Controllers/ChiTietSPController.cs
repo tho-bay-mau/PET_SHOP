@@ -17,20 +17,23 @@ namespace ThoBayMau_ASM.Controllers
             _webhost = webHostEnvironment;
             _context = context;
         }
-        public IActionResult Index(int? Id)
+        public IActionResult Index(int? SanPhamId)
         {
             ViewBag.QLSanPham = true;
-            var detail = _context.ChiTiet_SP.Where(x => x.SanPhamId == Id).ToList();
+            var detail = _context.ChiTiet_SP.Where(x => x.SanPhamId == SanPhamId).ToList();
+            ViewBag.SanPhamId = SanPhamId;
             return View(detail);
         }
-        public IActionResult Create(int? Id)
+        public IActionResult Create(int? SanPhamId)
         {
             ViewBag.QLSanPham = true;
-
+            var sp = _context.SanPham.FirstOrDefault(x => x.Id == SanPhamId);
+            ViewBag.tenSP = sp.Ten;
+            ViewBag.SanPhamId = sp.Id;
             return View();
         }
         [HttpPost]
-        public IActionResult Create(ChiTiet_SP ct) 
+        public IActionResult Create(ChiTiet_SP ct, int SanPhamId)
         {
             var user = HttpContext.Session.GetJson<TaiKhoan>("User");
             if (user != null)
@@ -76,6 +79,7 @@ namespace ThoBayMau_ASM.Controllers
                     {
                         ViewBag.ktHSD = "Vui lòng nhập hạn sử dụng!!";
                     }
+                    ct.SanPhamId = SanPhamId;
                     if (ModelState.IsValid)
                     {
                         _context.Add(ct);
@@ -104,7 +108,7 @@ namespace ThoBayMau_ASM.Controllers
                         ChiTiet = $"Lỗi: {ex}",
                         TaiKhoanId = user.Id
                     };
-                    _context.LichSu.Add(ls);
+                    _context.Add(ls);
                     _context.SaveChanges();
                     TempData["Error"] = "Lỗi nghiêm trọng hãy báo IT để được hỗ trợ";
                     return RedirectToAction("Index", "QLSanPham");
