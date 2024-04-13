@@ -56,6 +56,7 @@ namespace ThoBayMau_ASM.Controllers
 
             ViewBag.CurrentPage = currentpage;
             ViewBag.CountPages = countpages;
+            ViewBag.dh = _context.DonHang.ToList();
             if (total > 0)
             {
                 var result = _context.DonHang
