@@ -153,17 +153,19 @@ namespace ThoBayMau_ASM.Controllers
                     ViewBag.LoaiSPid = new SelectList(SPList, "Value", "Text");
 
 
-                    if (ct.Gia == 0)
+                    if (ct.Gia == null)
                     {
                         ViewBag.ktgia = "Vui lòng nhập giá!!";
                     }
 
-                    if (ct.SoLuong == 0)
+                    
+
+                    if (ct.SoLuong == null)
                     {
                         ViewBag.ktSoLuong = "Vui lòng nhập số lượng!!";
                     }
 
-                    if (ct.KichThuoc == 0)
+                    if (ct.KichThuoc == null)
                     {
                         ViewBag.ktKichThuoc = "Vui lòng nhập kích thước!!";
                     }
