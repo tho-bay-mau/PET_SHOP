@@ -1,6 +1,7 @@
 ﻿using Aram.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using ThoBayMau_ASM.Data;
 using ThoBayMau_ASM.Models;
 
@@ -101,6 +102,7 @@ namespace ThoBayMau_ASM.Controllers
                 }
                 catch (Exception ex)
                 {
+                    _context.Entry(ct).State = EntityState.Detached;
                     var ls = new LichSu
                     {
                         ThongTin_ThaoTac = $"Thêm chi tiết sản phẩm",
@@ -210,6 +212,7 @@ namespace ThoBayMau_ASM.Controllers
                 }
                 catch (Exception ex)
                 {
+                    _context.Entry(ct).State = EntityState.Detached;
                     var ls = new LichSu
                     {
                         ThongTin_ThaoTac = $"Sửa chi tiết sản phẩm",
