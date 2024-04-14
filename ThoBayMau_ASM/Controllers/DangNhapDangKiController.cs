@@ -278,6 +278,11 @@ namespace ThoBayMau_ASM.Controllers
 
                     if (user != null)
                     {
+                        if(user.SDT == "00000000000")
+                        {
+                            TempData["warning"] = "tài khoản khoản này không được hỗ trợ đổi mật khẩu";
+                            return View("GuiMail", email);
+                        }
                         string maXacNhan;
                         int time = 1;
                         Random rnd = new Random();

@@ -86,7 +86,7 @@
             // Mảng các màu cho các thanh cột
             var barColors = ['#29BFDA', '#FF5733', '#9A33FF', '#33FF57', '#FF33C7', '#33A3FF'];
             for (var i = 0; i < Math.min(data.length, 6); i++) {
-                labels.push("Tháng " + data[i].thang + "/" + data[i].nam);
+                labels.push(data[i].thang + "/" + data[i].nam);
                 userCounts.push(data[i].doanhThu);
             }
 
