@@ -352,8 +352,8 @@ namespace ThoBayMau_ASM.Controllers
             ViewBag.QLSanPham = true;
             if (Key != null)
             {
-                int total = _context.SanPham.Where(x => (x.TrangThai == "Đang bán" || x.TrangThai == "Mới") && x.Id.ToString() == Key).Count();
-                countpages = (int)Math.Ceiling((double)total / ITEM_PER_PAGE);
+                int total = _context.SanPham.Include(x => x.Anhs).Where(x => (x.TrangThai == "Đang bán" || x.TrangThai == "Mới") && x.Id.ToString() == Key).Count();
+                int countpages = (int)Math.Ceiling((double)total / ITEM_PER_PAGE);
 
                 if (currentpage < 1)
                 {
@@ -369,7 +369,7 @@ namespace ThoBayMau_ASM.Controllers
                 ViewBag.Search = Key;
                 if (total > 0)
                 {
-                    var result = _context.SanPham.Where(x => (x.TrangThai == "Đang bán" || x.TrangThai == "Mới") && x.Id.ToString() == Key).Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
+                    var result = _context.SanPham.Include(x => x.Anhs).Where(x => (x.TrangThai == "Đang bán" || x.TrangThai == "Mới") && x.Id.ToString() == Key).Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
                     return View("Index", result);
                 }
                 else
@@ -379,9 +379,9 @@ namespace ThoBayMau_ASM.Controllers
             }
             else
             {
-                int total = _context.SanPham.Where(x => (x.TrangThai == "Đang bán" || x.TrangThai == "Mới")).Count();
+                int total = _context.SanPham.Include(x => x.Anhs).Where(x => (x.TrangThai == "Đang bán" || x.TrangThai == "Mới")).Count();
 
-                countpages = (int)Math.Ceiling((double)total / ITEM_PER_PAGE);
+                int countpages = (int)Math.Ceiling((double)total / ITEM_PER_PAGE);
 
                 if (currentpage < 1)
                 {
@@ -397,7 +397,7 @@ namespace ThoBayMau_ASM.Controllers
                 ViewBag.Search = Key;
                 if (total > 0)
                 {
-                    var result = _context.SanPham.Where(x => (x.TrangThai == "Đang bán" || x.TrangThai == "Mới")).Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
+                    var result = _context.SanPham.Include(x => x.Anhs).Where(x => (x.TrangThai == "Đang bán" || x.TrangThai == "Mới")).Skip((currentpage - 1) * ITEM_PER_PAGE).Take(ITEM_PER_PAGE).ToList();
                     return View("Index", result);
                 }
                 else
