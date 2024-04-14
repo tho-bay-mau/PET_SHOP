@@ -41,16 +41,10 @@ namespace ThoBayMau_ASM.Controllers
             {
                 try
                 {
-                    var SPList = _context.SanPham.OrderBy(x => x.Id)
-                                    .Select(x => new SelectListItem
-                                    {
-                                        Value = x.Id.ToString(),
-                                        Text = x.Ten
-                                    })
-                                    .ToList();
-                    ViewBag.LoaiSPid = new SelectList(SPList, "Value", "Text");
-
-
+                        if (_context.ChiTiet_SP.Any(x => x.KichThuoc == ct.KichThuoc))
+                        {
+                            ModelState.AddModelError("KichThuoc", "Kích thước trong sản phẩm này đã có");
+                        }
                     if (ct.Gia == 0)
                     {
                         ViewBag.ktgia = "Giá không được để trống hoặc bằng 0";
@@ -148,9 +142,22 @@ namespace ThoBayMau_ASM.Controllers
             {
                 try
                 {
-                    var SP = _context.SanPham.FirstOrDefault(X => X.Id == id);
+
+                    var ChiTiet = _context.ChiTiet_SP.SingleOrDefault(x => x.Id == id);
+                    var SP = _context.SanPham.FirstOrDefault(X => X.Id == ChiTiet.SanPhamId);
+                    _context.Entry(ChiTiet).State = EntityState.Detached;
+                    _context.Entry(SP).State = EntityState.Detached;
                     ViewBag.tenSP = SP.Ten;
-                    ct.SanPhamId = id;
+                    ct.SanPhamId = SP.Id;
+                    if(ChiTiet.KichThuoc != ct.KichThuoc)
+                    {
+                        if(_context.ChiTiet_SP.Any(x => x.KichThuoc == ct.KichThuoc))
+                        {
+                            ModelState.AddModelError("KichThuoc", "Kích thước trong sản phẩm này đã có");
+                        }
+                    }
+                    
+
                     if (ct.Gia == null)
                     {
                         ViewBag.ktgia = "Vui lòng nhập giá!!";
@@ -181,10 +188,10 @@ namespace ThoBayMau_ASM.Controllers
                         ViewBag.ktHSD = "Vui lòng nhập hạn sử dụng!!";
                     }
 
+
+
                     if (ModelState.IsValid)
                     {
-                        
-
                         _context.Update(ct);
                         _context.SaveChanges();
                         TempData["Sucess"] = "Sửa Chi tiết sản phẩm thành công!!";
