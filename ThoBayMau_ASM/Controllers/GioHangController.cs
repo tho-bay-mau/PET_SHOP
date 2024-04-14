@@ -380,16 +380,19 @@ namespace ThoBayMau_ASM.Controllers
         }
         public IActionResult DatLai(int txt_ID)
         {
+            var currentDate = DateTime.Now.Date;
             //đếm số lần đặt lại
             var user = HttpContext.Session.GetJson<TaiKhoan>("User");
 
-            var dem1 = _context.DonHang
+            var dem = _context.DonHang
             .Where(y => y.TrangThaiDonHang == "da huy"
-                        && y.TaiKhoanId == user.Id);
-            var dem3 = 0;
-            if (dem3 > 5)
+                        && y.TaiKhoanId == user.Id
+                        && y.ThoiGianHuy.HasValue
+                        && y.ThoiGianHuy.Value.Date == currentDate)
+            .Count();
+            if (dem > 5)
             {
-                TempData["Error"] = "Đặt lần đặt nhất 5 lần đặt nhất 5 lần đặt nhất 5";
+                TempData["Error"] = "Bạn đẵ huỷ đơn quá nhiều vào hôm nay, thử lại vào ngày mai!";
                 return RedirectToAction("TTDH", "GioHang");
             } else
             {
