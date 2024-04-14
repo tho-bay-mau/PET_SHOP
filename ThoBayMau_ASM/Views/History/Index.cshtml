@@ -69,7 +69,14 @@
                                 @item.NgayGio
                             </td>
                             <td>
-                                @item.ChiTiet
+                                @if (@item.ChiTiet.Contains("Lỗi:"))
+                                {
+                                    <p>Lỗi hệ thống nghiêm trọng hãy liên hệ với bộ phận IT</p>
+                                }
+                                else
+                                {
+                                    @item.ChiTiet
+                                }
                             </td>
                             <td>
                                 @item.TaiKhoanId
