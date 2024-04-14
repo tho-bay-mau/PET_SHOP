@@ -1,8 +1,12 @@
 ﻿using Aram.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Globalization;
 using System.Security.Policy;
 using System.Text.RegularExpressions;
 using ThoBayMau_ASM.Data;
@@ -366,51 +370,74 @@ namespace ThoBayMau_ASM.Controllers
                 return NotFound();
             }
         }
+        public static string OutDay(string dateTime)
+        {
+            // Định dạng của chuỗi ngày tháng
+            string format = "yyyy-MM-dd HH:mm:ss";
+            DateTime OutdateTime;
+            DateTime.TryParseExact(dateTime, format, null, System.Globalization.DateTimeStyles.None, out OutdateTime);
+            return OutdateTime.ToString("yyyy/MM/dd");
+        }
         public IActionResult DatLai(int txt_ID)
         {
-            
-            var dh = _context.DonHang.Include(x => x.DonHang_ChiTiets)
-                .Include(x => x.ThongTin_NhanHang)
-                .FirstOrDefault(x => x.Id == txt_ID);
-            if (dh == null)
+            //đếm số lần đặt lại
+            var user = HttpContext.Session.GetJson<TaiKhoan>("User");
+
+            var dem1 = _context.DonHang
+            .Where(y => y.TrangThaiDonHang == "da huy"
+                        && y.TaiKhoanId == user.Id);
+            var dem3 = 0;
+            if (dem3 > 5)
             {
-                return NotFound();
+                TempData["Error"] = "Đặt lần đặt nhất 5 lần đặt nhất 5 lần đặt nhất 5";
+                return RedirectToAction("TTDH", "GioHang");
             } else
             {
-                var DH = new DonHang();
-                DH.TaiKhoanId = dh.TaiKhoanId;
-                _context.Add(DH);
-                if(_context.SaveChanges() > 0)
+                var dh = _context.DonHang.Include(x => x.DonHang_ChiTiets)
+                .Include(x => x.ThongTin_NhanHang)
+                .FirstOrDefault(x => x.Id == txt_ID);
+                if (dh == null)
                 {
-                    foreach (var item in dh.DonHang_ChiTiets)
+                    return NotFound();
+                }
+                else
+                {
+                    var DH = new DonHang();
+                    DH.TaiKhoanId = dh.TaiKhoanId;
+                    _context.Add(DH);
+                    if (_context.SaveChanges() > 0)
                     {
-                        var donHang_chiTiet = new DonHang_ChiTiet();
-                        donHang_chiTiet.ChiTiet_SPId = item.ChiTiet_SPId;
-                        donHang_chiTiet.DonHangId = DH.Id;
-                        donHang_chiTiet.SoLuong = item.SoLuong;
-                        var SP = _context.ChiTiet_SP.FirstOrDefault(p => p.Id == item.Id);
-                        if (SP != null)
+                        foreach (var item in dh.DonHang_ChiTiets)
                         {
-                            SP.SoLuong -= item.SoLuong;
-                            _context.Update(SP);
+                            var donHang_chiTiet = new DonHang_ChiTiet();
+                            donHang_chiTiet.ChiTiet_SPId = item.ChiTiet_SPId;
+                            donHang_chiTiet.DonHangId = DH.Id;
+                            donHang_chiTiet.SoLuong = item.SoLuong;
+                            var SP = _context.ChiTiet_SP.FirstOrDefault(p => p.Id == item.Id);
+                            if (SP != null)
+                            {
+                                SP.SoLuong -= item.SoLuong;
+                                _context.Update(SP);
+                                _context.SaveChanges();
+                            }
+                            _context.Add(donHang_chiTiet);
                             _context.SaveChanges();
                         }
-                        _context.Add(donHang_chiTiet);
+                        var tt_nh = dh.ThongTin_NhanHang;
+                        var TT_NH = new ThongTin_NhanHang();
+                        TT_NH.DonhangId = DH.Id;
+                        TT_NH.HoTen = tt_nh.HoTen;
+                        TT_NH.SDT = tt_nh.SDT;
+                        TT_NH.DiaChi = tt_nh.DiaChi;
+                        TT_NH.GhiChu = tt_nh.GhiChu;
+                        _context.Add(TT_NH);
                         _context.SaveChanges();
                     }
-                    var tt_nh = dh.ThongTin_NhanHang;
-                    var TT_NH = new ThongTin_NhanHang();
-                    TT_NH.DonhangId = DH.Id;
-                    TT_NH.HoTen = tt_nh.HoTen;
-                    TT_NH.SDT = tt_nh.SDT;
-                    TT_NH.DiaChi = tt_nh.DiaChi;
-                    TT_NH.GhiChu = tt_nh.GhiChu;
-                    _context.Add(TT_NH);
-                    _context.SaveChanges();
                 }
+                TempData["Sucess"] = $"Đặt lại đơn thành công";
+                return RedirectToAction("TTDH", "GioHang");
             }
-            TempData["Sucess"] = $"Đặt lại đơn thành công";
-            return RedirectToAction("TTDH", "GioHang");
+            
         }
 
     }
