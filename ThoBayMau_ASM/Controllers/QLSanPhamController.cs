@@ -6,6 +6,7 @@ using ThoBayMau_ASM.Data;
 using ThoBayMau_ASM.Models;
 using System.IO;
 using Aram.Infrastructure;
+using System.Text;
 
 namespace ThoBayMau_ASM.Controllers
 {
@@ -56,7 +57,7 @@ namespace ThoBayMau_ASM.Controllers
         public IActionResult Create()
         {
             ViewBag.QLSanPham = true;
-            var loaiSPList = _context.LoaiSP.OrderBy(x => x.Id)
+            var loaiSPList = _context.LoaiSP.Where(x => x.TrangThai == true).OrderBy(x => x.Id)
                                      .Select(x => new SelectListItem
                                      {
                                          Value = x.Id.ToString(),
@@ -72,13 +73,12 @@ namespace ThoBayMau_ASM.Controllers
         [HttpPost]
         public IActionResult Create(SanPham sp, IFormFile[] files, int gia, int soluong, int kichthuoc, DateTime ngaysanxuat, DateTime hansudung)
         {
-
             var user = HttpContext.Session.GetJson<TaiKhoan>("User");
             if (user != null)
             {
                 try
                 {
-                    var loaiSPList = _context.LoaiSP.OrderBy(x => x.Id)
+                    var loaiSPList = _context.LoaiSP.Where(x => x.TrangThai == true).OrderBy(x => x.Id)
                                      .Select(x => new SelectListItem
                                      {
                                          Value = x.Id.ToString(),
@@ -143,8 +143,7 @@ namespace ThoBayMau_ASM.Controllers
                             _context.Anh.Add(anh);
                             if (_context.Anh.Any(a => a.TenAnh == item.FileName))
                             {
-                                ViewBag.ktAnh = "Ảnh đã tồn tại";
-                                return View(sp);
+                                anh.TenAnh = randomimagename(5) +  item.FileName ;
                             }
                         }
                         _context.SaveChanges();
@@ -183,7 +182,7 @@ namespace ThoBayMau_ASM.Controllers
         public IActionResult Edit(int? id)
         {
             ViewBag.QLSanPham = true;
-            var loaiSPList = _context.LoaiSP.OrderBy(x => x.Id)
+            var loaiSPList = _context.LoaiSP.Where(x => x.TrangThai == true).OrderBy(x => x.Id)
                                      .Select(x => new SelectListItem
                                      {
                                          Value = x.Id.ToString(),
@@ -210,7 +209,7 @@ namespace ThoBayMau_ASM.Controllers
         [HttpPost]
         public IActionResult Edit(SanPham obj, IFormFile[] files)
         {
-            var loaiSPList = _context.LoaiSP.OrderBy(x => x.Id)
+            var loaiSPList = _context.LoaiSP.Where(x => x.TrangThai == true).OrderBy(x => x.Id)
                                      .Select(x => new SelectListItem
                                      {
                                          Value = x.Id.ToString(),
@@ -247,8 +246,7 @@ namespace ThoBayMau_ASM.Controllers
                                 _context.Anh.Add(anh);
                                 if (_context.Anh.Any(a => a.TenAnh == item.FileName))
                                 {
-                                    ViewBag.ktAnh = "Ảnh đã tồn tại";
-                                    return View(obj);
+                                    anh.TenAnh = randomimagename(5) + item.FileName;
                                 }
                             }
                             _context.SaveChanges(); 
@@ -434,6 +432,20 @@ namespace ThoBayMau_ASM.Controllers
             {
                 return NotFound(); // ID sản phẩm không hợp lệ hoặc không tồn tại
             }
+        }
+        static string randomimagename(int quantity)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;:,.<>?";
+            StringBuilder password = new StringBuilder();
+            Random random = new Random();
+
+            for (int i = 0; i < quantity; i++)
+            {
+                int index = random.Next(chars.Length);
+                password.Append(chars[index]);
+            }
+
+            return password.ToString();
         }
     }
 }

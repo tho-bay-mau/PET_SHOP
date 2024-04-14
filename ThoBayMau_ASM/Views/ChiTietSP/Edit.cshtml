@@ -84,7 +84,7 @@
         </div>
         <br />
         <button type="submit" class="btn btn-primary">Sửa</button>
-        <a asp-controller="ChiTietSP" asp-action="Index" class="btn btn-primary">Trở về</a>
+            <a asp-controller="ChiTietSP" asp-action="Index" class="btn btn-primary" asp-route-id="@Model.SanPhamId">Trở về</a>
     </div>
     </div>
 </form>

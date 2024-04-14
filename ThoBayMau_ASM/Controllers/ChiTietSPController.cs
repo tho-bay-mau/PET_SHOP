@@ -151,7 +151,7 @@ namespace ThoBayMau_ASM.Controllers
                     ct.SanPhamId = SP.Id;
                     if(ChiTiet.KichThuoc != ct.KichThuoc)
                     {
-                        if(_context.ChiTiet_SP.Any(x => x.KichThuoc == ct.KichThuoc))
+                        if(_context.ChiTiet_SP.Any(x => x.KichThuoc == ct.KichThuoc && x.SanPhamId == SP.Id))
                         {
                             ModelState.AddModelError("KichThuoc", "Kích thước trong sản phẩm này đã có");
                         }
