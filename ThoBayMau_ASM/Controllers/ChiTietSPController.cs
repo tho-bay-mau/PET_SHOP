@@ -1,6 +1,7 @@
 ﻿using Aram.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using ThoBayMau_ASM.Data;
 using ThoBayMau_ASM.Models;
 
@@ -40,29 +41,23 @@ namespace ThoBayMau_ASM.Controllers
             {
                 try
                 {
-                    var SPList = _context.SanPham.OrderBy(x => x.Id)
-                                    .Select(x => new SelectListItem
-                                    {
-                                        Value = x.Id.ToString(),
-                                        Text = x.Ten
-                                    })
-                                    .ToList();
-                    ViewBag.LoaiSPid = new SelectList(SPList, "Value", "Text");
-
-
+                        if (_context.ChiTiet_SP.Any(x => x.KichThuoc == ct.KichThuoc))
+                        {
+                            ModelState.AddModelError("KichThuoc", "Kích thước trong sản phẩm này đã có");
+                        }
                     if (ct.Gia == 0)
                     {
-                        ViewBag.ktgia = "Vui lòng nhập giá!!";
+                        ViewBag.ktgia = "Giá không được để trống hoặc bằng 0";
                     }
 
                     if (ct.SoLuong == 0)
                     {
-                        ViewBag.ktSoLuong = "Vui lòng nhập số lượng!!";
+                        ViewBag.ktSoLuong = "Số lượng không được để trống hoặc bằng 0";
                     }
 
                     if (ct.KichThuoc == 0)
                     {
-                        ViewBag.ktKichThuoc = "Vui lòng nhập kích thước!!";
+                        ViewBag.ktKichThuoc = "Kích thước không được để trống hoặc bằng 0";
                     }
 
                     if (ct.NgaySanXuat >= ct.HanSuDung)
@@ -79,7 +74,10 @@ namespace ThoBayMau_ASM.Controllers
                     {
                         ViewBag.ktHSD = "Vui lòng nhập hạn sử dụng!!";
                     }
+
                     ct.SanPhamId = SanPhamId;
+                    var sp = _context.SanPham.FirstOrDefault(x => x.Id == SanPhamId);
+                    ViewBag.tenSP = sp.Ten;
                     if (ModelState.IsValid)
                     {
                         _context.Add(ct);
@@ -97,10 +95,12 @@ namespace ThoBayMau_ASM.Controllers
                         _context.SaveChanges();
                         return RedirectToAction("Index", "QLSanPham");
                     }
+                    ViewBag.SanPhamId = SanPhamId;
                     return View(ct);
                 }
                 catch (Exception ex)
                 {
+                    _context.Entry(ct).State = EntityState.Detached;
                     var ls = new LichSu
                     {
                         ThongTin_ThaoTac = $"Thêm chi tiết sản phẩm",
@@ -119,55 +119,56 @@ namespace ThoBayMau_ASM.Controllers
         public IActionResult Edit(int? id)
         {
             ViewBag.QLSanPham = true;
-            var SPList = _context.SanPham.OrderBy(x => x.Id)
-                                    .Select(x => new SelectListItem
-                                    {
-                                        Value = x.Id.ToString(),
-                                        Text = x.Ten
-                                    })
-                                    .ToList();
-            ViewBag.LoaiSPid = new SelectList(SPList, "Value", "Text");
-
             if (id == null || id == 0)
             {
                 return NotFound();
             }
+
             var SanPhamID = _context.ChiTiet_SP.SingleOrDefault(x => x.Id == id);
+            var SP = _context.SanPham.FirstOrDefault(X => X.Id == SanPhamID.SanPhamId);
+            ViewBag.tenSP = SP.Ten;
             if (SanPhamID == null)
             {
                 return NotFound();
             }
+
             return View(SanPhamID);
         }
         [HttpPost]
-        public IActionResult Edit(ChiTiet_SP ct)
+        public IActionResult Edit(ChiTiet_SP ct, int id)
         {
             var user = HttpContext.Session.GetJson<TaiKhoan>("User");
             if (user != null)
             {
                 try
                 {
-                    var SPList = _context.SanPham.OrderBy(x => x.Id)
-                                    .Select(x => new SelectListItem
-                                    {
-                                        Value = x.Id.ToString(),
-                                        Text = x.Ten
-                                    })
-                                    .ToList();
-                    ViewBag.LoaiSPid = new SelectList(SPList, "Value", "Text");
 
+                    var ChiTiet = _context.ChiTiet_SP.SingleOrDefault(x => x.Id == id);
+                    var SP = _context.SanPham.FirstOrDefault(X => X.Id == ChiTiet.SanPhamId);
+                    _context.Entry(ChiTiet).State = EntityState.Detached;
+                    _context.Entry(SP).State = EntityState.Detached;
+                    ViewBag.tenSP = SP.Ten;
+                    ct.SanPhamId = SP.Id;
+                    if(ChiTiet.KichThuoc != ct.KichThuoc)
+                    {
+                        if(_context.ChiTiet_SP.Any(x => x.KichThuoc == ct.KichThuoc))
+                        {
+                            ModelState.AddModelError("KichThuoc", "Kích thước trong sản phẩm này đã có");
+                        }
+                    }
+                    
 
-                    if (ct.Gia == 0)
+                    if (ct.Gia == null)
                     {
                         ViewBag.ktgia = "Vui lòng nhập giá!!";
                     }
 
-                    if (ct.SoLuong == 0)
+                    if (ct.SoLuong == null)
                     {
                         ViewBag.ktSoLuong = "Vui lòng nhập số lượng!!";
                     }
 
-                    if (ct.KichThuoc == 0)
+                    if (ct.KichThuoc == null)
                     {
                         ViewBag.ktKichThuoc = "Vui lòng nhập kích thước!!";
                     }
@@ -186,6 +187,9 @@ namespace ThoBayMau_ASM.Controllers
                     {
                         ViewBag.ktHSD = "Vui lòng nhập hạn sử dụng!!";
                     }
+
+
+
                     if (ModelState.IsValid)
                     {
                         _context.Update(ct);
@@ -204,10 +208,12 @@ namespace ThoBayMau_ASM.Controllers
                         string returnUrl = Url.Action("Index", "ChiTietSP", new { SanPhamId = ct.SanPhamId });
                         return Redirect(returnUrl);
                     }
+                    
                     return View(ct);
                 }
                 catch (Exception ex)
                 {
+                    _context.Entry(ct).State = EntityState.Detached;
                     var ls = new LichSu
                     {
                         ThongTin_ThaoTac = $"Sửa chi tiết sản phẩm",

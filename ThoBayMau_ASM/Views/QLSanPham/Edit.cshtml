@@ -37,7 +37,7 @@
         </div>
         <div class=" mb-3 mt-3">
             <label asp-for="LoaiSPId" class="form-label">Mã loại sản phẩm</label>
-            <input asp-for="LoaiSPId" class="form-control" id="exampleInputEmail1">
+                <select asp-for="LoaiSPId" class="form-control" asp-items="ViewBag.LoaiSPid"></select>
             <span asp-validation-for="LoaiSPId" class="text-danger"></span>
         </div>
             <button type="submit" class="btn btn-primary">Sửa</button>

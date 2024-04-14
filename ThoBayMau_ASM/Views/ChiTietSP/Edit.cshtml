@@ -4,13 +4,21 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 
 }
-<form method="post" asp-action="Edit">
-
+<form method="post" asp-action="Edit" asp-route-id="@Model.SanPhamId">
+    <h4>Sửa chi tiết sản phẩm</h4>
+    <div class="container" style="width: 50%">
     <div class="card-body">
-
+        <div class="mb-3 mt-3">
+            <label class="form-label">Tên sản phẩm</label>
+            <input type="text" class="form-control" value="@ViewBag.tenSP" readonly/>
+        </div>
+            <div class="mb-3 mt-3">
+                <label class="form-label">ID</label>
+                <input asp-for="Id" type="number" class="form-control"/>
+            </div>
         <div class="mb-3 mt-3">
             <label asp-for="Gia" class="form-label">Giá </label>
-            <input asp-for="Gia" type="number" class="form-control" id="numberInput">
+            <input asp-for="Gia" type="text" class="form-control" id="numberInput" maxlength="8">
 
             @if (ViewBag.ktgia != null)
             {
@@ -26,7 +34,7 @@
 
         <div class="mb-3 mt-3">
             <label asp-for="SoLuong" class="form-label">Số lượng</label>
-            <input asp-for="SoLuong" type="number" class="form-control" id="numberInput">
+            <input asp-for="SoLuong" type="text" class="form-control" id="numberInput" maxlength="4">
             @if (ViewBag.ktSoLuong != null)
             {
                 <span class="text-danger">@ViewBag.ktSoLuong</span>
@@ -39,7 +47,7 @@
         </div>
         <div class="mb-3 mt-3">
             <label asp-for="KichThuoc" class="form-label">Kích thước</label>
-            <input asp-for="KichThuoc" type="number" class="form-control" id="numberInput">
+            <input asp-for="KichThuoc" type="text" class="form-control" id="numberInput" maxlength="2">
             @if (ViewBag.ktKichThuoc != null)
             {
                 <span class="text-danger">@ViewBag.ktKichThuoc</span>
@@ -74,13 +82,9 @@
 
             </div>
         </div>
-        <div class=" mb-3 mt-3">
-            <label asp-for="SanPhamId" class="form-label">Mã sản phẩm</label>
-            <select asp-for="SanPhamId" class="form-control" asp-items="ViewBag.LoaiSPid"></select>
-            <span asp-validation-for="SanPhamId" class="text-danger"></span>
-        </div>
         <br />
         <button type="submit" class="btn btn-primary">Sửa</button>
         <a asp-controller="ChiTietSP" asp-action="Index" class="btn btn-primary">Trở về</a>
+    </div>
     </div>
 </form>

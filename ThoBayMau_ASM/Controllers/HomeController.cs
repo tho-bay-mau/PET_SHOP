@@ -87,7 +87,7 @@ namespace ThoBayMau_ASM.Controllers
             var topProducts = _db.SPTop5.FromSqlRaw("EXEC SPTop5").ToList();
             ViewBag.SPTop5 = topProducts;
             ViewBag.SPID = id;
-            ViewBag.LoaiSP = _db.LoaiSP.OrderBy(x => x.Id).ToList();
+            ViewBag.LoaiSP = _db.LoaiSP.Where(x => x.TrangThai == true).OrderBy(x => x.Id).ToList();
             int total;
             if (id == null)
             {
