@@ -51,19 +51,19 @@ namespace ThoBayMau_ASM.Controllers
                     ViewBag.LoaiSPid = new SelectList(SPList, "Value", "Text");
 
 
-                    if (ct.Gia == null)
+                    if (ct.Gia == 0)
                     {
-                        ViewBag.ktgia = "Vui lòng nhập giá!!";
+                        ViewBag.ktgia = "Giá không được để trống hoặc bằng 0";
                     }
 
-                    if (ct.SoLuong == null)
+                    if (ct.SoLuong == 0)
                     {
-                        ViewBag.ktSoLuong = "Vui lòng nhập số lượng!!";
+                        ViewBag.ktSoLuong = "Số lượng không được để trống hoặc bằng 0";
                     }
 
-                    if (ct.KichThuoc == null)
+                    if (ct.KichThuoc == 0)
                     {
-                        ViewBag.ktKichThuoc = "Vui lòng nhập kích thước!!";
+                        ViewBag.ktKichThuoc = "Kích thước không được để trống hoặc bằng 0";
                     }
 
                     if (ct.NgaySanXuat >= ct.HanSuDung)
@@ -80,7 +80,10 @@ namespace ThoBayMau_ASM.Controllers
                     {
                         ViewBag.ktHSD = "Vui lòng nhập hạn sử dụng!!";
                     }
+
                     ct.SanPhamId = SanPhamId;
+                    var sp = _context.SanPham.FirstOrDefault(x => x.Id == SanPhamId);
+                    ViewBag.tenSP = sp.Ten;
                     if (ModelState.IsValid)
                     {
                         _context.Add(ct);
@@ -98,6 +101,7 @@ namespace ThoBayMau_ASM.Controllers
                         _context.SaveChanges();
                         return RedirectToAction("Index", "QLSanPham");
                     }
+                    ViewBag.SanPhamId = SanPhamId;
                     return View(ct);
                 }
                 catch (Exception ex)
@@ -143,7 +147,10 @@ namespace ThoBayMau_ASM.Controllers
             if (user != null)
             {
                 try
-                { 
+                {
+                    var SP = _context.SanPham.FirstOrDefault(X => X.Id == id);
+                    ViewBag.tenSP = SP.Ten;
+                    ct.SanPhamId = id;
                     if (ct.Gia == null)
                     {
                         ViewBag.ktgia = "Vui lòng nhập giá!!";
@@ -176,7 +183,8 @@ namespace ThoBayMau_ASM.Controllers
 
                     if (ModelState.IsValid)
                     {
-                        ct.SanPhamId = id;
+                        
+
                         _context.Update(ct);
                         _context.SaveChanges();
                         TempData["Sucess"] = "Sửa Chi tiết sản phẩm thành công!!";
@@ -193,6 +201,7 @@ namespace ThoBayMau_ASM.Controllers
                         string returnUrl = Url.Action("Index", "ChiTietSP", new { SanPhamId = ct.SanPhamId });
                         return Redirect(returnUrl);
                     }
+                    
                     return View(ct);
                 }
                 catch (Exception ex)
