@@ -252,8 +252,7 @@ namespace ThoBayMau_ASM.Controllers
                     if (now == "early")
                     {
                         return RedirectToAction("TTDH", "GioHang");
-                    }
-                    if (payment == "Thanh toán VNPay")
+                    } else
                     {
                         var vnPayModel = new VnPaymentRequestModel
                         {
@@ -265,7 +264,6 @@ namespace ThoBayMau_ASM.Controllers
                         };
                         return Redirect(_vnPayService.CreatePaymentUrl(HttpContext, vnPayModel));
                     }
-                    return RedirectToAction("Index", "GioHang");
                 }
             }
             return RedirectToAction("Index", "GioHang");        
