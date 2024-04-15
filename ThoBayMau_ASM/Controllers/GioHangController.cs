@@ -216,58 +216,57 @@ namespace ThoBayMau_ASM.Controllers
                     return RedirectToAction("Index", "GioHang");
                 }
                 GioHang = HttpContext.Session.GetJson<GioHang>("giohang") ?? new GioHang();
-                var donHang = new DonHang();
-                donHang.TaiKhoanId = User.Id;
-                _context.Add(donHang);
-                _context.SaveChanges();
-                GioHang = HttpContext.Session.GetJson<GioHang>("giohang");
-                foreach (var item in GioHang.Lines)
+                if (GioHang.Lines.Count > 0)
                 {
-                    var donHang_chiTiet = new DonHang_ChiTiet();
-                    donHang_chiTiet.ChiTiet_SPId = item.ChiTiet_SP.Id;
-                    var SP = _context.ChiTiet_SP.FirstOrDefault(p => p.Id == item.ChiTiet_SP.Id);
-                    if (SP != null)
+                    var donHang = new DonHang();
+                    donHang.TaiKhoanId = User.Id;
+                    _context.Add(donHang);
+                    _context.SaveChanges();
+
+                    foreach (var item in GioHang.Lines)
                     {
-                        SP.SoLuong -= item.SoLuong;
-                        _context.Update(SP);
+                        var donHang_chiTiet = new DonHang_ChiTiet();
+                        donHang_chiTiet.ChiTiet_SPId = item.ChiTiet_SP.Id;
+                        var SP = _context.ChiTiet_SP.FirstOrDefault(p => p.Id == item.ChiTiet_SP.Id);
+                        if (SP != null)
+                        {
+                            SP.SoLuong -= item.SoLuong;
+                            _context.Update(SP);
+                            _context.SaveChanges();
+                        }
+                        donHang_chiTiet.DonHangId = donHang.Id;
+                        donHang_chiTiet.SoLuong = item.SoLuong;
+                        _context.Add(donHang_chiTiet);
                         _context.SaveChanges();
                     }
-                    donHang_chiTiet.DonHangId = donHang.Id;
-                    donHang_chiTiet.SoLuong = item.SoLuong;
-                    _context.Add(donHang_chiTiet);
+                    var TT_NH = new ThongTin_NhanHang();
+                    TT_NH.DonhangId = donHang.Id;
+                    TT_NH.HoTen = HoTen;
+                    TT_NH.SDT = SDT;
+                    TT_NH.DiaChi = DiaChi;
+                    TT_NH.GhiChu = GhiChu;
+                    _context.Add(TT_NH);
                     _context.SaveChanges();
-                }
-                var TT_NH = new ThongTin_NhanHang();
-                TT_NH.DonhangId = donHang.Id;
-                TT_NH.HoTen = HoTen;
-                TT_NH.SDT = SDT;
-                TT_NH.DiaChi = DiaChi;
-                TT_NH.GhiChu = GhiChu;
-                _context.Add(TT_NH);
-                _context.SaveChanges();
 
-                HttpContext.Session.Remove("giohang");
-
-
-                if (now == "early")
-                {
-                    return RedirectToAction("TTDH", "GioHang");
-                } 
-                if (payment == "Thanh toán VNPay")
-                {
-                    var vnPayModel = new VnPaymentRequestModel
+                    HttpContext.Session.Remove("giohang");
+                    if (now == "early")
                     {
-                        Amount = tinhTong(donHang.Id),
-                        CreatedDate = DateTime.Now,
-                        Description = $"{tk.DiaChi}{tk.SDT}",
-                        OrderId = new Random().Next(1000, 10000),
-                        ProductId = donHang.Id
-                    };
-                    return Redirect(_vnPayService.CreatePaymentUrl(HttpContext, vnPayModel));
+                        return RedirectToAction("TTDH", "GioHang");
+                    } else
+                    {
+                        var vnPayModel = new VnPaymentRequestModel
+                        {
+                            Amount = tinhTong(donHang.Id),
+                            CreatedDate = DateTime.Now,
+                            Description = $"{tk.DiaChi}{tk.SDT}",
+                            OrderId = new Random().Next(1000, 10000),
+                            ProductId = donHang.Id
+                        };
+                        return Redirect(_vnPayService.CreatePaymentUrl(HttpContext, vnPayModel));
+                    }
                 }
-                return RedirectToAction("Index", "GioHang");
             }
-
+            return RedirectToAction("Index", "GioHang");        
         }
 
         public IActionResult PaymentUser(int Id)
