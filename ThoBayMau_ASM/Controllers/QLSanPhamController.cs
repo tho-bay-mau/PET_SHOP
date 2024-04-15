@@ -139,12 +139,13 @@ namespace ThoBayMau_ASM.Controllers
                             Uploadfile(item);
                             Anh anh = new Anh();
                             anh.SanphamId = sp.Id;
-                            anh.TenAnh = item.FileName;
                             _context.Anh.Add(anh);
                             if (_context.Anh.Any(a => a.TenAnh == item.FileName))
                             {
-                                anh.TenAnh = randomimagename(5) +  item.FileName ;
+                                anh.TenAnh = randomimagename(5) + item.FileName;
                             }
+                            anh.TenAnh = item.FileName;
+                            
                         }
                         _context.SaveChanges();
                         TempData["Sucess"] = "Thêm sản phẩm thành công!!";
@@ -242,12 +243,14 @@ namespace ThoBayMau_ASM.Controllers
                                 Uploadfile(item);
                                 Anh anh = new Anh();
                                 anh.SanphamId = obj.Id;
-                                anh.TenAnh = item.FileName;
                                 _context.Anh.Add(anh);
                                 if (_context.Anh.Any(a => a.TenAnh == item.FileName))
                                 {
                                     anh.TenAnh = randomimagename(5) + item.FileName;
                                 }
+                                anh.TenAnh = item.FileName;
+                                
+                                
                             }
                             _context.SaveChanges(); 
                         }
