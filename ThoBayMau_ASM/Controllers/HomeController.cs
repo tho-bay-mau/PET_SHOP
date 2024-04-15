@@ -145,7 +145,7 @@ namespace ThoBayMau_ASM.Controllers
         {
             if (key == null)
             {
-                return View(null);
+                return NotFound();
             }
             ViewBag.key = key;
             var topProducts = _db.SPTop5.FromSqlRaw("EXEC SPTop5").ToList();
@@ -184,7 +184,7 @@ namespace ThoBayMau_ASM.Controllers
             }
             else
             {
-                return View(null);
+                return NotFound();
             }
         }
         public JsonResult Search()
