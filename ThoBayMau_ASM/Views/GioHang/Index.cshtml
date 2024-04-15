@@ -82,7 +82,7 @@
                                     <td class="total">
                                         <div class="line-item_quantity product-quantity qty-click d-inline-block">
                                             <button type="button" id="tang_@item.ChiTiet_SP.Id" class="qtyminus qty-btn border float-left giam" data-id="@item.ChiTiet_SP.Id">-</button>
-                                            <input type="text" size="4" name="updates[]" min="1" id="sl_@item.ChiTiet_SP.Id" value="@(item.SoLuong)" class="item-quantity float-left text-center border border-right-0 border-left-0" data-id="@item.ChiTiet_SP.Id" onkeypress="return isPositiveNumberKey(event)">
+                                            <input type="text" size="4" name="updates[]" min="1" id="sl_@item.ChiTiet_SP.Id" value="@(item.SoLuong)" class="item-quantity float-left text-center border border-right-0 border-left-0" data-id="@item.ChiTiet_SP.Id" readonly>
                                             <button id="giam_@item.ChiTiet_SP.Id" class="qtyplus qty-btn border float-left tang" data-id="@item.ChiTiet_SP.Id">+</button>
                                         </div>
                                         <script>
