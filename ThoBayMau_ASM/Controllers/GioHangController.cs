@@ -369,14 +369,6 @@ namespace ThoBayMau_ASM.Controllers
                 return NotFound();
             }
         }
-        public static string OutDay(string dateTime)
-        {
-            // Định dạng của chuỗi ngày tháng
-            string format = "yyyy-MM-dd HH:mm:ss";
-            DateTime OutdateTime;
-            DateTime.TryParseExact(dateTime, format, null, System.Globalization.DateTimeStyles.None, out OutdateTime);
-            return OutdateTime.ToString("yyyy/MM/dd");
-        }
         public IActionResult DatLai(int txt_ID)
         {
             var currentDate = DateTime.Now.Date;

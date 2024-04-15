@@ -50,11 +50,32 @@ namespace ThoBayMau_ASM.Controllers
             
             if (user != null)
             {
-                
-                
-
+                if (tk.MatKhau == null)
+                {
+                    ViewBag.ErrPassword = "Mật khẩu không được để trống";
+                    return View(tk);
+                }
                 if (BCrypt.Net.BCrypt.Verify(tk.MatKhau, user.MatKhau))
                 {
+                    var currentDate = DateTime.Now;
+
+                    var acc = _db.LichSu.FirstOrDefault(x => x.ThongTin_ThaoTac.Contains("Đăng nhập sai mật khẩu") && x.TaiKhoanId == user.Id);
+                    if (acc != null)
+                    {
+                        string[] parts = acc.ThongTin_ThaoTac.Split(' ');
+                        string number = parts.Last();
+                        if (int.Parse(number) >= 5 && currentDate <= acc.NgayGio.AddMinutes(30))
+                        {
+                            TempData["warning"] = "Tài khoản của bạn đã bị khóa 30 phút";
+                            return View(tk);
+                        }
+                        else
+                        {
+                            _db.LichSu.Remove(acc);
+                            _db.SaveChanges();
+                        }
+                    }
+
                     HttpContext.Session.SetString("UserName", user.TenTK.ToString());
                     HttpContext.Session.SetJson("User", user);
                     if (user.TrangThai == false)
@@ -77,12 +98,67 @@ namespace ThoBayMau_ASM.Controllers
                 }
                 else
                 {
-                    ViewBag.ErrPassword = "Tên tài khoản hoặc mật khẩu không chính xác";
+                    var currentDate = DateTime.Now;
+                    int quantity = 0;
+                    int dem = _db.LichSu.Where(x => x.ThongTin_ThaoTac.Contains("Đăng nhập sai mật khẩu") && x.TaiKhoanId == user.Id).Count();
+                    if (dem != 1)
+                    {
+                        var ls = new LichSu
+                        {
+                            ThongTin_ThaoTac = "Đăng nhập sai mật khẩu 1",
+                            NgayGio = DateTime.Now,
+                            ChiTiet = $"Tài khoản: {user.TenTK}",
+                            TaiKhoanId = user.Id
+                        };
+                        _db.LichSu.Add(ls);
+                        _db.SaveChanges();
+                        quantity = 1;
+                    }
+                    if (dem == 1)
+                    {
+                        var acc = _db.LichSu.FirstOrDefault(x => x.ThongTin_ThaoTac.Contains("Đăng nhập sai mật khẩu") && x.TaiKhoanId == user.Id);
+                        string[] parts = acc.ThongTin_ThaoTac.Split(' ');
+                        string number = parts.Last();
+                        if (int.Parse(number) >= 4)
+                        {
+                            if (int.Parse(number) == 4)
+                            {
+                                acc.ThongTin_ThaoTac = $"Đăng nhập sai mật khẩu {int.Parse(number) + 1}";
+                                acc.NgayGio = currentDate;
+                                _db.LichSu.Update(acc);
+                                _db.SaveChanges();
+                                TempData["Warning"] = $"Tài khoản đã bị khóa 30 phút";
+                                return View(tk);
+                            }
+                            if (int.Parse(number) >= 5 && currentDate <= acc.NgayGio.AddMinutes(30))
+                            {
+                                TempData["Warning"] = $"Tài khoản đã bị khóa 30 phút";
+                                return View(tk);
+                            }
+                            else
+                            {
+                                acc.ThongTin_ThaoTac = "Đăng nhập sai mật khẩu 1";
+                                acc.NgayGio = currentDate;
+                                _db.LichSu.Update(acc);
+                                _db.SaveChanges();
+                                quantity = 1;
+                            }
+                        }
+                        else
+                        {
+                            acc.ThongTin_ThaoTac = $"Đăng nhập sai mật khẩu {int.Parse(number) + 1}";
+                            acc.NgayGio = currentDate;
+                            _db.LichSu.Update(acc);
+                            _db.SaveChanges();
+                            quantity = int.Parse(number) + 1;
+                        }
+                    }
+                    TempData["Warning"] = $"Tài khoản đăng nhập sai lần {quantity}";
+                    ViewBag.ErrPassword = "Tài khoản hoặc mật khẩu không chính xác sai không quá 5 lần";
                     return View(tk);
                 }
             }
             ViewBag.ErrPassword = "Tên tài khoản hoặc mật khẩu không chính xác";
-
             return View(tk);
         }
         //chuyển tên tài khoản google thành không dấu cho phù hợp với varchar
